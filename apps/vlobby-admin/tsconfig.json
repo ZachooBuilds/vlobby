@@ -1,0 +1,25 @@
+{
+  "extends": "@repo/typescript-config/nextjs.json",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  },
+ "include": [
+    ".eslintrc.cjs",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.cjs",
+    "**/*.js",
+    ".next/types/**/*.ts", 
+    "src/app/admin/settings/theme/_component/icon-upload.tsx", 
+    "src/app/(auth)/auth-validation", 
+    "src/app/(onboarding)/onboarding/_forms/onboarding-form.tsx", 
+    "src/components/global/file-upload-dropzone-form.tsx"],
+  "exclude": ["node_modules"]}

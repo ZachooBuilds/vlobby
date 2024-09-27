@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  
+  :root .ag-theme-quartz,
+  :root .ag-theme-quartz-dark {
+    --ag-foreground-color: hsl(var(--muted-foreground)) !important;
+    --ag-background-color: hsl(var(--background)) !important;
+    --ag-header-foreground-color: hsl(var(--foreground)) !important;
+    --ag-header-background-color: hsl(var(--muted)) !important;
+    --ag-header-column-resize-handle-color: hsl(var(--primary)) !important;
+    --ag-menu-background-color: hsl(var(--background)) !important;
+    --ag-control-panel-background-color: var(--background) !important;
+    --ag-panel-background-color: hsl(var(--background)) !important;
+    --ag-active-color: hsl(var(--primary)) !important;
+    --ag-checkbox-background-color: hsl(var(--background)) !important;
+    --ag-popover-background-color: hsl(var(--background)) !important;
+    --ag-font-size: 12px !important;
+    --ag-menu-border-color: hsl(var(--muted)) !important;
+    --ag-row-hover-color: hsl(var(--muted)) !important;
+    --ag-range-selection-border-color: hsl(var(--muted)) !important;
+    --ag-input-border-color: hsl(var(--muted)) !important;
+    --ag-popup-shadow: 0 0 0 1px hsl(var(--muted)) !important;
+  }
+
+   :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 248.4 100% 60.6%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 248.4 100% 60.6%;
+    --radius: 0.5rem;
+
+    --fc-page-bg-color: hsl(var(--background));
+    --fc-neutral-bg-color: rgba(var(--muted), 0.3);
+    --fc-neutral-text-color: hsl(var(--muted-foreground));
+    --fc-border-color: hsl(var(--muted));
+    --fc-button-text-color: hsl(var(--foreground));  
+    --fc-button-bg-color: hsl(var(--muted));
+    --fc-button-border-color: hsl(var(--muted));
+    --fc-button-hover-bg-color: hsl(var(--primary-dark));
+    --fc-button-hover-border-color: hsl(var(--muted));
+    --fc-button-active-bg-color: '#FFF';
+    --fc-button-active-border-color: hsl(var(--muted));
+    --fc-event-bg-color: hsl(var(--secondary));
+    --fc-event-border-color: hsl(var(--secondary));
+    --fc-event-text-color: hsl(var(--foreground));  
+    --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
+    --fc-more-link-bg-color: hsl(var(--muted));
+    --fc-more-link-text-color: inherit;
+    --fc-event-resizer-thickness: 8px;
+    --fc-event-resizer-dot-total-width: 8px;
+    --fc-event-resizer-dot-border-width: 1px;
+    --fc-non-business-color: rgba(var(--muted), 0.3);
+    --fc-bg-event-color: rgb(var(--accent));
+    --fc-bg-event-opacity: 0.3;
+    --fc-highlight-color: rgba(var(--accent), 0.3);
+    --fc-today-bg-color: rgba(var(--accent-light), 0.15);
+    --fc-now-indicator-color: hsl(var(--destructive));
+
+    --chart-1: 221.2 83.2% 53.3%;
+    --chart-2: 212 95% 68%;
+    --chart-3: 216 92% 60%;
+    --chart-4: 210 98% 78%;
+    --chart-5: 212 97% 87%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 248.4 100% 60.6%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 248.4 100% 60.6%;
+
+    --chart-1: 221.2 83.2% 53.3%;
+    --chart-2: 212 95% 68%;
+    --chart-3: 216 92% 60%;
+    --chart-4: 210 98% 78%;
+    --chart-5: 212 97% 87%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.fc .fc-daygrid-day-frame {
+  border-radius: 0.5rem !important;
+}
+
+.fc .fc-daygrid-event {
+  border-radius: 0.25rem !important;
+}
+
+.fc {
+  width: 100%;
+}
+
+.fc .fc-toolbar h2 {
+  font-size: 16px;
+}
+
+.fc-timegrid-slot-label {
+  font-size: 12px;
+}
+
+.fc-col-header-cell {
+  font-size: 12px;
+}
+
+.ag-row .ag-cell {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 14px !important;
+  font-family: inherit !important;
+  font-weight: 500 !important;
+  line-height: 1.5 !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.fc .fc-button {
+  font-size: 14px !important;
+  font-family: inherit !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.fc .fc-timegrid-slot,
+.fc .fc-timegrid-axis,
+.fc .fc-col-header-cell {
+  border-color: hsl(var(--muted)) !important;
+}

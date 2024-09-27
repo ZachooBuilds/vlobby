@@ -1,0 +1,271 @@
+2024-09-26T04:47:43.705175Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/docs/.next")}
+2024-09-26T04:47:43.705194Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("docs"), path: AnchoredSystemPathBuf("apps/docs") }}))
+2024-09-26T04:52:58.707804Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin"), AnchoredSystemPathBuf("apps/vlobby-admin/README.md"), AnchoredSystemPathBuf("apps/vlobby-admin/package.json")}
+2024-09-26T04:52:58.708462Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:53:25.606296Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(""), AnchoredSystemPathBuf("_tmp_12356_d04a0e7373839c32777e234f262d1331")}
+2024-09-26T04:53:25.606386Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:53:27.304569Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("")}
+2024-09-26T04:53:27.304586Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({}))
+2024-09-26T04:53:27.504856Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("pnpm-lock.yaml.146900361")}
+2024-09-26T04:53:27.504864Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:53:27.603098Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("pnpm-lock.yaml.146900361"), AnchoredSystemPathBuf("pnpm-lock.yaml")}
+2024-09-26T04:53:27.603106Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:54:43.404626Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/.gitignore"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/.env.example"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/public"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/src"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/src/app/layout.tsx"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/.eslintrc.cjs"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/public/favicon.ico"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/src/app/page.tsx"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/src/env.js"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/postcss.config.cjs"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/prettier.config.js"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/src/styles"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/README.md"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/src/app"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/tsconfig.json"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/package.json"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/src/styles/globals.css"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/_gitignore"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/tailwind.config.ts"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/next.config.js")}
+2024-09-26T04:54:43.404717Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:54:43.603565Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/package.json")}
+2024-09-26T04:54:43.603573Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:54:43.804169Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(""), AnchoredSystemPathBuf("_tmp_12472_ba43025e6556e449ea5eaed5379b169a")}
+2024-09-26T04:54:43.804177Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:54:44.005939Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("")}
+2024-09-26T04:54:44.005947Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({}))
+2024-09-26T04:56:20.503670Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/.env.example"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/.gitignore"), AnchoredSystemPathBuf("apps/vlobby-admin/src"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/src"), AnchoredSystemPathBuf("apps/vlobby-admin/public"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/.eslintrc.cjs"), AnchoredSystemPathBuf("apps/vlobby-admin/.eslintrc.cjs"), AnchoredSystemPathBuf("apps/vlobby-admin/.gitignore"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/.env.example"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/public")}
+2024-09-26T04:56:20.503696Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:56:20.619686Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/tailwind.config.ts"), AnchoredSystemPathBuf("apps/vlobby-admin/tailwind.config.ts"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/next.config.js"), AnchoredSystemPathBuf("apps/vlobby-admin/next.config.js"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/prettier.config.js"), AnchoredSystemPathBuf("apps/vlobby-admin/postcss.config.cjs"), AnchoredSystemPathBuf("apps/vlobby-admin/prettier.config.js"), AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/postcss.config.cjs")}
+2024-09-26T04:56:20.619695Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:56:20.703415Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin/tsconfig.json"), AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T04:56:20.703430Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:56:25.904055Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/vlobby-admin")}
+2024-09-26T04:56:25.904068Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:56:50.303020Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tailwind.config.ts")}
+2024-09-26T04:56:50.303040Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:57:20.604302Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T04:57:20.604321Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:57:22.903766Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T04:57:22.903776Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:58:08.602950Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T04:58:08.602970Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:58:48.102900Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/.eslintrc.js")}
+2024-09-26T04:58:48.103002Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:58:52.303970Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/.eslintrc.cjs")}
+2024-09-26T04:58:52.303983Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T04:59:41.703327Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/next.config.js")}
+2024-09-26T04:59:41.703351Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:00:03.311724Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/next.config.mjs")}
+2024-09-26T05:00:03.311890Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:00:11.904391Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/next.config.mjs")}
+2024-09-26T05:00:11.904413Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:01:01.502544Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/package.json")}
+2024-09-26T05:01:01.502570Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:01:04.803971Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/package.json")}
+2024-09-26T05:01:04.803981Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:01:06.603339Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/package.json")}
+2024-09-26T05:01:06.603364Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:01:34.703604Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(""), AnchoredSystemPathBuf("_tmp_12838_1fae3b7c12beaa31e48b4e9684c0949c")}
+2024-09-26T05:01:34.703639Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:01:35.803158Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("pnpm-lock.yaml"), AnchoredSystemPathBuf("pnpm-lock.yaml.1602582244")}
+2024-09-26T05:01:35.803175Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:06:16.802241Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/package.json")}
+2024-09-26T05:06:16.802368Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:06:37.702728Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/package.json")}
+2024-09-26T05:06:37.702763Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:07:26.604229Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/package.json")}
+2024-09-26T05:07:26.604754Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:12:22.835940Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(""), AnchoredSystemPathBuf("_tmp_14002_c6ea9eb7cdc2adf9444deeb61cb57655")}
+2024-09-26T05:12:22.837287Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:12:25.231867Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("")}
+2024-09-26T05:12:25.231879Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({}))
+2024-09-26T05:12:25.330900Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/package.json.3589803789"), AnchoredSystemPathBuf("apps/vlobby-admin/package.json"), AnchoredSystemPathBuf("pnpm-lock.yaml"), AnchoredSystemPathBuf("pnpm-lock.yaml.4275610207")}
+2024-09-26T05:12:25.330908Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:12:58.831830Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(""), AnchoredSystemPathBuf("_tmp_14059_eed14d2db98a12526939bfa8718f4c74")}
+2024-09-26T05:12:58.831850Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:12:59.632484Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/package.json"), AnchoredSystemPathBuf("apps/vlobby-admin/package.json.425746430"), AnchoredSystemPathBuf("pnpm-lock.yaml"), AnchoredSystemPathBuf("pnpm-lock.yaml.1204473546")}
+2024-09-26T05:12:59.632491Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:13:20.131848Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/.next")}
+2024-09-26T05:13:20.131870Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:13:47.938301Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:13:47.939625Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:14:00.032178Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:14:00.032204Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:14:28.933595Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("_tmp_14308_4f813a71543708e5da0983f326bfb0a2"), AnchoredSystemPathBuf("")}
+2024-09-26T05:14:28.933612Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:14:29.732153Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(""), AnchoredSystemPathBuf("pnpm-lock.yaml"), AnchoredSystemPathBuf("pnpm-lock.yaml.1556018563")}
+2024-09-26T05:14:29.732162Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:14:29.832966Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/package.json"), AnchoredSystemPathBuf("apps/vlobby-admin/package.json.3354691214")}
+2024-09-26T05:14:29.832973Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:14:43.833033Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:14:43.833069Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:14:51.532779Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:14:51.532791Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:16:09.937825Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:16:09.938246Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:16:12.632731Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:16:12.632742Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:18:29.638108Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:18:29.638845Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:18:31.632744Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:18:31.632757Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:18:35.633034Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:18:35.633074Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:19:35.732859Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T05:19:35.732879Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:19:38.033527Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T05:19:38.033542Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:20:32.933435Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:20:32.933573Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:20:35.035933Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:20:35.035954Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:21:04.834768Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:21:04.834797Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:21:08.134631Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:21:08.134652Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:21:11.533064Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:21:11.533082Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:21:20.433726Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:21:20.433736Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:21:23.934180Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:21:23.934213Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:21:24.233613Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T05:21:24.233630Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:24:37.635309Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T05:24:37.635335Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:24:41.635091Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T05:24:41.635104Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:25:01.035097Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T05:25:01.035122Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:25:08.434864Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T05:25:08.434882Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:25:12.336507Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T05:25:12.336521Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:34:45.680310Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/typescript-config/nextjs.json")}
+2024-09-26T05:34:45.681446Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(RootInternalDepChanged))
+2024-09-26T05:34:47.473926Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/typescript-config/nextjs.json")}
+2024-09-26T05:34:47.473941Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(RootInternalDepChanged))
+2024-09-26T05:34:48.973536Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/typescript-config/nextjs.json")}
+2024-09-26T05:34:48.973555Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(RootInternalDepChanged))
+2024-09-26T05:34:53.074533Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/typescript-config/nextjs.json")}
+2024-09-26T05:34:53.074557Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(RootInternalDepChanged))
+2024-09-26T05:36:09.775362Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/typescript-config/base.json")}
+2024-09-26T05:36:09.775387Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(RootInternalDepChanged))
+2024-09-26T05:36:13.174055Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/typescript-config/base.json")}
+2024-09-26T05:36:13.174064Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(RootInternalDepChanged))
+2024-09-26T05:36:15.274330Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/typescript-config/base.json")}
+2024-09-26T05:36:15.274356Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(RootInternalDepChanged))
+2024-09-26T05:36:18.273536Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/typescript-config/base.json")}
+2024-09-26T05:36:18.273546Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(RootInternalDepChanged))
+2024-09-26T05:36:20.874440Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/typescript-config/base.json")}
+2024-09-26T05:36:20.874452Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(RootInternalDepChanged))
+2024-09-26T05:36:30.173995Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/typescript-config/base.json")}
+2024-09-26T05:36:30.174010Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(RootInternalDepChanged))
+2024-09-26T05:36:31.374449Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/typescript-config/base.json")}
+2024-09-26T05:36:31.374459Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(RootInternalDepChanged))
+2024-09-26T05:37:04.874469Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("prettier.config.mjs")}
+2024-09-26T05:37:04.874497Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:37:10.875403Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/typescript-config/base.json")}
+2024-09-26T05:37:10.875445Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(RootInternalDepChanged))
+2024-09-26T05:37:29.575806Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("prettier.config.mjs")}
+2024-09-26T05:37:29.575850Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:37:36.576304Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("prettier.config.mjs")}
+2024-09-26T05:37:36.576337Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:37:39.576297Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("prettier.config.mjs")}
+2024-09-26T05:37:39.576319Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:37:47.475342Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/typescript-config/base.json")}
+2024-09-26T05:37:47.475368Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(RootInternalDepChanged))
+2024-09-26T05:37:51.175394Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("prettier.config.mjs")}
+2024-09-26T05:37:51.175405Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:37:54.775974Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/typescript-config/base.json")}
+2024-09-26T05:37:54.776002Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(RootInternalDepChanged))
+2024-09-26T05:40:01.483467Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend")}
+2024-09-26T05:40:01.484454Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:40:54.082127Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/convex/keys.tsx"), AnchoredSystemPathBuf("packages/backend/convex/requests.tsx"), AnchoredSystemPathBuf("packages/backend/convex/contractors.tsx"), AnchoredSystemPathBuf("packages/backend/convex/documents.tsx"), AnchoredSystemPathBuf("packages/backend/convex/tsconfig.json"), AnchoredSystemPathBuf("packages/backend/convex/vehicles.tsx"), AnchoredSystemPathBuf("packages/backend/convex/tickets.tsx"), AnchoredSystemPathBuf("packages/backend/convex/chats.tsx"), AnchoredSystemPathBuf("packages/backend/convex/auth.tsx"), AnchoredSystemPathBuf("packages/backend/convex/feed.tsx"), AnchoredSystemPathBuf("packages/backend/convex/bookingTypes.tsx"), AnchoredSystemPathBuf("packages/backend/convex/notes.tsx"), AnchoredSystemPathBuf("packages/backend/convex/activity.tsx"), AnchoredSystemPathBuf("packages/backend/convex/_generated/dataModel.d.ts"), AnchoredSystemPathBuf("packages/backend/convex/_generated/server.d.ts"), AnchoredSystemPathBuf("packages/backend/convex/auth.config.ts"), AnchoredSystemPathBuf("packages/backend/convex/announcements.tsx"), AnchoredSystemPathBuf("packages/backend/convex/parking.tsx"), AnchoredSystemPathBuf("packages/backend/convex/buildings.tsx"), AnchoredSystemPathBuf("packages/backend/convex/_generated"), AnchoredSystemPathBuf("packages/backend/convex/parkTypes.tsx"), AnchoredSystemPathBuf("packages/backend/convex/site.tsx"), AnchoredSystemPathBuf("packages/backend/convex/_generated/server.js"), AnchoredSystemPathBuf("packages/backend/convex/storage.tsx"), AnchoredSystemPathBuf("packages/backend/convex/storageSpaces.tsx"), AnchoredSystemPathBuf("packages/backend/convex/spaces.tsx"), AnchoredSystemPathBuf("packages/backend/convex/facilities.tsx"), AnchoredSystemPathBuf("packages/backend/convex/allocations.tsx"), AnchoredSystemPathBuf("packages/backend/convex/events.tsx"), AnchoredSystemPathBuf("packages/backend/convex/handoverNotes.tsx"), AnchoredSystemPathBuf("packages/backend/convex/parkingOperators.tsx"), AnchoredSystemPathBuf("packages/backend/convex/theme.tsx"), AnchoredSystemPathBuf("packages/backend/convex/occupants.tsx"), AnchoredSystemPathBuf("packages/backend/convex/parcels.tsx"), AnchoredSystemPathBuf("packages/backend/convex/_generated/api.js"), AnchoredSystemPathBuf("packages/backend/convex/offers.tsx"), AnchoredSystemPathBuf("packages/backend/convex/features.tsx"), AnchoredSystemPathBuf("packages/backend/convex/_generated/api.d.ts"), AnchoredSystemPathBuf("packages/backend/convex/dashboard.tsx"), AnchoredSystemPathBuf("packages/backend/convex"), AnchoredSystemPathBuf("packages/backend/convex/bookings.tsx"), AnchoredSystemPathBuf("packages/backend/convex/workOrders.tsx"), AnchoredSystemPathBuf("packages/backend/convex/eventAttendees.tsx")}
+2024-09-26T05:40:54.083134Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:41:15.077254Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/package.json")}
+2024-09-26T05:41:15.077274Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:41:29.677249Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/package.json")}
+2024-09-26T05:41:29.677277Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:41:47.977647Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/package.json")}
+2024-09-26T05:41:47.977670Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:43:28.479653Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/.gitignore")}
+2024-09-26T05:43:28.479681Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:43:42.978551Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/.gitignore")}
+2024-09-26T05:43:42.978572Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:48:44.988903Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/package.json")}
+2024-09-26T05:48:44.989995Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:48:47.682421Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/package.json")}
+2024-09-26T05:48:47.682430Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:48:49.082733Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/package.json")}
+2024-09-26T05:48:49.082749Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:50:18.088374Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("_tmp_16709_dce1717b411d4cf522defa78fc225c71"), AnchoredSystemPathBuf("")}
+2024-09-26T05:50:18.088407Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:50:19.988592Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("")}
+2024-09-26T05:50:19.988607Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({}))
+2024-09-26T05:50:20.583142Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("pnpm-lock.yaml.774860887")}
+2024-09-26T05:50:20.583155Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:50:20.682766Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("pnpm-lock.yaml"), AnchoredSystemPathBuf("apps/vlobby-admin/package.json"), AnchoredSystemPathBuf("pnpm-lock.yaml.774860887"), AnchoredSystemPathBuf("apps/vlobby-admin/package.json.3791748606")}
+2024-09-26T05:50:20.682774Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }, WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:55:38.593964Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/package.json")}
+2024-09-26T05:55:38.595424Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:55:42.887152Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/package.json")}
+2024-09-26T05:55:42.887166Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:58:24.874710Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(""), AnchoredSystemPathBuf("_tmp_17096_a28c119a2348372460490a4bc5bf1840")}
+2024-09-26T05:58:24.874737Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-26T05:58:24.973457Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("")}
+2024-09-26T05:58:24.973464Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({}))
+2024-09-26T05:59:03.873881Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("turbo.json")}
+2024-09-26T05:59:03.874382Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(DefaultGlobalFileChanged))
+2024-09-26T05:59:08.674098Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("turbo.json")}
+2024-09-26T05:59:08.674154Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(DefaultGlobalFileChanged))
+2024-09-26T06:00:55.675110Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("turbo.json")}
+2024-09-26T06:00:55.675158Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(DefaultGlobalFileChanged))
+2024-09-26T06:00:56.974945Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("turbo.json")}
+2024-09-26T06:00:56.974959Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(DefaultGlobalFileChanged))
+2024-09-26T06:02:15.076691Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/convex/_generated/api.js"), AnchoredSystemPathBuf("packages/backend/convex/_generated/server.js"), AnchoredSystemPathBuf("packages/backend/convex/_generated/api.d.ts"), AnchoredSystemPathBuf("packages/backend/convex/_generated/dataModel.d.ts"), AnchoredSystemPathBuf("packages/backend/convex/_generated/server.d.ts")}
+2024-09-26T06:02:15.076719Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@repo/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
+2024-09-26T06:05:29.486662Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/convexClientProvider.tsx")}
+2024-09-26T06:05:29.488002Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:05:41.476394Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/convexClientProvider.tsx"), AnchoredSystemPathBuf("apps/vlobby-admin/src/app/ConvexClientProvider.tsx")}
+2024-09-26T06:05:41.476421Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:05:54.577617Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/ConvexClientProvider.tsx")}
+2024-09-26T06:05:54.577640Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:06:08.777013Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/ConvexClientProvider.tsx")}
+2024-09-26T06:06:08.777031Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:06:11.978383Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/ConvexClientProvider.tsx")}
+2024-09-26T06:06:11.978394Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:07:21.277246Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:07:21.277270Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:07:51.478906Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/ConvexClientProvider.tsx")}
+2024-09-26T06:07:51.478934Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:08:00.779041Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/ConvexClientProvider.tsx")}
+2024-09-26T06:08:00.779056Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:09:51.292516Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:09:51.295307Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:10:10.279577Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:10:10.279606Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:10:17.979902Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:10:17.979924Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:10:20.879221Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:10:20.879245Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:10:20.879488Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2024-09-26T06:10:32.379001Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:10:32.379022Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:10:33.479322Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:10:33.479331Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:11:03.379379Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:11:03.379415Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:11:04.479631Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:11:04.479641Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:11:04.479658Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2024-09-26T06:11:08.279598Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:11:08.279609Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:11:11.880452Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:11:11.880470Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:11:13.679358Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:11:13.679371Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:11:17.079937Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:11:17.079950Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:11:20.679771Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:11:20.679798Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:11:23.880725Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:11:23.880736Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:11:26.079700Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/tsconfig.json")}
+2024-09-26T06:11:26.079718Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:11:26.111451Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2024-09-26T06:15:59.686903Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/ConvexClientProvider.tsx")}
+2024-09-26T06:15:59.687940Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:17:18.489948Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T06:17:18.491055Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:17:22.283527Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/layout.tsx")}
+2024-09-26T06:17:22.283552Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
+2024-09-26T06:20:17.490883Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("package.json")}
+2024-09-26T06:20:17.491759Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(DefaultGlobalFileChanged))
+2024-09-26T06:20:19.884152Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("package.json")}
+2024-09-26T06:20:19.884169Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All(DefaultGlobalFileChanged))
