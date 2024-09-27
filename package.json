@@ -8,7 +8,9 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "ui": "pnpm --filter @repo/ui ui"
+    "ui": "pnpm --filter @repo/ui ui",
+    "ionic:build": "npm run build",
+    "ionic:serve": "npm run dev"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

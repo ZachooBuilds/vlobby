@@ -34,7 +34,9 @@ export default async function DashboardPage() {
             {/* Placeholder for DefectBreakdown component (currently commented out) */}
             {/* <DefectBreakdown {...defectData} /> */}
             {/* UnderConstruction: Temporary component for features in development */}
+            <div className="flex flex-col items-center justify-center">
             <UnderConstruction />
+            </div>
           </div>
           {/**
            * Right column: Quick action menu

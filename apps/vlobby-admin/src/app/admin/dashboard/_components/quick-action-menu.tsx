@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { quickActionMenuItems } from "../../../lib/app-data/static-data";
 import { QuickActionMenuItem } from "../../../lib/app-data/app-types";
+import { Card } from "@repo/ui/components/ui/card";
 
 /**
  * QuickActionMenu Component
@@ -12,11 +13,11 @@ import { QuickActionMenuItem } from "../../../lib/app-data/app-types";
  */
 export default function QuickActionMenu() {
   return (
-    <div className="flex w-full flex-col gap-2 rounded-sm bg-background p-4">
+    <Card className="flex w-full flex-col gap-2 rounded-sm bg-background p-4">
       {quickActionMenuItems.map((item, index) => (
         <QuickActionItem key={index} {...item} />
       ))}
-    </div>
+    </Card>
   );
 }
 

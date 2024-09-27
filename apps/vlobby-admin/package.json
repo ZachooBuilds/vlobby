@@ -73,7 +73,7 @@
     "react-hook-form": "^7.53.0",
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.5.2",
-    "zod": "link:@hookform/resolvers/zod",
+     "zod": "^3.22.4",
     "zustand": "5.0.0-rc.2"
   },
   "devDependencies": {
