@@ -1,16 +1,15 @@
-
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { ConvexReactClient } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { ClerkProvider, useAuth } from "@clerk/clerk-react";
 
-/**
- * Initialize the Convex client with the provided URL from environment variables.
- * This client is used to connect to the Convex backend.
- */
-const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+if (!process.env.NEXT_PUBLIC_CONVEX_URL) {
+  throw new Error("NEXT_PUBLIC_CONVEX_URL is not set");
+}
+
+const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL);
 
 /**
  * ConvexClientProvider Component
@@ -27,6 +26,10 @@ export default function ConvexClientProvider({
 }: {
   children: ReactNode;
 }) {
+  useEffect(() => {
+    console.log("Convex URL:", process.env.NEXT_PUBLIC_CONVEX_URL);
+  }, []);
+
   return (
     <ClerkProvider
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}
@@ -45,7 +48,10 @@ export default function ConvexClientProvider({
        * ConvexProviderWithClerk integrates Convex with Clerk authentication.
        * It uses the Convex client and Clerk's useAuth hook to manage authentication state.
        */}
-      <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+      <ConvexProviderWithClerk 
+        client={convex} 
+        useAuth={useAuth}
+      >
         {children}
       </ConvexProviderWithClerk>
     </ClerkProvider>
