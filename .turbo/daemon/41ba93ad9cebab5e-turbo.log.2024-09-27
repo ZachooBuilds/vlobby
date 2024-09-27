@@ -286,3 +286,14 @@
 2024-09-27T07:06:26.523457Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/vlobby-admin/src/app/ConvexClientProvider.tsx")}
 2024-09-27T07:06:26.523468Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("vlobby-admin"), path: AnchoredSystemPathBuf("apps/vlobby-admin") }}))
 2024-09-27T07:06:26.552881Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2024-09-27T07:16:22.476954Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("convex"), AnchoredSystemPathBuf("convex/_generated")}
+2024-09-27T07:16:22.478586Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-27T07:16:22.568128Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("convex/_generated/api.d.ts"), AnchoredSystemPathBuf("convex/_generated/api.js"), AnchoredSystemPathBuf("convex/_generated/dataModel.d.ts"), AnchoredSystemPathBuf("convex/_generated/server.js"), AnchoredSystemPathBuf("convex/_generated/server.d.ts")}
+2024-09-27T07:16:22.568135Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-27T07:17:50.868459Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/package.json")}
+2024-09-27T07:17:50.868611Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@repo/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
+2024-09-27T07:17:50.869380Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2024-09-27T07:18:14.569269Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("convex")}
+2024-09-27T07:18:14.569293Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-09-27T07:18:42.368383Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/.gitignore")}
+2024-09-27T07:18:42.368408Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@repo/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
