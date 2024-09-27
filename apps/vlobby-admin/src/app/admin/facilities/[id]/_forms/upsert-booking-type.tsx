@@ -453,7 +453,7 @@ export default function UpsertBookingTypeForm({
           </div>
           {audienceFields.map((field, index) => (
             <div key={field.id} className="flex flex-row items-end gap-2">
-              <AudienceField index={index} buildingId={buildingId} />
+              <AudienceField index={index} />
               <Button
                 type="button"
                 variant="ghost"

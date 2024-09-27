@@ -321,7 +321,7 @@ export default function EventUpsertForm({
         </div>
         {audienceFields.map((field, index) => (
           <div key={field.id} className="flex flex-row items-end gap-2">
-            <AudienceField />
+            <AudienceField index={index} />
             <Button
               type="button"
               variant="ghost"
