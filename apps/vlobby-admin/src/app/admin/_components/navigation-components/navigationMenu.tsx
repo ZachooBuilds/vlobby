@@ -26,10 +26,7 @@ import { Card } from "@repo/ui/components/ui/card";
 import { SettingIconPath } from "../../../lib/icons/icons";
 import { Feature, IconImage } from "../../../lib/app-data/app-types";
 
-// Type definitions
-type Props = {
-  sidebarLogo?: string;
-};
+
 
 /**
  * WebNavigation Component
@@ -37,9 +34,9 @@ type Props = {
  * @param {Props} props - The component props
  * @returns {JSX.Element} The navigation menu component
  */
-export default function WebNavigation({ sidebarLogo }: Props) {
-  // Authentication state from Convex
-  const { isLoading, isAuthenticated } = useConvexAuth();
+export default function WebNavigation() {
+
+
   
   // Current pathname for determining the selected navigation item
   const pathname = usePathname();

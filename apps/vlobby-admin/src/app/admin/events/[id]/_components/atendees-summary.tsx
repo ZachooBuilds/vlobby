@@ -28,7 +28,6 @@ interface AttendeesSummaryProps {
  * @returns {JSX.Element} The rendered AttendeesSummary component
  */
 const AttendeesSummary = ({ eventId }: AttendeesSummaryProps) => {
-  const router = useRouter();
   const openModal = useModalStore((state) => state.openModal);
   // Fetch all attendees for the event from the database
   const attendees = useQuery(api.eventAttendees.getAttendeesForEvent, {

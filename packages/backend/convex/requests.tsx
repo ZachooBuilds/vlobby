@@ -1,9 +1,5 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
-import {
-  pickupSchema,
-  dropoffSchema,
-} from "../src/app/admin/parking/_forms/request-validation";
 
 // Define the request schema for Convex
 const requestSchema = {

@@ -7,7 +7,6 @@ import { completeOnboarding } from "../../actions/_actions";
 import { useRouter } from "next/navigation";
 import {
   useOrganizationList,
-  useUser,
 } from "@clerk/nextjs";
 import {
   MultiStageFormData,
@@ -112,16 +111,9 @@ const OnboardingForm = () => {
       if (orgResult.message && isLoaded) {
         await setActive({ organization: orgResult.message });
         // Complete the onboarding process
-        const res = await completeOnboarding(data);
+        const res = await completeOnboarding();
 
         if (res?.message) {
-          // Store the first site in the database
-          const siteResult = await createOrUpdateSiteMutation({
-            name: data.stage2.siteName,
-            description: data.stage2.siteDescription,
-            floors: data.stage2.floors,
-            namedFloors: data.stage2.namedFloors,
-          });
 
           // Prepare and add features
           const features =

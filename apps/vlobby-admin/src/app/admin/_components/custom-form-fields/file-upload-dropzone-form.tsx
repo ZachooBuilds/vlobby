@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import { useDropzone } from "react-dropzone";
 import { cn } from "@repo/ui/lib/utils";

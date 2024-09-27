@@ -12,7 +12,7 @@ import { MultiStageFormData } from "../onboarding/_forms/onboarding-validation"
  * @param {MultiStageFormData} formData - The form data from the onboarding process
  * @returns {Promise<{ message: any } | { error: string }>} A promise that resolves to a success message or an error
  */
-export const completeOnboarding = async (formData: MultiStageFormData) => {
+export const completeOnboarding = async () => {
   const { userId } = auth()
 
   if (!userId) {

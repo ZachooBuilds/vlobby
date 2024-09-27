@@ -55,7 +55,7 @@ const BookingSlots = ({
   maxSlots,
   bookings,
 }: BookingSlotsProps) => {
-  const { control, setValue } = useFormContext();
+  const { setValue } = useFormContext();
 
   console.log("in slot creation date:", date);
 

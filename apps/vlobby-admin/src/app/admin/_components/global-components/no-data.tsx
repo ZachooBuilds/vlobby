@@ -3,7 +3,6 @@ import useSheetStore from "../../../lib/global-state/sheet-state";
 import { Badge } from "@tremor/react";
 import { UnderConstructionImage } from "../../../lib/icons/icons";
 import { Button } from "@repo/ui/components/ui/button";
-import { GlobalSheet } from "./global-sheet";
 
 interface NoDataProps {
   badgeText: string;
