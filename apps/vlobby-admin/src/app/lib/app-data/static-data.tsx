@@ -15,6 +15,9 @@ import FeedPostUpsertForm from "../../admin/social/feed/_forms/feed_post_form";
 import OccupantUpsertForm from "../../admin/occupants/_form/occupant-upsert";
 import TicketUpsertForm from "../../admin/issues/_forms/issues-upsert-form";
 import WorkOrderUpsertForm from "../../admin/work-orders/_forms/work-order-upsert-form";
+import HandoverNoteUpsertForm from "../../admin/handover-notes/_forms/handover-note-upsert-form";
+import ParcelUpsertForm from "../../admin/parcels/_forms/parcel-upsert-form";
+import ContractorUpsertForm from "../../admin/contractors/_forms/contractor-upsert-form";
 
 // smaller size only the icons from the quick_actions categorey will be displayed
 export const navigationItems = [
@@ -368,7 +371,6 @@ export const spaceRoleOptions = [
 ];
 
 export const FormMap = {
-  // FacilityUpsert: FacilityUpsertForm,
   FacilityTypeUpsert: FacilityTypeUpsertForm,
   BookingUpsertForm: BookingUpsertForm,
   SpaceTypeUpsertForm: SpaceTypeUpsertForm,
@@ -380,16 +382,16 @@ export const FormMap = {
   // OfferUpsertForm: OfferUpsertForm,
   // SpaceUpsertForm: SpaceUpsertForm,
   FacilityUpsertForm: FacilityUpsertForm,
-  // ContractorUpsertForm: ContractorUpsertForm,
+  ContractorUpsertForm: ContractorUpsertForm,
   TicketUpsertForm: TicketUpsertForm,
   WorkOrderUpsertForm: WorkOrderUpsertForm,
   // FileUpsertForm: UpsertFileForm,
   // StorageUpsertForm: StorageUpsertForm,
   KeyTypeUpsertForm: KeyTypeUpsertForm,
   // KeyUpsertForm: KeyUpsertForm,
-  // ParcelUpsertForm: ParcelUpsertForm,
+  ParcelUpsertForm: ParcelUpsertForm,
   EventUpsertForm: EventUpsertForm,
-  // HandoverNoteUpsertForm: HandoverNoteUpsertForm,
+  HandoverNoteUpsertForm: HandoverNoteUpsertForm,
   AnnouncementUpsertForm: AnnouncementUpsertForm,
   FeedPostUpsertForm: FeedPostUpsertForm,
 

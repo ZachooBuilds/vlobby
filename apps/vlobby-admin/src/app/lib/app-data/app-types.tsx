@@ -7,6 +7,7 @@ import { AttendeeFormData } from "../../admin/events/_forms/atendee-validation";
 import { AnnouncementFormData } from "../../admin/social/announcements/_forms/announcement-validation";
 import { IssueFormData } from "../../admin/issues/_forms/issues-validation";
 import { WorkOrderFormData } from "../../admin/work-orders/_forms/work-order-validation";
+import { ParcelFormData } from "../../admin/parcels/_forms/parcel-validation";
 
 export type IconImage = {
   url: string;
@@ -110,6 +111,14 @@ export type FileData = {
 export type EventAttendeeWithOccupantDetails = AttendeeFormData & {
   occupantName: string;
   occupantEmail: string;
+};
+
+export type ParcelTableData = ParcelFormData & {
+  spaceName: string;
+
+  occupantName: string;
+
+  parcelTypeName: string;
 };
 
 export type WorkOrderSummaryCardData = {
