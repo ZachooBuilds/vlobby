@@ -8,6 +8,10 @@ import { AnnouncementFormData } from "../../admin/social/announcements/_forms/an
 import { IssueFormData } from "../../admin/issues/_forms/issues-validation";
 import { WorkOrderFormData } from "../../admin/work-orders/_forms/work-order-validation";
 import { ParcelFormData } from "../../admin/parcels/_forms/parcel-validation";
+import { KeyFormData } from "../../admin/key-register/_forms/key-validation";
+import { KeyLogFormData } from "../../admin/key-register/_forms/key-log-validation";
+import { Allocation } from "../../admin/parking/_forms/allocation-validation";
+import { StorageFormData } from "../../admin/storage/_forms/storage-validation";
 
 export type IconImage = {
   url: string;
@@ -113,12 +117,127 @@ export type EventAttendeeWithOccupantDetails = AttendeeFormData & {
   occupantEmail: string;
 };
 
+export type AllocationDetails = Allocation & {
+  parkTypeName: string;
+};
+
 export type ParcelTableData = ParcelFormData & {
   spaceName: string;
 
   occupantName: string;
 
   parcelTypeName: string;
+};
+
+
+export type FolderSummaryData = {
+  _id: string;
+  name: string;
+  fileCount: string;
+};
+
+export type FileSummaryData = {
+  _id: string;
+  name: string;
+  type: string;
+  folderName: string;
+  fileUrl: string;
+  fileStorageId: string;
+  views: number;
+};
+
+export type ParkingLog = {
+  _id: string;
+  requestId: string;
+  vehicleId: string;
+  parkId: string;
+  parkTypeId: string;
+  allocationId: string;
+  sessionStart: string;
+  sessionEnd?: string;
+  status: 'active' | 'completed';
+  orgId: string;
+};
+
+export type StorageSummaryTableData = StorageFormData & {
+  spaceName: string;
+};
+
+export type VehicleInfo = {
+  _id: string;
+  rego: string;
+  make: string;
+  model: string;
+  color: string;
+  year: string;
+  spaceId: string;
+  type: string;
+  image?: { url: string; storageId: string }[];
+  lastActivity?: Date;
+  isParked: boolean;
+};
+
+export type RequestCardData = {
+  _id: string;
+  requestType: string;
+  status: string;
+  vehicleDetails: string;
+  parkName: string;
+  assignedToName: string;
+  assignedAt: string;
+  serviceTime: string;
+  createdAt: string;
+};
+
+export type ParkingSpotDetails = {
+  parkingSpot: {
+    _id: string;
+    _creationTime: number;
+    name: string;
+    levelId: string;
+    x: number;
+    y: number;
+    orgId: string;
+  };
+  activeParkingLog: {
+    _id: string;
+    _creationTime: number;
+    parkId: string;
+    vehicleId: string;
+    status: 'active';
+    startTime: number;
+    endTime?: number;
+    orgId: string;
+  } | null;
+  vehicle: {
+    _id: string;
+    _creationTime: number;
+    rego: string;
+    make: string;
+    model: string;
+    color: string;
+    spaceId?: string;
+    orgId: string;
+  } | null;
+  space: {
+    _id: string;
+    _creationTime: number;
+    spaceName: string;
+    orgId: string;
+  } | null;
+};
+
+
+export type KeyTableData = KeyFormData & {
+  keyTypeName: string;
+  spaceName: string;
+  isOutKey: boolean;
+};
+
+export type OutKeysSummaryData = KeyLogFormData & {
+  keyTypeName: string;
+  spaceName: string;
+  userName: string;
 };
 
 export type WorkOrderSummaryCardData = {
