@@ -10,6 +10,11 @@ import { Feature, QuickActionMenuItem } from "./app-types";
 import UpsertServiceLocationForm from "../../admin/settings/general/_forms/upsert-service-locations";
 import FacilityTypeUpsertForm from "../../admin/settings/general/_forms/upsert-facility-types";
 import KeyTypeUpsertForm from "../../admin/settings/general/_forms/upsert-key-types";
+import AnnouncementUpsertForm from "../../admin/social/announcements/_forms/announcement-form";
+import FeedPostUpsertForm from "../../admin/social/feed/_forms/feed_post_form";
+import OccupantUpsertForm from "../../admin/occupants/_form/occupant-upsert";
+import TicketUpsertForm from "../../admin/issues/_forms/issues-upsert-form";
+import WorkOrderUpsertForm from "../../admin/work-orders/_forms/work-order-upsert-form";
 
 // smaller size only the icons from the quick_actions categorey will be displayed
 export const navigationItems = [
@@ -150,6 +155,24 @@ export const navigationItems = [
     category: "resident_services",
     href: "/settlement",
     icon: SettlementIconPath,
+  },
+];
+
+export const socialMenu = [
+  {
+    name: 'Announcements',
+    href: 'announcements',
+    icon: AnnouncementIconPath,
+  },
+  {
+    name: 'Feed',
+    href: 'feed',
+    icon: FeedIconPath,
+  },
+  {
+    name: 'Clubs',
+    href: 'clubs',
+    icon: ClubIconPath,
   },
 ];
 
@@ -337,6 +360,13 @@ export const IconMap = {
   LogoIcon: LogoIconPath,
 };
 
+export const spaceRoleOptions = [
+  { id: 'vl:owner', name: 'Owner' },
+  { id: 'vl:owner-occupier', name: 'Owner Occupier' },
+  { id: 'vl:occupant', name: 'Occupant' },
+  { id: 'vl:tenant', name: 'Tenant' },
+];
+
 export const FormMap = {
   // FacilityUpsert: FacilityUpsertForm,
   FacilityTypeUpsert: FacilityTypeUpsertForm,
@@ -346,13 +376,13 @@ export const FormMap = {
   OfferCategoryUpsertForm: UpsertOfferCategoryForm,
   ServiceLocationUpsertForm: UpsertServiceLocationForm,
   BuildingUpsertForm: UpsertSiteForm,
-  // OccupantUpsertForm: OccupantUpsertForm,
+  OccupantUpsertForm: OccupantUpsertForm,
   // OfferUpsertForm: OfferUpsertForm,
   // SpaceUpsertForm: SpaceUpsertForm,
   FacilityUpsertForm: FacilityUpsertForm,
   // ContractorUpsertForm: ContractorUpsertForm,
-  // TicketUpsertForm: TicketUpsertForm,
-  // WorkOrderUpsertForm: WorkOrderUpsertForm,
+  TicketUpsertForm: TicketUpsertForm,
+  WorkOrderUpsertForm: WorkOrderUpsertForm,
   // FileUpsertForm: UpsertFileForm,
   // StorageUpsertForm: StorageUpsertForm,
   KeyTypeUpsertForm: KeyTypeUpsertForm,
@@ -360,8 +390,8 @@ export const FormMap = {
   // ParcelUpsertForm: ParcelUpsertForm,
   EventUpsertForm: EventUpsertForm,
   // HandoverNoteUpsertForm: HandoverNoteUpsertForm,
-  // AnnouncementUpsertForm: AnnouncementUpsertForm,
-  // FeedPostUpsertForm: FeedPostUpsertForm,
+  AnnouncementUpsertForm: AnnouncementUpsertForm,
+  FeedPostUpsertForm: FeedPostUpsertForm,
 
 };
 

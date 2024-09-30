@@ -10,9 +10,10 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
-    "@types/node": "^20.0.0",
     "@clerk/clerk-react": "^5.9.3",
     "@clerk/nextjs": "^5.6.2",
+    "@emoji-mart/data": "^1.2.1",
+    "@emoji-mart/react": "^1.1.1",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
@@ -55,6 +56,7 @@
     "@tiptap/react": "^2.7.4",
     "@tiptap/starter-kit": "^2.7.4",
     "@tremor/react": "^3.18.3",
+    "@types/node": "^20.0.0",
     "ag-grid-community": "^32.2.1",
     "ag-grid-react": "^32.2.1",
     "clsx": "^2.1.1",
@@ -73,7 +75,7 @@
     "react-hook-form": "^7.53.0",
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.5.2",
-     "zod": "^3.22.4",
+    "zod": "^3.22.4",
     "zustand": "5.0.0-rc.2"
   },
   "devDependencies": {

@@ -4,6 +4,9 @@ import { EventFormData } from "../../admin/events/_forms/event-validation";
 import { FacilityFormData } from "../../admin/facilities/_forms/facility-validation";
 import { FormMap, IconMap } from "./static-data";
 import { AttendeeFormData } from "../../admin/events/_forms/atendee-validation";
+import { AnnouncementFormData } from "../../admin/social/announcements/_forms/announcement-validation";
+import { IssueFormData } from "../../admin/issues/_forms/issues-validation";
+import { WorkOrderFormData } from "../../admin/work-orders/_forms/work-order-validation";
 
 export type IconImage = {
   url: string;
@@ -109,4 +112,90 @@ export type EventAttendeeWithOccupantDetails = AttendeeFormData & {
   occupantEmail: string;
 };
 
+export type WorkOrderSummaryCardData = {
+  _id: string;
+  title: string;
+  assignedContractorId: string;
+  _creationTime: number;
+  contractorFirstName?: string;
+  contractorLastName?: string;
+  contractorCompany?: string;
+  status: string;
+  priority: string;
+};
+
+export type AssignedUserWithWorkOrderDetails = AssignedUser &
+  WorkOrderFormData & {
+    creationFirstName?: string;
+    creationLastName?: string;
+    creationEmail?: string;
+  };
+
+export type WorkOrderFormDataWithNames = WorkOrderFormData & {
+  assignedContractor: {
+    name: string;
+    businessName: string;
+    email: string;
+  } | null;
+  userId: string;
+  _creationTime: string;
+  locationName: string;
+  linkedAssetName: string;
+  buildingName: string;
+};
+
+export type AssignedUserWithFormDetails = AssignedUser &
+  IssueFormData & {
+    creationFirstName?: string;
+    creationLastName?: string;
+    creationEmail?: string;
+  };
+
+
+export type IssueFormDataWithNames = IssueFormData & {
+  userId: string;
+  _creationTime: string;
+  locationName: string;
+  linkedAssetName: string;
+  buildingName: string;
+};
+
+export type IssueSummaryCardData = {
+  _id: string;
+  title: string;
+  description: string;
+  _creationTime: number;
+  followUpDate: number;
+  issueType: string;
+  status: string;
+  priority: string;
+};
+
+
+export type AssignedUser = {
+  assignedFirstName?: string;
+  assignedLastName?: string;
+  assignedEmail?: string;
+};
+
+export type ChatSummary = {
+  _id: string;
+  occupantId: string;
+  OccupantName: string;
+  lastMessage: string;
+  lastMessageDate: Date;
+};
+
+export type Message = {
+  chatId: string;
+  content: string;
+  createdAt: string;
+  isFromOccupant: boolean;
+};
+
+export type AnnouncementTableEntry = AnnouncementFormData & {
+  status: 'draft' | 'scheduled' | 'sent';
+  views: number;
+  user: string;
+};
 

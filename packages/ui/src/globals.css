@@ -2,7 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+nextjs-portal {
+  display: none;
+}
+
 @layer base {
+
+  ::-webkit-scrollbar {
+  display: none;
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
   
   :root .ag-theme-quartz,
   :root .ag-theme-quartz-dark {
