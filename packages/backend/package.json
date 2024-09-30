@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "dev": "npx convex dev",
-    "setup": "npx convex dev --until-success"
+    "setup": "npx convex dev --until-success",
+    "build": "npx convex deploy"
   },
   "author": "",
   "license": "ISC",
