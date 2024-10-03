@@ -6,11 +6,8 @@ const config: CapacitorConfig = {
   webDir: 'out',
   server: {
     cleartext: true,
-    url: "http://192.168.1.64:3000",
+    url: "https://vlobby-occupant-app.vercel.app",
   },
-  //   ios: {
-  //   contentInset: 'always',
-  // },
   
   // Use the new way to pass environment variables in Capacitor 6
 };
