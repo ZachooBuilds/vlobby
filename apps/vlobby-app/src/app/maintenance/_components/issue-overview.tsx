@@ -12,7 +12,6 @@ import {
 import { Badge } from '@tremor/react';
 import { Button } from '@repo/ui/components/ui/button';
 import ImageGalleryComponent from '../../_components/image-gallery';
-import { useClerk } from '@clerk/nextjs';
 import { useQuery } from 'convex/react';
 import { api } from '@repo/backend/convex/_generated/api';
 import {
