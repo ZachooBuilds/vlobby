@@ -287,7 +287,7 @@ const BookingUpsertForm = (props: BookingUpsertFormProps) => {
               control={form.control}
               name="bookingTypeId"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="text-base">
                   <FormLabel>Booking Type</FormLabel>
                   <Select
                     onValueChange={field.onChange}
@@ -322,7 +322,7 @@ const BookingUpsertForm = (props: BookingUpsertFormProps) => {
               control={form.control}
               name="date"
               render={({ field }) => (
-                <FormItem className="flex flex-col gap-2">
+                <FormItem className="flex flex-col gap-2 text-base">
                   <FormLabel>Booking Date</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -408,7 +408,7 @@ const BookingUpsertForm = (props: BookingUpsertFormProps) => {
             control={form.control}
             name="notes"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="text-base">
                 <FormLabel>Notes</FormLabel>
                 <FormControl>
                   <Textarea placeholder="Enter booking notes" {...field} />
