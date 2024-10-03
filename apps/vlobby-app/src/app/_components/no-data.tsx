@@ -1,3 +1,5 @@
+'use client';
+
 import { Badge } from '@tremor/react';
 import { UnderConstructionImage } from '../../../public/svg/icons';
 

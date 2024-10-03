@@ -1,3 +1,4 @@
+"use client"
 import { Id } from '@repo/backend/convex/_generated/dataModel';
 import { BookingFormData } from '../app/facilities/_forms/booking-validation';
 
@@ -86,6 +87,68 @@ export type FacilityOverview = {
     url: string;
     storageId: string;
   }>;
+};
+
+export type BookingDetails = {
+  _id: Id<'bookings'>;
+  _creationTime: number;
+  orgId: string;
+  facilityId: Id<'facilities'>;
+  bookingTypeId: Id<'bookingTypes'>;
+  userId: Id<'users'>;
+  date: string;
+  slots: Array<{
+    slotIndex: number;
+    slotTime: string;
+  }>;
+  startTime: string;
+  endTime: string;
+  status: string;
+  notes?: string;
+  facilityName: string;
+  bookingTypeName: string;
+  userName: string;
+};
+
+/**
+ * @interface FileUploadWithPreviewProps
+ * @description Defines the props for the FileUploadWithPreview component
+ */
+export type FileUploadWithPreviewProps = {
+  name: string;
+  label?: string;
+  multiple?: boolean;
+  maxFiles?: number;
+}
+
+/**
+ * @interface FileData
+ * @description Defines the structure of file data
+ */
+export type FileData = {
+  url: string;
+  storageId: Id<"_storage">;
+  name?: string;
+  type?: string; // Add this line
+}
+
+export type EventDetails = {
+  _id: Id<'events'>;
+  _creationTime: number;
+  attendeeCount?: number;
+  isAttending?: boolean;
+  title: string;
+  startTime: string;
+  endTime: string;
+  description: string;
+  capacity: number;
+  audience?: Array<{ type: string; entity: string }>;
+  files?: string[];
+  isPublicPlace: boolean;
+  address?: string;
+  spaceId?: string;
+  orgId: string;
+  facilityName: string;
 };
 
 export type ChatSummary = {

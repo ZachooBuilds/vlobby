@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import { api } from '@repo/backend/convex/_generated/api';
 import { ParcelData } from '../../../lib/app-types';

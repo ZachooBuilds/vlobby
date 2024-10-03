@@ -29,7 +29,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@repo/ui/components/ui/select';
-import { Textarea } from '@repo/ui/components/ui/textarea';
 
 type VehicleFormProps = {
   selectedVehicle?: Vehicle;

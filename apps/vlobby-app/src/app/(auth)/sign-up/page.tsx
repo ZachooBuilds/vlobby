@@ -21,7 +21,6 @@ import { motion } from 'framer-motion';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { LogoPath } from '../../../lib/images';
 import { useRouter } from 'next/navigation';
-import { isPlatform } from '@ionic/react';
 
 console.log('Initializing SignUpPage component');
 

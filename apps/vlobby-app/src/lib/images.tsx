@@ -1,3 +1,4 @@
+"use client"
 export function LogoPath() {
   return (
     <svg viewBox="0 0 60 60" className=" h-full w-full">

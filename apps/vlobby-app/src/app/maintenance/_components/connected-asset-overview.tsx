@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Card,
   CardContent,
@@ -6,8 +8,8 @@ import {
   CardTitle,
 } from '@repo/ui/components/ui/card';
 import React from 'react';
-import { SpacesIconPath } from '../../../lib/icons/icons';
 import { Button } from '@repo/ui/components/ui/button';
+import { SpacesIconPath } from '../../../../public/svg/icons';
 
 interface EntityDetailsProps {
   space: string;

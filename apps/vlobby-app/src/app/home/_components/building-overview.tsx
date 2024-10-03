@@ -1,5 +1,6 @@
+'use client';
 import React from 'react';
-import { useUser } from '@clerk/nextjs';
+import { useUser } from '@clerk/clerk-react';
 import { useQuery } from 'convex/react';
 import { api } from '@repo/backend/convex/_generated/api';
 import { Building, ImageUrlAndId } from '../../../lib/app-types';

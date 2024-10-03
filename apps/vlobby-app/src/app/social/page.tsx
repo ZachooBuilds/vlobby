@@ -1,14 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useUser, useOrganizationList } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useQuery } from 'convex/react';
 import { api } from '@repo/backend/convex/_generated/api';
 import NavigationBar from '../_components/navigation';
-import { Loader2, Search } from 'lucide-react';
-import { Input } from '@repo/ui/components/ui/input';
-import { Announcement, OfferDetails } from '../../lib/app-types';
+import { Loader2} from 'lucide-react';
+import {OfferDetails } from '../../lib/app-types';
 import {
   AnnouncementIconPath,
   ClubIconPath,
@@ -20,6 +18,7 @@ import AnnouncementsOverview from './_components/announcements';
 import { motion } from 'framer-motion';
 import FeedOverview from './_components/feed';
 import ClubsOverview from './_components/clubs';
+import { useOrganizationList, useUser } from '@clerk/clerk-react';
 
 // ... existing SearchBar component ...
 

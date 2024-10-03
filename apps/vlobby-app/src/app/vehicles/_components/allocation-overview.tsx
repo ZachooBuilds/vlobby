@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+'use client';
+import React from 'react';
 import { useQuery } from 'convex/react';
 import { api } from '@repo/backend/convex/_generated/api';
 import { Card, CardContent } from '@repo/ui/components/ui/card';
 import { Badge } from '@tremor/react';
-import { CarIconPath, ParkIconPath } from '../../../../public/svg/icons';
-import { Button } from '@repo/ui/components/ui/button';
-import { Input } from '@repo/ui/components/ui/input';
-import { Loader2, PenIcon } from 'lucide-react';
+import { ParkIconPath } from '../../../../public/svg/icons';
+import { Loader2} from 'lucide-react';
 import useDrawerStore from '../../../lib/global-state';
 import { Allocation } from '../../../lib/app-types';
 import NoData from '../../_components/no-data';

@@ -1,4 +1,5 @@
-import { z } from "zod";
+'use client';
+import { z } from 'zod';
 
 // Booking /////////////////////////////////////////////////////////////////
 export const BookingFormSchema = z.object({

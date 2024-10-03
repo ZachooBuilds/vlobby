@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useUser, useOrganizationList } from '@clerk/nextjs';
+import { useOrganizationList, useUser } from '@clerk/clerk-react';
 import { useRouter } from 'next/navigation';
 import { SignOutButton } from '../(auth)/_components/sign-out-button';
 import { useQuery } from 'convex/react';

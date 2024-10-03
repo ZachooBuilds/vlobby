@@ -29,12 +29,20 @@ export const getUserById = query({
 export const upsertFromClerk = internalMutation({
   args: { data: v.any() as Validator<UserJSON> }, // no runtime validation, trust Clerk
   async handler(ctx, { data }) {
+    if (!data) {
+      throw new Error('Data is undefined');
+    }
+
     const userAttributes = {
       firstname: data.first_name,
       lastname: data.last_name,
-      email: data.email_addresses[0].email_address,
+      email: data.email_addresses[0]?.email_address,
       userId: data.id,
     };
+
+    if (!userAttributes.email || !userAttributes.userId) {
+      throw new Error('Missing required user attributes');
+    }
 
     const user = await userByExternalId(ctx, data.id);
     if (user === null) {

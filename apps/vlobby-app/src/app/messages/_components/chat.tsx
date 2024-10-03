@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '@repo/backend/convex/_generated/api';

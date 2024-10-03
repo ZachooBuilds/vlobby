@@ -1,3 +1,4 @@
+"use client"
 import { z } from 'zod';
 
 // Update the schema to match the new file structure

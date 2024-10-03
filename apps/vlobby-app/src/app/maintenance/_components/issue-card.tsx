@@ -1,3 +1,4 @@
+'use client';
 import { Badge } from '@tremor/react';
 import { EnhancedIssue, Issue } from '../../../lib/app-types';
 import { format } from 'date-fns';

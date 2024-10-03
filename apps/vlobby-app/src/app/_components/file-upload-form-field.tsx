@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 /**
  * FileUploadWithPreview Component
@@ -29,19 +29,23 @@
  * Note: This component requires being wrapped in a react-hook-form context.
  */
 
-import React, { useState } from "react";
-import { useFormContext } from "react-hook-form";
-import { useMutation } from "convex/react";
-import { FileIcon, X, Loader2 } from "lucide-react";
-import Image from "next/image";
-import { api } from "@repo/backend/convex/_generated/api";
-import { Id } from "@repo/backend/convex/_generated/dataModel";
-import { FileData, FileUploadWithPreviewProps } from "../../../lib/app-data/app-types";
-import { Button } from "@repo/ui/components/ui/button";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/ui/form";
-import { FileUploadForm } from "./file-upload-dropzone-form";
-
-
+import React, { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { useMutation } from 'convex/react';
+import { FileIcon, X, Loader2 } from 'lucide-react';
+import Image from 'next/image';
+import { api } from '@repo/backend/convex/_generated/api';
+import { Id } from '@repo/backend/convex/_generated/dataModel';
+import { Button } from '@repo/ui/components/ui/button';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@repo/ui/components/ui/form';
+import { FileUploadForm } from './file-upload-dropzone-form';
+import { FileData, FileUploadWithPreviewProps } from '../../lib/app-types';
 
 /**
  * @function FileUploadWithPreview
@@ -50,7 +54,7 @@ import { FileUploadForm } from "./file-upload-dropzone-form";
  */
 export function FileUploadWithPreview({
   name,
-  label = "Files",
+  label = 'Files',
   multiple = false,
   maxFiles = 5,
 }: FileUploadWithPreviewProps) {
@@ -78,13 +82,13 @@ export function FileUploadWithPreview({
       // Generate upload URL and save file
       const uploadUrl = await generateUploadUrl();
       const result = await fetch(uploadUrl, {
-        method: "POST",
-        headers: { "Content-Type": file.type },
+        method: 'POST',
+        headers: { 'Content-Type': file.type },
         body: file,
       });
 
       const { storageId } = (await result.json()) as {
-        storageId: Id<"_storage">;
+        storageId: Id<'_storage'>;
       };
       const savedFile = await saveFile({ storageId });
       if (savedFile.url) {
@@ -110,7 +114,7 @@ export function FileUploadWithPreview({
    * @param {number} index - The index of the file in the list
    */
   const renderFilePreview = (file: FileData, index: number) => {
-    const isPDF = file.name?.toLowerCase().endsWith(".pdf");
+    const isPDF = file.name?.toLowerCase().endsWith('.pdf');
 
     return (
       <div key={index} className="group relative">
@@ -176,16 +180,16 @@ export function FileUploadWithPreview({
             <div className="w-full">
               <div
                 className={`grid w-full gap-4 ${
-                  multiple ? "grid-cols-2" : "grid-cols-1"
+                  multiple ? 'grid-cols-2' : 'grid-cols-1'
                 }`}
               >
                 {/* Render previews for uploaded files */}
                 {(field.value as FileData[])?.map((file, index) =>
-                  renderFilePreview(file, index),
+                  renderFilePreview(file, index)
                 )}
                 {/* Render indicators for files being uploaded */}
                 {uploadingFiles.map((fileName) =>
-                  renderUploadingIndicator(fileName),
+                  renderUploadingIndicator(fileName)
                 )}
 
                 {/* Render file upload form if below max files limit */}

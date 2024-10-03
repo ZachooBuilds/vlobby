@@ -1,5 +1,5 @@
 "use client";
-import { useOrganization } from "@clerk/nextjs";
+import { useOrganization} from '@clerk/clerk-react';
 import { api } from "@repo/backend/convex/_generated/api";
 import { Id } from "@repo/backend/convex/_generated/dataModel";
 import { useQuery } from "convex/react";

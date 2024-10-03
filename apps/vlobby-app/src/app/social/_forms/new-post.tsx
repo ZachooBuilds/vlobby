@@ -2,10 +2,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { Loader2 } from 'lucide-react';
 import { useMutation } from 'convex/react';
-
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { api } from '@repo/backend/convex/_generated/api';
 import { Id } from '@repo/backend/convex/_generated/dataModel';
@@ -20,12 +18,10 @@ import {
 } from '@repo/ui/components/ui/form';
 import { Input } from '@repo/ui/components/ui/input';
 import { Textarea } from '@repo/ui/components/ui/textarea';
-import { Switch } from '@repo/ui/components/ui/switch';
 import { Button } from '@repo/ui/components/ui/button';
 import { FeedPostFormData, feedPostSchema } from './post-validation';
 import useDrawerStore from '../../../lib/global-state';
 import { FileUploadWithPreview } from '../../_components/file-upload-form-field';
-
 
 type Props = {
   selectedPost?: FeedPostFormData;
@@ -58,7 +54,7 @@ const FeedPostUpsertForm = ({ selectedPost }: Props) => {
         _id: selectedPost?._id as Id<'feedPosts'>,
         images: data.images.map((image) => image.storageId),
         isAdmin: false,
-        status: 'pending'
+        status: 'pending',
       });
 
       setIsLoading(false);

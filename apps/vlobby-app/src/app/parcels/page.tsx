@@ -1,15 +1,14 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useUser, useOrganizationList } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { SignOutButton } from '../(auth)/_components/sign-out-button';
 import { useQuery } from 'convex/react';
 import { api } from '@repo/backend/convex/_generated/api';
 import NavigationBar from '../_components/navigation';
 import { Loader2 } from 'lucide-react';
 import { MailOverview } from './_components/mail-overview';
 import { CollectedMailOverview } from './_components/collected-mail-overview';
+import { useOrganizationList, useUser } from '@clerk/clerk-react';
 
 export default function HomePage() {
   const { isLoaded: isUserLoaded, isSignedIn, user } = useUser();

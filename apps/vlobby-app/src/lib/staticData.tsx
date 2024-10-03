@@ -1,3 +1,4 @@
+"use client"
 import { ValueLabelPair } from './app-types';
 
 import { Mail, Box, Utensils, HelpCircle } from 'lucide-react';

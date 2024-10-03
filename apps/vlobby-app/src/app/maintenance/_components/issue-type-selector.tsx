@@ -1,3 +1,4 @@
+'use client';
 import { BuildingIconPath, FacilityIconPath, SpacesIconPath } from "../../../../public/svg/icons";
 
 

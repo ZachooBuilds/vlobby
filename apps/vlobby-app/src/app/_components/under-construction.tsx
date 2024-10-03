@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 import { Button } from '@repo/ui/components/ui/button';
 import { Badge } from '@tremor/react';

@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Trash, Plus } from "lucide-react";
 import { z } from "zod";
 import { useMutation, useQuery } from "convex/react";
-import { useOrganization } from "@clerk/nextjs";
+import { useOrganization} from '@clerk/clerk-react';
 import { useToast } from "@repo/ui/hooks/use-toast";
 import { api } from "@repo/backend/convex/_generated/api";
 import useSheetStore from "../../../lib/global-state/sheet-state";
