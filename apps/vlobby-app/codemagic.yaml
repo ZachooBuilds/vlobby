@@ -90,7 +90,9 @@ workflows:
         script: |
           cd apps/vlobby-app/ios/App
           LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
-          agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
+          NEW_BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
+          agvtool new-version -all $NEW_BUILD_NUMBER
+          echo "New build number: $NEW_BUILD_NUMBER"
       - name: Build ipa for distribution
         script: |
           cd apps/vlobby-app/ios/App
