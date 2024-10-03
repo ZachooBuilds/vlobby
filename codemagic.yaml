@@ -10,7 +10,7 @@ workflows:
         bundle_identifier: com.vlobby.app
       vars:
         APP_STORE_APPLE_ID: 6736442782
-        XCODE_WORKSPACE: "App.xcworkspace"
+        XCODE_WORKSPACE: "apps/vlobby-app/ios/App/App.xcworkspace"
         XCODE_SCHEME: "App"
         
     scripts:
