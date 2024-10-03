@@ -3,7 +3,7 @@ workflows:
     name: iOS Workflow
     max_build_duration: 120
     integrations:
-      app_store_connect: codemagic
+      app_store_connect: Virtual Lobby Technology
     environment:
       ios_signing:
         distribution_type: app_store
