@@ -16,7 +16,11 @@ workflows:
     scripts:
       - name: Install pnpm
         script: |
-          npm install -g pnpm
+          if ! command -v pnpm &> /dev/null; then
+            npm install -g pnpm
+          else
+            echo "pnpm is already installed"
+          fi
       - name: Install dependencies
         script: |
           pnpm install
