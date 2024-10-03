@@ -40,7 +40,7 @@ export default function ConvexClientProvider({
            * This should match your application's theme.
            * The value is in HSL format for better color manipulation.
            */
-          colorPrimary: "hsl(248.4, 100%, 60.6%)",
+          colorPrimary: 'hsl(248.4, 100%, 60.6%)',
         },
       }}
     >
@@ -48,10 +48,7 @@ export default function ConvexClientProvider({
        * ConvexProviderWithClerk integrates Convex with Clerk authentication.
        * It uses the Convex client and Clerk's useAuth hook to manage authentication state.
        */}
-      <ConvexProviderWithClerk 
-        client={convex} 
-        useAuth={useAuth}
-      >
+      <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
         {children}
       </ConvexProviderWithClerk>
     </ClerkProvider>
