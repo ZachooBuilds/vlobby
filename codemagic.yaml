@@ -10,7 +10,7 @@ workflows:
         bundle_identifier: com.vlobby.app
       vars:
         APP_STORE_APPLE_ID: 1555555551
-        XCODE_WORKSPACE: "apps/vlobby-app/ios/App/App.xcworkspace"
+        XCODE_WORKSPACE: "App.xcworkspace"
         XCODE_SCHEME: "App"
         
     scripts:
@@ -45,7 +45,7 @@ workflows:
         script: |
           cd apps/vlobby-app/ios/App
           xcode-project build-ipa \
-            --workspace "$XCODE_WORKSPACE" \
+            --workspace "App.xcworkspace" \
             --scheme "$XCODE_SCHEME"
     artifacts:
       - apps/vlobby-app/ios/App/build/ios/ipa/*.ipa
