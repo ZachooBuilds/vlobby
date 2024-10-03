@@ -36,14 +36,12 @@ workflows:
         script: |
           cd apps/vlobby-app/ios/App
           xcode-project use-profiles
-      - name: Increment build number
+      - name: Set build number
         script: | 
           #!/bin/sh
           cd $CM_BUILD_DIR/apps/vlobby-app/ios/App
-          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
-          NEW_BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
-          echo "Latest build number: $LATEST_BUILD_NUMBER"
-          echo "New build number: $NEW_BUILD_NUMBER"
+          NEW_BUILD_NUMBER="1.0.1"
+          echo "Setting build number to: $NEW_BUILD_NUMBER"
           agvtool new-version -all $NEW_BUILD_NUMBER
           
           # Verify the new build number
