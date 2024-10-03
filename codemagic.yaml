@@ -1,0 +1,117 @@
+workflows:
+  android-workflow:
+    name: Ionic Capacitor Android Workflow
+    max_build_duration: 120
+    environment:
+      android_signing:
+        - keystore_reference
+      groups:
+        - google_play
+      vars:
+        PACKAGE_NAME: "com.vlobby.app"
+        GOOGLE_PLAY_TRACK: alpha
+      node: latest
+    scripts:
+      - name: Install pnpm
+        script: |
+          npm install -g pnpm
+      - name: Install dependencies
+        script: |
+          pnpm install
+      - name: Set up local.properties
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/apps/vlobby-app/android/local.properties"
+      - name: Update dependencies and copy web assets to native project
+        script: |
+          cd apps/vlobby-app
+          pnpm run build
+          npx cap sync
+      - name: Build Android release
+        script: |
+          cd apps/vlobby-app
+          LATEST_GOOGLE_PLAY_BUILD_NUMBER=$(google-play get-latest-build-number --package-name "$PACKAGE_NAME")
+          if [ -z $LATEST_GOOGLE_PLAY_BUILD_NUMBER ]; then
+            UPDATED_BUILD_NUMBER=$BUILD_NUMBER
+          else
+            UPDATED_BUILD_NUMBER=$(($LATEST_GOOGLE_PLAY_BUILD_NUMBER + 1))
+          fi
+          cd android
+          ./gradlew bundleRelease \
+            -PversionCode=$UPDATED_BUILD_NUMBER \
+            -PversionName=1.0.$UPDATED_BUILD_NUMBER
+    artifacts:
+      - apps/vlobby-app/android/app/build/outputs/**/*.apk
+    publishing:
+      email:
+        recipients:
+          - zach.kingsford@gmail.com
+        notify:
+          success: true
+          failure: false
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+        submit_as_draft: true
+
+  ios-workflow:
+    name: iOS Workflow
+    max_build_duration: 120
+    integrations:
+      app_store_connect: codemagic
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.vlobby.app
+      vars:
+        APP_STORE_APPLE_ID: 1555555551
+        XCODE_WORKSPACE: "apps/vlobby-app/ios/App/App.xcworkspace"
+        XCODE_SCHEME: "App"
+        
+    scripts:
+      - name: Install pnpm
+        script: |
+          npm install -g pnpm
+      - name: Install dependencies
+        script: |
+          pnpm install
+      - name: Cocoapods installation
+        script: |
+          cd apps/vlobby-app/ios/App && pod install
+      - name: Update dependencies and copy web assets to native project
+        script: |
+          cd apps/vlobby-app
+          pnpm run build
+          npx cap sync
+      - name: Set up code signing settings on Xcode project
+        script: |
+          cd apps/vlobby-app/ios/App
+          xcode-project use-profiles
+      - name: Increment build number
+        script: |
+          cd apps/vlobby-app/ios/App
+          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
+          agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
+      - name: Build ipa for distribution
+        script: |
+          cd apps/vlobby-app/ios/App
+          xcode-project build-ipa \
+            --workspace "$XCODE_WORKSPACE" \
+            --scheme "$XCODE_SCHEME"
+    artifacts:
+      - apps/vlobby-app/ios/App/build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+    publishing:
+      email:
+        recipients:
+          - zach.kingsford@gmail.com
+        notify:
+          success: true
+          failure: false
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - vlobby-beta-testers
+        submit_to_app_store: false
