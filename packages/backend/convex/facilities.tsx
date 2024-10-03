@@ -1,24 +1,25 @@
-import { Id } from "./_generated/dataModel";
-import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
+import { internal } from './_generated/api';
+import { Id } from './_generated/dataModel';
+import { mutation, query } from './_generated/server';
+import { v } from 'convex/values';
 
 // Upsert facility type
 export const upsertFacilityType = mutation({
   args: {
-    _id: v.optional(v.id("facilityTypes")),
+    _id: v.optional(v.id('facilityTypes')),
     name: v.string(),
     description: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     if (args._id) {
       // Update existing facility type
       const existing = await ctx.db.get(args._id);
       if (!existing || existing.orgId !== orgId) {
-        throw new Error("Facility type not found or access denied");
+        throw new Error('Facility type not found or access denied');
       }
       await ctx.db.patch(args._id, {
         name: args.name,
@@ -27,7 +28,7 @@ export const upsertFacilityType = mutation({
       return args._id;
     } else {
       // Insert new facility type
-      return await ctx.db.insert("facilityTypes", {
+      return await ctx.db.insert('facilityTypes', {
         name: args.name,
         description: args.description,
         orgId,
@@ -38,15 +39,15 @@ export const upsertFacilityType = mutation({
 
 // Remove facility type
 export const removeFacilityType = mutation({
-  args: { _id: v.id("facilityTypes") },
+  args: { _id: v.id('facilityTypes') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const existing = await ctx.db.get(args._id);
     if (!existing || existing.orgId !== orgId) {
-      throw new Error("Facility type not found or access denied");
+      throw new Error('Facility type not found or access denied');
     }
     await ctx.db.delete(args._id);
   },
@@ -54,10 +55,10 @@ export const removeFacilityType = mutation({
 
 // Get a single facility type by ID
 export const getFacilityType = query({
-  args: { _id: v.id("facilityTypes") },
+  args: { _id: v.id('facilityTypes') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const facilityType = await ctx.db.get(args._id);
@@ -72,12 +73,12 @@ export const getFacilityType = query({
 export const getAllFacilityTypes = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     return await ctx.db
-      .query("facilityTypes")
-      .filter((q) => q.eq(q.field("orgId"), orgId))
+      .query('facilityTypes')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
       .collect();
   },
 });
@@ -98,31 +99,31 @@ export const getAllFacilityTypes = query({
  */
 export const upsertFacility = mutation({
   args: {
-    _id: v.optional(v.id("facilities")),
+    _id: v.optional(v.id('facilities')),
     name: v.string(),
     description: v.string(),
-    facilityTypeId: v.id("facilityTypes"),
-    buildingId: v.id("sites"),
+    facilityTypeId: v.id('facilityTypes'),
+    buildingId: v.id('sites'),
     floor: v.string(),
     isPublic: v.boolean(),
     hasAudience: v.boolean(),
     files: v.array(
       v.object({
         storageId: v.string(),
-      }),
+      })
     ),
     audience: v.optional(
       v.array(
         v.object({
           type: v.string(),
           entity: v.string(),
-        }),
-      ),
+        })
+      )
     ),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const facilityData = {
@@ -141,13 +142,13 @@ export const upsertFacility = mutation({
       // Update existing facility
       const existing = await ctx.db.get(args._id);
       if (!existing || existing.orgId !== orgId) {
-        throw new Error("Facility not found or access denied");
+        throw new Error('Facility not found or access denied');
       }
       await ctx.db.patch(args._id, facilityData);
       return args._id;
     } else {
       // Insert new facility
-      return await ctx.db.insert("facilities", facilityData);
+      return await ctx.db.insert('facilities', facilityData);
     }
   },
 });
@@ -160,10 +161,10 @@ export const upsertFacility = mutation({
  * @returns {Promise<Object|null>} The facility object or null if not found.
  */
 export const getFacility = query({
-  args: { _id: v.id("facilities") },
+  args: { _id: v.id('facilities') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const facility = await ctx.db.get(args._id);
@@ -173,19 +174,19 @@ export const getFacility = query({
 
     // Get building name
     const building = await ctx.db.get(facility.buildingId);
-    const buildingName = building ? building.name : "Unknown Building";
+    const buildingName = building ? building.name : 'Unknown Building';
 
     // Get facility type name
     const facilityType = await ctx.db.get(facility.facilityTypeId);
-    const facilityTypeName = facilityType ? facilityType.name : "Unknown Type";
+    const facilityTypeName = facilityType ? facilityType.name : 'Unknown Type';
 
     // Map files to include URLs
-    const filesWithUrls = await Promise.all(facility.files.map(
-      async (file: { storageId: Id<"_storage"> }) => ({
+    const filesWithUrls = await Promise.all(
+      facility.files.map(async (file: { storageId: Id<'_storage'> }) => ({
         url: await ctx.storage.getUrl(file.storageId),
         storageId: file.storageId,
-      }),
-    ));
+      }))
+    );
 
     return {
       ...facility,
@@ -204,34 +205,87 @@ export const getFacility = query({
 export const getAllFacilities = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const facilities = await ctx.db
-      .query("facilities")
-      .filter((q) => q.eq(q.field("orgId"), orgId))
+      .query('facilities')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
       .collect();
 
-    // Resolve URLs for files
-    const facilitiesWithUrls = await Promise.all(
-      facilities.map(async (facility) => {
-        const filesWithUrls = await Promise.all(
-          facility.files.map(async (file: { storageId: Id<"_storage"> }) => ({
-            url: await ctx.storage.getUrl(file.storageId),
-            storageId: file.storageId,
-          })),
-        );
-
-        return {
-          ...facility,
-          files: filesWithUrls,
-        };
-      }),
-    );
-
-    return facilitiesWithUrls;
+    return await processFacilities(ctx, facilities);
   },
 });
+
+export const getAllOccupantFacilities = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    // Call the internal function to get audience groups
+    const audienceGroups = await ctx.runQuery(
+      internal.helperFunctions.getOccupantAudienceGroups,
+      {}
+    );
+
+    const facilities = await ctx.db
+      .query('facilities')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .collect();
+
+    const filteredFacilities = facilities.filter((facility) => {
+      if (!facility.audience || facility.audience.length === 0) {
+        return true; // Include facilities without specific audience
+      }
+
+      // Use filter instead of some
+      const matchingAudiences = facility.audience.filter(
+        (audienceItem: any) =>
+          audienceGroups.filter(
+            (group: any) =>
+              group.type === audienceItem.type &&
+              group.entity === audienceItem.entity
+          ).length > 0
+      );
+
+      return matchingAudiences.length > 0;
+    });
+
+    return await processFacilities(ctx, filteredFacilities);
+  },
+});
+
+async function processFacilities(ctx: any, facilities: any[]) {
+  // Resolve URLs for files and add additional data
+  return await Promise.all(
+    facilities.map(async (facility) => {
+      const filesWithUrls = await Promise.all(
+        facility.files.map(async (file: { storageId: Id<'_storage'> }) => ({
+          url: await ctx.storage.getUrl(file.storageId),
+          storageId: file.storageId,
+        }))
+      );
+
+      // Get building name
+      const building = await ctx.db.get(facility.buildingId);
+      const buildingName = building ? building.name : 'Unknown Building';
+
+      // Get facility type name
+      const facilityType = await ctx.db.get(facility.facilityTypeId);
+      const facilityTypeName = facilityType
+        ? facilityType.name
+        : 'Unknown Type';
+
+      return {
+        ...facility,
+        files: filesWithUrls,
+        buildingName,
+        facilityTypeName,
+      };
+    })
+  );
+}
 
 /**
  * @function deleteFacility
@@ -240,15 +294,15 @@ export const getAllFacilities = query({
  * @param {string} args._id - ID of the facility to delete.
  */
 export const deleteFacility = mutation({
-  args: { _id: v.id("facilities") },
+  args: { _id: v.id('facilities') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const existing = await ctx.db.get(args._id);
     if (!existing || existing.orgId !== orgId) {
-      throw new Error("Facility not found or access denied");
+      throw new Error('Facility not found or access denied');
     }
     await ctx.db.delete(args._id);
   },
@@ -257,12 +311,12 @@ export const deleteFacility = mutation({
 export const getAllFacilityValueLabelPairs = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const rawData = await ctx.db
-      .query("facilities")
-      .filter((q) => q.eq(q.field("orgId"), orgId))
+      .query('facilities')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
       .collect();
 
     return rawData.map((facility) => ({

@@ -182,6 +182,72 @@ export const getVehicleForEdit = query({
   },
 });
 
+
+
+export const getAllForUser = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const userId = identity.subject;
+    const orgId = identity.orgId;
+
+    // Get the occupant
+    const occupant = await ctx.db
+      .query('users')
+      .filter((q) =>
+        q.and(q.eq(q.field('orgId'), orgId), q.eq(q.field('userId'), userId))
+      )
+      .first();
+
+    if (!occupant) throw new Error('User is not an occupant');
+
+    // Get user's spaces
+    const userSpaces = await ctx.db
+      .query('userSpaces')
+      .filter((q) =>
+        q.and(q.eq(q.field('orgId'), orgId), q.eq(q.field('userId'), userId))
+      )
+      .collect();
+
+    const spaceIds = userSpaces.map((space) => space.spaceId);
+
+    // Get all vehicles
+    const allVehicles = await ctx.db
+      .query('vehicles')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .collect();
+
+    // Get active parking logs
+    const activeParkingLogs = await ctx.db
+      .query('parkingLogs')
+      .filter((q) => 
+        q.and(
+          q.eq(q.field('orgId'), orgId),
+          q.eq(q.field('status'), 'active')
+        )
+      )
+      .collect();
+
+    // Create a Set of parked vehicle IDs for quick lookup
+    const parkedVehicleIds = new Set(activeParkingLogs.map(log => log.vehicleId));
+
+    // Filter vehicles based on conditions and add parked status
+    const userVehicles = allVehicles.filter((vehicle) => {
+      if (vehicle.availableTo === 'space') {
+        return spaceIds.includes(vehicle.spaceId);
+      } else if (vehicle.availableTo === 'specific') {
+        return vehicle.drivers.some((driver: { id: string }) => driver.id === occupant._id);
+      }
+      return false;
+    }).map(vehicle => ({
+      ...vehicle,
+      isParked: parkedVehicleIds.has(vehicle._id)
+    }));
+
+    return userVehicles;
+  },
+});
+
 export const getAllVehicleValueLabelPair = query({
   args: { isDropoff: v.optional(v.boolean()) },
   handler: async (ctx, args) => {

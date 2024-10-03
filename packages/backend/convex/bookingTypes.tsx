@@ -1,3 +1,4 @@
+import { internal } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -160,6 +161,44 @@ export const getBookingTypesForFacility = query({
       .filter((q) => q.eq(q.field("orgId"), orgId))
       .filter((q) => q.eq(q.field("facilityId"), args.facilityId))
       .collect();
+  },
+});
+
+export const getBookingTypesForFacilityForCurrentOccupant = query({
+  args: { facilityId: v.id('facilities') },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    // Call the internal function to get audience groups
+    const audienceGroups = await ctx.runQuery(
+      internal.helperFunctions.getOccupantAudienceGroups,
+      {}
+    );
+
+    const bookingTypes = await ctx.db
+      .query('bookingTypes')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .filter((q) => q.eq(q.field('facilityId'), args.facilityId))
+      .collect();
+
+    return bookingTypes.filter((bookingType) => {
+      if (!bookingType.audience || bookingType.audience.length === 0) {
+        return true; // Include booking types without specific audience
+      }
+
+      const matchingAudiences = bookingType.audience.filter(
+        (audienceItem: any) =>
+          audienceGroups.some(
+            (group: any) =>
+              group.type === audienceItem.type &&
+              group.entity === audienceItem.entity
+          )
+      );
+
+      return matchingAudiences.length > 0;
+    });
   },
 });
 

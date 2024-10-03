@@ -123,6 +123,40 @@ export const getAll = query({
   },
 });
 
+export const getAllForCurrentOccupant = query({
+  args: { isCollected: v.boolean() },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const userId = identity.subject;
+    const orgId = identity.orgId;
+
+    const occupant = await ctx.db
+      .query('users')
+      .filter((q) => q.eq(q.field('userId'), userId))
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .first();
+
+    if (!occupant) throw new Error('Occupant not found');
+
+    const parcels = await ctx.db
+      .query('parcels')
+      .filter((q) => q.eq(q.field('occupantId'), occupant._id))
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .filter((q) => q.eq(q.field('isCollected'), args.isCollected))
+      .collect();
+
+    return await Promise.all(parcels.map(async (parcel) => {
+      let spaceName = "Unknown";
+      if (parcel.spaceId) {
+        const space = await ctx.db.get(parcel.spaceId);
+        spaceName = space?.spaceName || "Unknown";
+      }
+      return { ...parcel, spaceName };
+    }));
+  },
+});
+
 export const getParcelForEdit = query({
   args: { id: v.id("parcels") },
   handler: async (ctx, args) => {

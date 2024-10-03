@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import ChatBottombar from './chat-bottom-bar';
 import { format } from 'date-fns';
@@ -43,7 +43,7 @@ export function ChatList({
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to the bottom when new messages are added
-  React.useEffect(() => {
+  useEffect(() => {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;

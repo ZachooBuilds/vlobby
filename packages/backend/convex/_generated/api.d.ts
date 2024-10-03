@@ -16,6 +16,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as activity from "../activity.js";
+import type * as allUsers from "../allUsers.js";
 import type * as allocations from "../allocations.js";
 import type * as announcements from "../announcements.js";
 import type * as auth from "../auth.js";
@@ -31,6 +32,8 @@ import type * as facilities from "../facilities.js";
 import type * as features from "../features.js";
 import type * as feed from "../feed.js";
 import type * as handoverNotes from "../handoverNotes.js";
+import type * as helperFunctions from "../helperFunctions.js";
+import type * as http from "../http.js";
 import type * as keys from "../keys.js";
 import type * as notes from "../notes.js";
 import type * as occupants from "../occupants.js";
@@ -59,6 +62,7 @@ import type * as workOrders from "../workOrders.js";
  */
 declare const fullApi: ApiFromModules<{
   activity: typeof activity;
+  allUsers: typeof allUsers;
   allocations: typeof allocations;
   announcements: typeof announcements;
   auth: typeof auth;
@@ -74,6 +78,8 @@ declare const fullApi: ApiFromModules<{
   features: typeof features;
   feed: typeof feed;
   handoverNotes: typeof handoverNotes;
+  helperFunctions: typeof helperFunctions;
+  http: typeof http;
   keys: typeof keys;
   notes: typeof notes;
   occupants: typeof occupants;

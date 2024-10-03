@@ -5,6 +5,7 @@ import { ThemeProvider } from 'next-themes';
 import ConvexClientProvider from './ConvexClientProvider';
 import { ReactNode } from 'react';
 import { Toaster } from '@repo/ui/components/ui/toaster';
+import { GlobalDrawer } from './_components/global-drawer';
 
 /**
  * RootLayout Component
@@ -28,12 +29,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {/* ThemeProvider: Manages the application's theme */}
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >
             {/* ConvexClientProvider: Wraps the app with Convex client for real-time data and authentication */}
-            <ConvexClientProvider>{children}</ConvexClientProvider>
+            <ConvexClientProvider>
+              {children}
+              <GlobalDrawer />
+            </ConvexClientProvider>
             {/* Toaster: Provides a container for toast notifications */}
             <Toaster />
           </ThemeProvider>

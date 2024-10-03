@@ -136,6 +136,12 @@ export type FolderSummaryData = {
   fileCount: string;
 };
 
+ export type ImageUrlAndId = {
+   url: string;
+   storageId: Id<'_storage'>;
+ };
+
+ 
 export type FileSummaryData = {
   _id: string;
   name: string;

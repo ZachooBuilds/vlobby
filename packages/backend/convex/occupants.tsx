@@ -122,14 +122,55 @@ export const getAllOccupantsValueLabelPair = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthenticated");
+    const userId = identity.subject;
     const orgId = identity.orgId;
 
-    const rawData = await ctx.db
+    // Check if the user is an occupant
+    const occupant = await ctx.db
       .query("users")
-      .filter((q) => q.eq(q.field("orgId"), orgId))
-      .collect();
+      .filter((q) =>
+        q.and(q.eq(q.field("orgId"), orgId), q.eq(q.field("userId"), userId))
+      )
+      .first();
 
-    return rawData.map((occupant) => ({
+    let occupants;
+    if (occupant) {
+      // If user is an occupant, get only the users of their spaces
+      const userSpaces = await ctx.db
+        .query("userSpaces")
+        .filter((q) =>
+          q.and(q.eq(q.field("orgId"), orgId), q.eq(q.field("userId"), userId))
+        )
+        .collect();
+
+      const spaceIds = userSpaces.map((userSpace) => userSpace.spaceId);
+
+      const allUserSpaces = await ctx.db
+        .query("userSpaces")
+        .filter((q) => q.eq(q.field("orgId"), orgId))
+        .collect();
+
+      const filteredUserSpaces = allUserSpaces.filter((userSpace) =>
+        spaceIds.includes(userSpace.spaceId)
+      );
+
+      const userIds = new Set(filteredUserSpaces.map((userSpace) => userSpace.userId));
+
+      occupants = await ctx.db
+        .query("users")
+        .filter((q) => q.eq(q.field("orgId"), orgId))
+        .collect();
+
+      occupants = occupants.filter((occupant) => userIds.has(occupant.userId));
+    } else {
+      // If user is not an occupant, get all occupants for the organization
+      occupants = await ctx.db
+        .query("users")
+        .filter((q) => q.eq(q.field("orgId"), orgId))
+        .collect();
+    }
+
+    return occupants.map((occupant) => ({
       value: occupant._id,
       label: `${occupant.firstName} ${occupant.lastName}`,
     }));
@@ -173,6 +214,27 @@ export const get = query({
       return null;
     }
     return user;
+  },
+});
+
+export const getCurrentOccupant = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthenticated");
+    const userId = identity.subject;
+    const orgId = identity.orgId;
+
+    const occupant = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("userId"), userId))
+      .filter((q) => q.eq(q.field("orgId"), orgId))
+      .unique();
+
+    if (!occupant) {
+      throw new Error("Current occupant not found");
+    }
+
+    return occupant;
   },
 });
 

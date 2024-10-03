@@ -96,18 +96,81 @@ export const getAllSpaceTypesValueLabelPair = query({
   },
 });
 
+
+
 export const getAllSpaceValueLabelPairs = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthenticated");
+    const userId = identity.subject;
     const orgId = identity.orgId;
 
-    const rawData = await ctx.db
-      .query("spaces")
-      .filter((q) => q.eq(q.field("orgId"), orgId))
+    // Check if the user is an occupant
+    const occupant = await ctx.db
+      .query("users")
+      .filter((q) =>
+        q.and(q.eq(q.field("orgId"), orgId), q.eq(q.field("userId"), userId))
+      )
+      .first();
+
+    let spaces;
+    if (occupant) {
+      // If user is an occupant, get only their spaces
+      const userSpaces = await ctx.db
+        .query("userSpaces")
+        .filter((q) =>
+          q.and(q.eq(q.field("orgId"), orgId), q.eq(q.field("userId"), userId))
+        )
+        .collect();
+
+      const spaceIds = new Set(userSpaces.map((userSpace) => userSpace.spaceId));
+
+      spaces = await ctx.db
+        .query("spaces")
+        .filter((q) => q.eq(q.field("orgId"), orgId))
+        .collect();
+
+      spaces = spaces.filter((space) => spaceIds.has(space._id));
+    } else {
+      // If user is not an occupant, get all spaces for the organization
+      spaces = await ctx.db
+        .query("spaces")
+        .filter((q) => q.eq(q.field("orgId"), orgId))
+        .collect();
+    }
+
+    return spaces.map((space) => ({
+      value: space._id,
+      label: space.spaceName,
+    }));
+  },
+});
+
+export const getAllSpaceValueLabelPairsForUser = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const userId = identity.subject;
+    const orgId = identity.orgId;
+
+    // Get all spaces for the current user
+    const userSpaces = await ctx.db
+      .query('userSpaces')
+      .filter((q) =>
+        q.and(q.eq(q.field('orgId'), orgId), q.eq(q.field('userId'), userId))
+      )
       .collect();
 
-    return rawData.map((space) => ({
+    const spaceIds = new Set(userSpaces.map((userSpace) => userSpace.spaceId));
+
+    const allSpaces = await ctx.db
+      .query('spaces')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .collect();
+
+    const userSpacesFiltered = allSpaces.filter((space) => spaceIds.has(space._id));
+
+    return userSpacesFiltered.map((space) => ({
       value: space._id,
       label: space.spaceName,
     }));
@@ -378,6 +441,62 @@ export const getSpacesForUser = query({
   },
 });
 
+// ... existing code ...
+
+export const getCurrentUserSpaces = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthenticated");
+    const orgId = identity.orgId;
+    const userId = identity.subject;
+
+    // Step 1: Get all userSpaces for the current user
+    const userSpaces = await ctx.db
+      .query("userSpaces")
+      .filter((q) => q.eq(q.field("userId"), userId))
+      .filter((q) => q.eq(q.field("orgId"), orgId))
+      .collect();
+
+    // Step 2: Fetch spaces based on the extracted spaceIds and include their roles
+    const spaces = await Promise.all(
+      userSpaces.map(async (userSpace) => {
+        const space = await ctx.db
+          .query("spaces")
+          .filter((q) => q.eq(q.field("orgId"), orgId))
+          .filter((q) => q.eq(q.field("_id"), userSpace.spaceId))
+          .first();
+
+        if (space) {
+          const building = await ctx.db.get(space.building);
+          const spaceType = await ctx.db.get(space.type);
+          
+          // Get all userSpaces for this space
+          const allUserSpacesForThisSpace = await ctx.db
+            .query("userSpaces")
+            .filter((q) => q.eq(q.field("spaceId"), space._id))
+            .filter((q) => q.eq(q.field("orgId"), orgId))
+            .collect();
+
+          // Calculate the total number of users (including the current user)
+          const totalUsersCount = allUserSpacesForThisSpace.length;
+
+          return {
+            ...space,
+            role: userSpace.role,
+            buildingName: building ? building.name : "Unknown",
+            typeName: spaceType ? spaceType.name : "Unknown",
+            totalUsersCount,
+          };
+        }
+        return null;
+      })
+    );
+
+    return spaces.filter((space) => space !== null);
+  },
+});
+
+
 // Get all spaces for the authenticated organization
 export const getAllSpaces = query({
   handler: async (ctx) => {
@@ -411,6 +530,7 @@ export const getAllSpaces = query({
     }));
   },
 });
+
 
 // Get all spaces with only id and name
 export const getAllSpacesDropdown = query({

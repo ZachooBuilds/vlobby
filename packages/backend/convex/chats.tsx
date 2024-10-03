@@ -120,6 +120,59 @@ export const getChatSummaries = query({
   },
 });
 
+export const getChatSummaryForOccupant = mutation({
+  args: { occupantId: v.id('users') },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+    const userId = identity.subject;
+
+    // Check if a chat with the occupant already exists
+    let chat = await ctx.db
+      .query('chats')
+      .filter((q) => q.eq(q.field('occupantId'), args.occupantId))
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .first();
+
+    // If chat doesn't exist, create a new one
+    if (!chat) {
+      const chatId = await ctx.db.insert('chats', {
+        occupantId: args.occupantId,
+        orgId,
+        userId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      });
+      chat = await ctx.db.get(chatId);
+    }
+
+    // Get the latest message
+    const latestMessage = await ctx.db
+      .query('messages')
+      .filter((q) => q.eq(q.field('chatId'), chat!._id))
+      .order('desc')
+      .first();
+
+    // Get occupant details
+    const occupant = await ctx.db.get(chat!.occupantId);
+
+    // Return chat summary
+    return {
+      _id: chat!._id,
+      occupantId: chat!.occupantId,
+      occupantName: occupant
+        ? `${occupant.firstName} ${occupant.lastName}`
+        : 'Unknown',
+      lastMessage: latestMessage ? latestMessage.content : '',
+      lastMessageDate: latestMessage
+        ? latestMessage.createdAt
+        : chat!.updatedAt,
+    };
+  },
+});
+
+
 export const getChat = query({
   args: { chatId: v.id("chats") },
   handler: async (ctx, args) => {

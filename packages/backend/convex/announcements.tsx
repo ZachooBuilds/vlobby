@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
 
 export const upsertAnnouncement = mutation({
   args: {
@@ -101,6 +102,46 @@ export const getAllAnnouncements = query({
       .collect();
 
     return announcements;
+  },
+});
+
+export const getAllOccupantAnnouncements = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    // Call the internal function to get audience groups
+    const audienceGroups = await ctx.runQuery(internal.helperFunctions.getOccupantAudienceGroups, {});
+
+    const announcements = await ctx.db
+      .query('announcements')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .filter((q) => 
+        q.or(
+          q.eq(q.field('scheduleSend'), false),
+          q.and(
+            q.eq(q.field('scheduleSend'), true),
+            q.lt(q.field('dateTime'), new Date().toISOString())
+          )
+        )
+      )
+      .collect();
+
+    return announcements.filter((announcement) => {
+      if (!announcement.audience || announcement.audience.length === 0) {
+        return true; // Include announcements without specific audience
+      }
+      
+      // Use filter instead of some
+      const matchingAudiences = announcement.audience.filter((audienceItem: any) =>
+        audienceGroups.filter((group: any) =>
+          group.type === audienceItem.type && group.entity === audienceItem.entity
+        ).length > 0
+      );
+      
+      return matchingAudiences.length > 0;
+    });
   },
 });
 

@@ -1,38 +1,58 @@
-"use client";
+'use client';
 /**
  * @file IssueDetailsPage Component
  * @description This component provides the detailed view of a specific issue.
  * It includes issue details, notes, activity, and placeholders for work orders and invoices.
  */
-import React, { useEffect, useState } from "react";
-import { useQuery } from "convex/react";
-import { Loader2 } from "lucide-react";
-import { Badge } from "@tremor/react";
-import TicketUpsertForm from "../_forms/issues-upsert-form";
-import { format } from "date-fns";
-import ConnectAssetDetailsCard from "../_components/connected-asset-summary";
-import TicketDetailsCard from "../_components/issue-summary";
-import WorkOrderUpsertForm from "../../work-orders/_forms/work-order-upsert-form";
-import { TaskCard } from "./_components/work-order-summary";
-import { Id } from "@repo/backend/convex/_generated/dataModel";
-import { AssignedUser, AssignedUserWithFormDetails, IssueFormDataWithNames, WorkOrderSummaryCardData } from "../../../lib/app-data/app-types";
-import useModalStore from "../../../lib/global-state/modal-state";
-import { api } from "@repo/backend/convex/_generated/api";
-import { getUser } from "../../../../clerk-server/clerk";
-import DetailsHeader from "../../_components/global-components/page-header";
-import { IssueIconPath } from "../../../lib/icons/icons";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs";
-import GlobalNoteForm, { GlobalNoteData } from "../../_components/notes/global-note-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
-import { Button } from "@repo/ui/components/ui/button";
-import NoData from "../../_components/global-components/no-data";
-import GlobalNote from "../../_components/notes/global-note";
-import { ActivityTimeline, TimelineItem } from "../../_components/activity/activity-timeline";
-import useSheetStore from "../../../lib/global-state/sheet-state";
-import UnderConstructionMessage from "../../_components/global-components/under-construction";
+import React, { useEffect, useState } from 'react';
+import { useQuery } from 'convex/react';
+import { Loader2 } from 'lucide-react';
+import { Badge } from '@tremor/react';
+import TicketUpsertForm from '../_forms/issues-upsert-form';
+import { format } from 'date-fns';
+import ConnectAssetDetailsCard from '../_components/connected-asset-summary';
+import TicketDetailsCard from '../_components/issue-summary';
+import WorkOrderUpsertForm from '../../work-orders/_forms/work-order-upsert-form';
+import { TaskCard } from './_components/work-order-summary';
+import { Id } from '@repo/backend/convex/_generated/dataModel';
+import {
+  AssignedUser,
+  AssignedUserWithFormDetails,
+  IssueFormDataWithNames,
+  WorkOrderSummaryCardData,
+} from '../../../lib/app-data/app-types';
+import useModalStore from '../../../lib/global-state/modal-state';
+import { api } from '@repo/backend/convex/_generated/api';
+import { getUser } from '../../../../clerk-server/clerk';
+import DetailsHeader from '../../_components/global-components/page-header';
+import { IssueIconPath } from '../../../lib/icons/icons';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@repo/ui/components/ui/tabs';
+import GlobalNoteForm, {
+  GlobalNoteData,
+} from '../../_components/notes/global-note-form';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@repo/ui/components/ui/card';
+import { Button } from '@repo/ui/components/ui/button';
+import NoData from '../../_components/global-components/no-data';
+import GlobalNote from '../../_components/notes/global-note';
+import {
+  ActivityTimeline,
+  TimelineItem,
+} from '../../_components/activity/activity-timeline';
+import useSheetStore from '../../../lib/global-state/sheet-state';
+import UnderConstructionMessage from '../../_components/global-components/under-construction';
 
 type IssueDetailsPageProps = {
-  params: { id: Id<"issues"> };
+  params: { id: Id<'issues'> };
 };
 
 /**
@@ -56,8 +76,8 @@ export default function IssueDetailsPage({ params }: IssueDetailsPageProps) {
 
   // Calculate issueCreationTime outside the if block
   const issueCreationTime = issueDetails
-    ? format(new Date(issueDetails._creationTime), "dd/MM/yyyy h:mm a")
-    : "";
+    ? format(new Date(issueDetails._creationTime), 'dd/MM/yyyy h:mm a')
+    : '';
 
   // Fetch users from clerk
   useEffect(() => {
@@ -68,7 +88,7 @@ export default function IssueDetailsPage({ params }: IssueDetailsPageProps) {
           const assignedUser = await getUser(issueDetails.assignedToId);
           setAssignedUser(assignedUser);
         } catch (error) {
-          console.error("Error fetching assigned user:", error);
+          console.error('Error fetching assigned user:', error);
         }
       }
     };
@@ -79,7 +99,7 @@ export default function IssueDetailsPage({ params }: IssueDetailsPageProps) {
           const creationUser = await getUser(issueDetails.userId);
           setCreationUser(creationUser);
         } catch (error) {
-          console.error("Error fetching creation user:", error);
+          console.error('Error fetching creation user:', error);
         }
       }
     };
@@ -90,11 +110,11 @@ export default function IssueDetailsPage({ params }: IssueDetailsPageProps) {
 
   const completeIssueDetails: AssignedUserWithFormDetails = {
     ...issueDetails,
-    creationFirstName: creationUser?.assignedFirstName ?? "",
-    creationLastName: creationUser?.assignedLastName ?? "",
-    creationEmail: creationUser?.assignedEmail ?? "",
-    assignedFirstName: assignedUser?.assignedFirstName ?? "",
-    assignedLastName: assignedUser?.assignedLastName ?? "",
+    creationFirstName: creationUser?.assignedFirstName ?? '',
+    creationLastName: creationUser?.assignedLastName ?? '',
+    creationEmail: creationUser?.assignedEmail ?? '',
+    assignedFirstName: assignedUser?.assignedFirstName ?? '',
+    assignedLastName: assignedUser?.assignedLastName ?? '',
   };
 
   const images = issueDetails?.files?.map((file) => file.url) ?? [];
@@ -108,7 +128,7 @@ export default function IssueDetailsPage({ params }: IssueDetailsPageProps) {
     ); // Or use a loading spinner component
   }
 
-  console.log("complete issue detailss:", completeIssueDetails);
+  console.log('complete issue detailss:', completeIssueDetails);
 
   return (
     <div className="flex flex-col items-start justify-start gap-2">
@@ -128,23 +148,25 @@ export default function IssueDetailsPage({ params }: IssueDetailsPageProps) {
           <div className="w-full md:w-1/3">
             <ConnectAssetDetailsCard
               space={issueDetails.linkedAssetName}
-              floor={issueDetails.floor ?? ""}
-              location={issueDetails.locationName ?? ""}
+              floor={issueDetails.floor ?? ''}
+              location={issueDetails.locationName ?? ''}
               loggedBy={`${creationUser?.assignedFirstName} ${creationUser?.assignedLastName}`}
-              email={creationUser?.assignedEmail ?? ""}
+              email={creationUser?.assignedEmail ?? ''}
             />
           </div>
 
           {/* Right Column - 2/3 width */}
           <div className="w-full md:w-2/3">
             <TicketDetailsCard
+              id={issueDetails._id!}
+              status={issueDetails.status!}
               type={completeIssueDetails.issueType}
               tags={issueDetails.tags.map((tag) => tag.label)}
               priority={issueDetails.priority}
               assignedTo={
                 assignedUser?.assignedFirstName
                   ? `${assignedUser.assignedFirstName} ${assignedUser.assignedLastName}`
-                  : "Unassigned"
+                  : 'Unassigned'
               }
               description={issueDetails.description}
               images={images}
@@ -185,14 +207,14 @@ function NotesTab({ issueId }: { issueId: string }) {
   const openModal = useModalStore((state) => state.openModal);
   const handleAddNote = () => {
     openModal(
-      "Add Note",
-      "Use the options below to edit an existing offer category.",
-      <GlobalNoteForm noteType={"issue"} entityId={issueId} />,
+      'Add Note',
+      'Use the options below to edit an existing offer category.',
+      <GlobalNoteForm noteType={'issue'} entityId={issueId} />
     );
   };
 
   const noteData = useQuery(api.notes.getAllGlobalNotes, {
-    noteType: "issue",
+    noteType: 'issue',
     entityId: issueId,
   }) as GlobalNoteData[];
 
@@ -202,21 +224,21 @@ function NotesTab({ issueId }: { issueId: string }) {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-md font-medium">Notes</CardTitle>
-            <Button onClick={handleAddNote} variant={"outline"}>
+            <Button onClick={handleAddNote} variant={'outline'}>
               Add Note
             </Button>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <NoData
-              badgeText={"No notes found"}
-              title={"No notes found"}
-              description={"No notes have been added for this issue."}
-              buttonText={"Add Note"}
+              badgeText={'No notes found'}
+              title={'No notes found'}
+              description={'No notes have been added for this issue.'}
+              buttonText={'Add Note'}
               formComponent={
-                <GlobalNoteForm noteType={"issue"} entityId={issueId} />
+                <GlobalNoteForm noteType={'issue'} entityId={issueId} />
               }
-              sheetTitle={"Add Note"}
-              sheetDescription={"Add a note to this issue."}
+              sheetTitle={'Add Note'}
+              sheetDescription={'Add a note to this issue.'}
             />
           </CardContent>
         </Card>
@@ -229,7 +251,7 @@ function NotesTab({ issueId }: { issueId: string }) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-md font-medium">Notes</CardTitle>
-          <Button onClick={handleAddNote} variant={"outline"}>
+          <Button onClick={handleAddNote} variant={'outline'}>
             Add Note
           </Button>
         </CardHeader>
@@ -238,11 +260,11 @@ function NotesTab({ issueId }: { issueId: string }) {
             <>
               <div className="flex flex-row gap-2">
                 <p className="text-md font-medium">All Notes</p>
-                <Badge size={"xs"}>{noteData.length} Total</Badge>
-                <Badge size={"xs"} color={"gray"}>
+                <Badge size={'xs'}>{noteData.length} Total</Badge>
+                <Badge size={'xs'} color={'gray'}>
                   {noteData.filter((note) => !note.isPrivate).length} Public
                 </Badge>
-                <Badge size={"xs"} color={"gray"}>
+                <Badge size={'xs'} color={'gray'}>
                   {noteData.filter((note) => note.isPrivate).length} Private
                 </Badge>
               </div>
@@ -279,9 +301,9 @@ function ActivityTab({ issueId }: { issueId: string }) {
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <NoData
-              badgeText={"No activity found"}
-              title={"No activity recorded"}
-              description={"No activity has been recorded for this space."}
+              badgeText={'No activity found'}
+              title={'No activity recorded'}
+              description={'No activity has been recorded for this space.'}
             />
           </CardContent>
         </Card>
@@ -316,14 +338,14 @@ function WorkOrdersTab({
   const openSheet = useSheetStore((state) => state.openSheet);
   const handleAddWorkOrder = () => {
     openSheet(
-      "Add Work Order",
-      "Use the options below to edit an existing offer category.",
-      <WorkOrderUpsertForm referenceIssue={issueDetails} />,
+      'Add Work Order',
+      'Use the options below to edit an existing offer category.',
+      <WorkOrderUpsertForm referenceIssue={issueDetails} />
     );
   };
 
   const workOrders = useQuery(api.workOrders.getWorkOrdersByTicketId, {
-    ticketId: issueDetails._id ?? "",
+    ticketId: issueDetails._id ?? '',
   }) as WorkOrderSummaryCardData[];
 
   return (
@@ -331,7 +353,7 @@ function WorkOrdersTab({
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-md font-medium">Work Orders</CardTitle>
-          <Button onClick={handleAddWorkOrder} variant={"outline"}>
+          <Button onClick={handleAddWorkOrder} variant={'outline'}>
             Create Work Order
           </Button>
         </CardHeader>

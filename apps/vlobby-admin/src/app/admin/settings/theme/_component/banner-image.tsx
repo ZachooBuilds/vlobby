@@ -7,6 +7,9 @@ import { api } from "@repo/backend/convex/_generated/api";
 import { Id } from "@repo/backend/convex/_generated/dataModel";
 import { Dialog, DialogContent, DialogTrigger } from "@repo/ui/components/ui/dialog";
 import { FileUpload } from "../../../_components/custom-form-fields/file-upload-dropzone";
+import { ImageUrlAndId } from "../../../../lib/app-data/app-types";
+
+
 
 // Component for uploading and displaying a banner image
 export default function BannerImageUpload() {
@@ -20,13 +23,9 @@ export default function BannerImageUpload() {
   const uploadBannerImage = useMutation(api.theme.uploadBannerImage);
 
   // Type definition for the banner image object
-  type BannerImage = {
-    url: string;
-    storageId: Id<"_storage">;
-  };
 
   // Query to fetch the current banner image
-  const bannerImage = useQuery(api.theme.getBannerImage) as BannerImage;
+  const bannerImage = useQuery(api.theme.getBannerImage) as ImageUrlAndId;
 
   // Mutation to delete the banner image (Note: This seems to be incorrectly set to uploadBannerImage)
   const deleteBannerImage = useMutation(api.theme.uploadBannerImage);

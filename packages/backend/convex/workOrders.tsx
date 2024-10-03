@@ -1,15 +1,15 @@
-import { Id } from "./_generated/dataModel";
-import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
+import { Id } from './_generated/dataModel';
+import { mutation, query } from './_generated/server';
+import { v } from 'convex/values';
 
 export const upsertWorkOrder = mutation({
   args: {
-    _id: v.optional(v.id("workOrders")),
-    locationId: v.optional(v.id("ticketLocations")),
-    spaceId: v.optional(v.id("spaces")),
-    facilityId: v.optional(v.id("facilities")),
+    _id: v.optional(v.id('workOrders')),
+    locationId: v.optional(v.id('ticketLocations')),
+    spaceId: v.optional(v.id('spaces')),
+    facilityId: v.optional(v.id('facilities')),
     floor: v.optional(v.string()),
-    buildingId: v.optional(v.id("sites")),
+    buildingId: v.optional(v.id('sites')),
     priority: v.string(),
     workOrderType: v.string(),
     status: v.optional(v.string()),
@@ -21,33 +21,33 @@ export const upsertWorkOrder = mutation({
         v.object({
           value: v.string(),
           label: v.string(),
-        }),
-      ),
+        })
+      )
     ),
     tags: v.array(
       v.object({
         value: v.string(),
         label: v.string(),
-      }),
+      })
     ),
     dueDate: v.optional(v.string()),
     files: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
     const userId = identity.userId;
 
     let linkedAssetId = null;
     let linkedAssetType = null;
-    let status = "Open";
+    let status = 'Open';
     let buildingId = args.buildingId;
     let floor = args.floor;
 
     if (args.facilityId) {
       linkedAssetId = args.facilityId;
-      linkedAssetType = "facility";
+      linkedAssetType = 'facility';
       const facility = await ctx.db.get(args.facilityId);
       if (facility) {
         buildingId = facility.buildingId;
@@ -55,7 +55,7 @@ export const upsertWorkOrder = mutation({
       }
     } else if (args.spaceId) {
       linkedAssetId = args.spaceId;
-      linkedAssetType = "space";
+      linkedAssetType = 'space';
       const space = await ctx.db.get(args.spaceId);
       if (space) {
         buildingId = space.buildingId;
@@ -64,9 +64,9 @@ export const upsertWorkOrder = mutation({
     }
 
     if (args.assignedContractorId) {
-      status = "Assigned";
+      status = 'Assigned';
     } else {
-      status = "Pending";
+      status = 'Pending';
     }
 
     const workOrderData = {
@@ -95,27 +95,27 @@ export const upsertWorkOrder = mutation({
       // Update existing work order
       const existing = await ctx.db.get(args._id);
       if (!existing || existing.orgId !== orgId) {
-        throw new Error("Work order not found or access denied");
+        throw new Error('Work order not found or access denied');
       }
       await ctx.db.patch(args._id, workOrderData);
 
       // Log the work order update as an activity
-      await ctx.db.insert("globalActivity", {
-        title: "Work Order Updated",
+      await ctx.db.insert('globalActivity', {
+        title: 'Work Order Updated',
         description: `Work order details have been updated Status: ${status} Priority: ${args.priority}`,
-        type: "Work Order Updated",
+        type: 'Work Order Updated',
         entityId: args._id,
         orgId,
       });
     } else {
       // Create new work order
-      const result = await ctx.db.insert("workOrders", workOrderData);
+      const result = await ctx.db.insert('workOrders', workOrderData);
 
       // Log the new work order as an activity
-      await ctx.db.insert("globalActivity", {
-        title: "Work Order Created",
+      await ctx.db.insert('globalActivity', {
+        title: 'Work Order Created',
         description: `Work order details have been added to database`,
-        type: "New Work Order",
+        type: 'New Work Order',
         entityId: result,
         orgId,
       });
@@ -124,15 +124,15 @@ export const upsertWorkOrder = mutation({
 });
 
 export const updateAssignedContractor = mutation({
-  args: { contractorId: v.id("contractors"), workOrderId: v.id("workOrders") },
+  args: { contractorId: v.id('contractors'), workOrderId: v.id('workOrders') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const workOrder = await ctx.db.get(args.workOrderId);
     if (!workOrder || workOrder.orgId !== orgId) {
-      throw new Error("Work order not found or access denied");
+      throw new Error('Work order not found or access denied');
     }
     await ctx.db.patch(args.workOrderId, {
       assignedContractorId: args.contractorId,
@@ -141,24 +141,24 @@ export const updateAssignedContractor = mutation({
 });
 
 export const updateWorkOrderStatus = mutation({
-  args: { status: v.string(), workOrderId: v.id("workOrders") },
+  args: { status: v.string(), workOrderId: v.id('workOrders') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const workOrder = await ctx.db.get(args.workOrderId);
     if (!workOrder || workOrder.orgId !== orgId) {
-      throw new Error("Work order not found or access denied");
+      throw new Error('Work order not found or access denied');
     }
     await ctx.db.patch(args.workOrderId, {
       status: args.status,
     });
 
-    await ctx.db.insert("globalActivity", {
-      title: "Work Order Status Updated",
+    await ctx.db.insert('globalActivity', {
+      title: 'Work Order Status Updated',
       description: `Work order status has been updated to ${args.status}`,
-      type: "Status Update",
+      type: 'Status Update',
       entityId: args.workOrderId,
       orgId,
     });
@@ -169,13 +169,13 @@ export const getWorkOrdersByUserId = query({
   args: { userId: v.string() },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const workOrders = await ctx.db
-      .query("workOrders")
-      .filter((q) => q.eq(q.field("orgId"), orgId))
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('workOrders')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .collect();
 
     const mappedWorkOrders = await Promise.all(
@@ -213,19 +213,19 @@ export const getWorkOrdersByUserId = query({
 });
 
 export const getWorkOrdersBySpaceId = query({
-  args: { spaceId: v.id("spaces") },
+  args: { spaceId: v.id('spaces') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const workOrders = await ctx.db
-      .query("workOrders")
+      .query('workOrders')
       .filter((q) =>
         q.and(
-          q.eq(q.field("orgId"), orgId),
-          q.eq(q.field("linkedAssetType"), "space"),
-          q.eq(q.field("linkedAssetId"), args.spaceId)
+          q.eq(q.field('orgId'), orgId),
+          q.eq(q.field('linkedAssetType'), 'space'),
+          q.eq(q.field('linkedAssetId'), args.spaceId)
         )
       )
       .collect();
@@ -268,20 +268,20 @@ export const getWorkOrdersByTicketId = query({
   args: { ticketId: v.string() },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const workOrders = await ctx.db
-      .query("workOrders")
-      .filter((q) => q.eq(q.field("orgId"), orgId))
+      .query('workOrders')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
       .collect();
 
     const linkedWorkOrders = await Promise.all(
       workOrders
         .filter((workOrder) =>
           workOrder.linkedTickets?.some(
-            (ticket: { value: string }) => ticket.value === args.ticketId,
-          ),
+            (ticket: { value: string }) => ticket.value === args.ticketId
+          )
         )
         .map(async (workOrder) => {
           let contractorFirstName = null;
@@ -307,7 +307,7 @@ export const getWorkOrdersByTicketId = query({
             status: workOrder.status,
             priority: workOrder.priority,
           };
-        }),
+        })
     );
 
     console.log(linkedWorkOrders);
@@ -320,12 +320,12 @@ export const getWorkOrdersByTicketId = query({
 export const getAllWorkOrders = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     return await ctx.db
-      .query("workOrders")
-      .filter((q) => q.eq(q.field("orgId"), orgId))
+      .query('workOrders')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
       .collect();
   },
 });
@@ -333,12 +333,12 @@ export const getAllWorkOrders = query({
 export const getAllWorkOrdersWithNames = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const workOrders = await ctx.db
-      .query("workOrders")
-      .filter((q) => q.eq(q.field("orgId"), orgId))
+      .query('workOrders')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
       .collect();
 
     const enhancedWorkOrders = await Promise.all(
@@ -351,9 +351,9 @@ export const getAllWorkOrdersWithNames = query({
         let buildingName = null;
 
         if (workOrder.linkedAssetId) {
-          if (workOrder.linkedAssetType === "space") {
+          if (workOrder.linkedAssetType === 'space') {
             linkedAsset = await ctx.db.get(workOrder.linkedAssetId);
-          } else if (workOrder.linkedAssetType === "facility") {
+          } else if (workOrder.linkedAssetType === 'facility') {
             linkedAsset = await ctx.db.get(workOrder.linkedAssetId);
           }
         }
@@ -367,13 +367,13 @@ export const getAllWorkOrdersWithNames = query({
           ...workOrder,
           locationName: location ? location.name : null,
           linkedAssetName: linkedAsset
-            ? workOrder.linkedAssetType === "space"
+            ? workOrder.linkedAssetType === 'space'
               ? linkedAsset.spaceName
               : linkedAsset.name
             : null,
           buildingName,
         };
-      }),
+      })
     );
 
     return enhancedWorkOrders;
@@ -381,15 +381,15 @@ export const getAllWorkOrdersWithNames = query({
 });
 
 export const getWorkOrderDetailsById = query({
-  args: { id: v.id("workOrders") },
+  args: { id: v.id('workOrders') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const workOrder = await ctx.db.get(args.id);
     if (!workOrder || workOrder.orgId !== orgId) {
-      throw new Error("Work order not found or access denied");
+      throw new Error('Work order not found or access denied');
     }
 
     const location = workOrder.locationId
@@ -400,9 +400,9 @@ export const getWorkOrderDetailsById = query({
     let buildingName = null;
 
     if (workOrder.linkedAssetId) {
-      if (workOrder.linkedAssetType === "space") {
+      if (workOrder.linkedAssetType === 'space') {
         linkedAsset = await ctx.db.get(workOrder.linkedAssetId);
-      } else if (workOrder.linkedAssetType === "facility") {
+      } else if (workOrder.linkedAssetType === 'facility') {
         linkedAsset = await ctx.db.get(workOrder.linkedAssetId);
       }
     }
@@ -414,10 +414,10 @@ export const getWorkOrderDetailsById = query({
 
     // Transform the files array
     const transformedFiles = await Promise.all(
-      (workOrder.files || []).map(async (storageId: Id<"_storage">) => ({
+      (workOrder.files || []).map(async (storageId: Id<'_storage'>) => ({
         url: await ctx.storage.getUrl(storageId),
         storageId: storageId,
-      })),
+      }))
     );
 
     return {
@@ -425,7 +425,7 @@ export const getWorkOrderDetailsById = query({
       files: transformedFiles,
       locationName: location ? location.name : null,
       linkedAssetName: linkedAsset
-        ? workOrder.linkedAssetType === "space"
+        ? workOrder.linkedAssetType === 'space'
           ? linkedAsset.spaceName
           : linkedAsset.name
         : null,
@@ -436,15 +436,15 @@ export const getWorkOrderDetailsById = query({
 
 // Get a single work order by ID
 export const getWorkOrderById = query({
-  args: { id: v.id("workOrders") },
+  args: { id: v.id('workOrders') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const workOrder = await ctx.db.get(args.id);
     if (!workOrder || workOrder.orgId !== orgId) {
-      throw new Error("Work order not found or access denied");
+      throw new Error('Work order not found or access denied');
     }
 
     const location = workOrder.locationId
@@ -455,9 +455,9 @@ export const getWorkOrderById = query({
     let buildingName = null;
 
     if (workOrder.linkedAssetId) {
-      if (workOrder.linkedAssetType === "space") {
+      if (workOrder.linkedAssetType === 'space') {
         linkedAsset = await ctx.db.get(workOrder.linkedAssetId);
-      } else if (workOrder.linkedAssetType === "facility") {
+      } else if (workOrder.linkedAssetType === 'facility') {
         linkedAsset = await ctx.db.get(workOrder.linkedAssetId);
       }
     }
@@ -469,17 +469,17 @@ export const getWorkOrderById = query({
 
     // Transform the files array
     const transformedFiles = await Promise.all(
-      (workOrder.files || []).map(async (storageId: Id<"_storage">) => ({
+      (workOrder.files || []).map(async (storageId: Id<'_storage'>) => ({
         url: await ctx.storage.getUrl(storageId),
         storageId: storageId,
-      })),
+      }))
     );
 
     // Return the work order with transformed files
     return {
       ...workOrder,
       linkedAssetName: linkedAsset
-        ? workOrder.linkedAssetType === "space"
+        ? workOrder.linkedAssetType === 'space'
           ? linkedAsset.spaceName
           : linkedAsset.name
         : null,
@@ -500,15 +500,15 @@ export const getWorkOrderById = query({
 
 // Delete a work order
 export const deleteWorkOrder = mutation({
-  args: { id: v.id("workOrders") },
+  args: { id: v.id('workOrders') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const existing = await ctx.db.get(args.id);
     if (!existing || existing.orgId !== orgId) {
-      throw new Error("Work order not found or access denied");
+      throw new Error('Work order not found or access denied');
     }
     await ctx.db.delete(args.id);
   },
