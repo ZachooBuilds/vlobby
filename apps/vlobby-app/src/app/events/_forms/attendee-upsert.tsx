@@ -108,6 +108,7 @@ export default function AttendeeUpsertForm({
                 <Input
                   placeholder="Enter number of attendees"
                   type="number"
+                  className="text-base"
                   {...field}
                   onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
                 />
@@ -126,7 +127,7 @@ export default function AttendeeUpsertForm({
               <FormControl>
                 <Textarea
                   placeholder="Enter any additional notes"
-                  className="resize-none"
+                  className="resize-none text-base"
                   {...field}
                 />
               </FormControl>

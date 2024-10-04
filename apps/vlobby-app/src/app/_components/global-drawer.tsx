@@ -33,7 +33,7 @@ export function GlobalDrawer() {
           <DrawerTitle>{title}</DrawerTitle>
           <DrawerDescription>{description}</DrawerDescription>
         </DrawerHeader>
-        <ScrollArea className="overflow-scroll">
+        <ScrollArea className="overflow-scroll h-full">
           <div className="px-4 py-2">{content}</div>
         </ScrollArea>
         <DrawerFooter>

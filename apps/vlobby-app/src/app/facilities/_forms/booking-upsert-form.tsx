@@ -292,13 +292,14 @@ const BookingUpsertForm = (props: BookingUpsertFormProps) => {
                   <Select
                     onValueChange={field.onChange}
                     value={field.value || undefined}
+               
                     disabled={
                       !bookingTypesOptions || bookingTypesOptions.length === 0
                     }
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select booking type" />
+                        <SelectValue placeholder="Select booking type" className="text-base" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -306,6 +307,7 @@ const BookingUpsertForm = (props: BookingUpsertFormProps) => {
                         <SelectItem
                           key={bookingType.value}
                           value={bookingType.value}
+                          className="text-base"
                         >
                           {bookingType.label}
                         </SelectItem>
@@ -411,7 +413,7 @@ const BookingUpsertForm = (props: BookingUpsertFormProps) => {
               <FormItem className="text-base">
                 <FormLabel>Notes</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Enter booking notes" {...field} />
+                  <Textarea placeholder="Enter booking notes" {...field} className="text-base" />
                 </FormControl>
                 <FormDescription>
                   Provide any additional notes for the booking

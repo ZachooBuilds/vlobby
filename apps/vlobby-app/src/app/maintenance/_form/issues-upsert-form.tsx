@@ -174,12 +174,19 @@ const TicketUpsertForm = ({ selectedIssue }: Props) => {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select facility" />
+                        <SelectValue
+                          placeholder="Select facility"
+                          className="text-base"
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {getFacilities?.map((facility) => (
-                        <SelectItem key={facility.value} value={facility.value}>
+                        <SelectItem
+                          key={facility.value}
+                          value={facility.value}
+                          className="text-base"
+                        >
                           {facility.label}
                         </SelectItem>
                       ))}
@@ -210,12 +217,19 @@ const TicketUpsertForm = ({ selectedIssue }: Props) => {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select space" />
+                        <SelectValue
+                          placeholder="Select space"
+                          className="text-base"
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {getSpaces?.map((space) => (
-                        <SelectItem key={space.value} value={space.value}>
+                        <SelectItem
+                          key={space.value}
+                          value={space.value}
+                          className="text-base"
+                        >
                           {space.label}
                         </SelectItem>
                       ))}
@@ -241,12 +255,19 @@ const TicketUpsertForm = ({ selectedIssue }: Props) => {
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select building" />
+                          <SelectValue
+                            placeholder="Select building"
+                            className="text-base"
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {getSites?.map((site) => (
-                          <SelectItem key={site.value} value={site.value}>
+                          <SelectItem
+                            key={site.value}
+                            value={site.value}
+                            className="text-base"
+                          >
                             {site.label}
                           </SelectItem>
                         ))}
@@ -268,7 +289,10 @@ const TicketUpsertForm = ({ selectedIssue }: Props) => {
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select floor" />
+                          <SelectValue
+                            placeholder="Select floor"
+                            className="text-base"
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -276,6 +300,7 @@ const TicketUpsertForm = ({ selectedIssue }: Props) => {
                           <SelectItem
                             key={site.value}
                             value={site.value.toString()}
+                            className="text-base"
                           >
                             {site.label}
                           </SelectItem>
@@ -301,12 +326,19 @@ const TicketUpsertForm = ({ selectedIssue }: Props) => {
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select location" />
+                      <SelectValue
+                        placeholder="Select location"
+                        className="text-base"
+                      />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     {getLocations?.map((location) => (
-                      <SelectItem key={location.value} value={location.value}>
+                      <SelectItem
+                        key={location.value}
+                        value={location.value}
+                        className="text-base"
+                      >
                         {location.label}
                       </SelectItem>
                     ))}
@@ -329,13 +361,22 @@ const TicketUpsertForm = ({ selectedIssue }: Props) => {
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select priority" />
+                      <SelectValue
+                        placeholder="Select priority"
+                        className="text-base"
+                      />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="low">Low</SelectItem>
-                    <SelectItem value="medium">Medium</SelectItem>
-                    <SelectItem value="high">High</SelectItem>
+                    <SelectItem value="low" className="text-base">
+                      Low
+                    </SelectItem>
+                    <SelectItem value="medium" className="text-base">
+                      Medium
+                    </SelectItem>
+                    <SelectItem value="high" className="text-base">
+                      High
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 <FormDescription className="text-base">
@@ -354,7 +395,7 @@ const TicketUpsertForm = ({ selectedIssue }: Props) => {
             <FormItem>
               <FormLabel className="text-base">Issue Title</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} className="text-base" />
               </FormControl>
               <FormDescription className="text-base">
                 Provide a brief summary of the issue
