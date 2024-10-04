@@ -113,7 +113,11 @@ const FeedPostUpsertForm = ({ selectedPost }: Props) => {
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter title" {...field} />
+                  <Input
+                    placeholder="Enter title"
+                    {...field}
+                    className="text-base"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -126,7 +130,11 @@ const FeedPostUpsertForm = ({ selectedPost }: Props) => {
               <FormItem>
                 <FormLabel>Content</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Enter post content" {...field} />
+                  <Textarea
+                    placeholder="Enter post content"
+                    {...field}
+                    className="text-base"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

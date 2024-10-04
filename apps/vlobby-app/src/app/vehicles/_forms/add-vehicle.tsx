@@ -133,7 +133,11 @@ export default function AddVehicleForm({ selectedVehicle }: VehicleFormProps) {
             <FormItem>
               <FormLabel>Registration Number</FormLabel>
               <FormControl>
-                <Input placeholder="Enter registration number" {...field} />
+                <Input
+                  placeholder="Enter registration number"
+                  {...field}
+                  className="text-base"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -148,7 +152,11 @@ export default function AddVehicleForm({ selectedVehicle }: VehicleFormProps) {
               <FormItem>
                 <FormLabel>Make</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter vehicle make" {...field} />
+                  <Input
+                    placeholder="Enter vehicle make"
+                    {...field}
+                    className="text-base"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -162,7 +170,11 @@ export default function AddVehicleForm({ selectedVehicle }: VehicleFormProps) {
               <FormItem>
                 <FormLabel>Model</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter vehicle model" {...field} />
+                  <Input
+                    placeholder="Enter vehicle model"
+                    {...field}
+                    className="text-base"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -178,7 +190,11 @@ export default function AddVehicleForm({ selectedVehicle }: VehicleFormProps) {
               <FormItem>
                 <FormLabel>Color</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter vehicle color" {...field} />
+                  <Input
+                    placeholder="Enter vehicle color"
+                    {...field}
+                    className="text-base"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -192,7 +208,11 @@ export default function AddVehicleForm({ selectedVehicle }: VehicleFormProps) {
               <FormItem>
                 <FormLabel>Year</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter vehicle year" {...field} />
+                  <Input
+                    placeholder="Enter vehicle year"
+                    {...field}
+                    className="text-base"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -207,7 +227,11 @@ export default function AddVehicleForm({ selectedVehicle }: VehicleFormProps) {
             <FormItem>
               <FormLabel>Vehicle Type</FormLabel>
               <FormControl>
-                <Input placeholder="Enter vehicle type" {...field} />
+                <Input
+                  placeholder="Enter vehicle type"
+                  {...field}
+                  className="text-base"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -223,16 +247,19 @@ export default function AddVehicleForm({ selectedVehicle }: VehicleFormProps) {
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select availability" />
+                    <SelectValue
+                      placeholder="Select availability"
+                      className="text-base"
+                    />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="space">
-                    <Car className="mr-2 h-4 w-4 inline-block" />
+                    <Car className="mr-2 h-4 w-4 inline-block text-base" />
                     Available to entire space
                   </SelectItem>
                   <SelectItem value="specific">
-                    <Users className="mr-2 h-4 w-4 inline-block" />
+                    <Users className="mr-2 h-4 w-4 inline-block text-base" />
                     Available to specific drivers
                   </SelectItem>
                 </SelectContent>
@@ -256,12 +283,19 @@ export default function AddVehicleForm({ selectedVehicle }: VehicleFormProps) {
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select space" />
+                      <SelectValue
+                        placeholder="Select space"
+                        className="text-base"
+                      />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     {getSpaces?.map((space) => (
-                      <SelectItem key={space.value} value={space.value}>
+                      <SelectItem
+                        key={space.value}
+                        value={space.value}
+                        className="text-base"
+                      >
                         {space.label}
                       </SelectItem>
                     ))}
@@ -292,12 +326,19 @@ export default function AddVehicleForm({ selectedVehicle }: VehicleFormProps) {
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select driver" />
+                            <SelectValue
+                              placeholder="Select driver"
+                              className="text-base"
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
                           {getOccupants?.map((driver) => (
-                            <SelectItem key={driver.value} value={driver.value}>
+                            <SelectItem
+                              key={driver.value}
+                              value={driver.value}
+                              className="text-base"
+                            >
                               {driver.label}
                             </SelectItem>
                           ))}

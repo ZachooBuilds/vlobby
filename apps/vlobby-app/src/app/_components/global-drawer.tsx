@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
+import '@ionic/react/css/core.css';
 import {
   Drawer,
   DrawerContent,
@@ -12,7 +13,7 @@ import {
 } from '@repo/ui/components/ui/drawer';
 import { Button } from '@repo/ui/components/ui/button';
 import useDrawerStore from '../../lib/global-state';
-import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
+import { IonContent } from '@ionic/react';
 
 /**
  * GlobalDrawer Component
@@ -24,19 +25,39 @@ import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
  */
 export function GlobalDrawer() {
   const { isOpen, title, description, content, closeDrawer } = useDrawerStore();
+  const contentRef = useRef<HTMLIonContentElement>(null);
+
+  useEffect(() => {
+    const adjustScroll = () => {
+      if (contentRef.current) {
+        contentRef.current.scrollToTop(300);
+      }
+    };
+
+    window.addEventListener('ionKeyboardDidShow', adjustScroll);
+    return () => {
+      window.removeEventListener('ionKeyboardDidShow', adjustScroll);
+    };
+  }, []);
 
   return (
     <Drawer open={isOpen} onOpenChange={closeDrawer}>
-      {/* <DrawerContent className="pb-10 max-h-[80vh] overflow-y-auto"> */}
-      <DrawerContent className="pb-10">
-        <DrawerHeader>
-          <DrawerTitle>{title}</DrawerTitle>
-          <DrawerDescription>{description}</DrawerDescription>
-        </DrawerHeader>
-        <ScrollArea className="overflow-scroll h-full">
-          <div className="px-4 py-2">{content}</div>
-        </ScrollArea>
-        <DrawerFooter>
+      <DrawerContent className="h-[80vh] flex flex-col">
+        <IonContent
+          ref={contentRef}
+          scrollY={true}
+          className="flex-grow overflow-auto"
+          style={{ '--overflow': 'hidden' }}
+        >
+          <div className="p-4 space-y-4">
+            <DrawerHeader className="p-0">
+              <DrawerTitle>{title}</DrawerTitle>
+              <DrawerDescription>{description}</DrawerDescription>
+            </DrawerHeader>
+            <div>{content}</div>
+          </div>
+        </IonContent>
+        <DrawerFooter className="flex-shrink-0">
           <DrawerClose asChild>
             <Button variant="outline">Close</Button>
           </DrawerClose>
