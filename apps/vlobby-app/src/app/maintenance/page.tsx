@@ -66,11 +66,11 @@ export default function MaintenancePage() {
   // Handler for editing an issue
   const handleIssueEdit = () => {
     if (selectedIssue) {
-      openDrawer(
-        'Edit Issue',
-        'Edit the selected maintenance issue.',
-        <IssuesUpsertForm selectedIssue={selectedIssue as Issue} />
-      );
+      // openDrawer(
+      //   'Edit Issue',
+      //   'Edit the selected maintenance issue.',
+      //   <IssuesUpsertForm selectedIssue={selectedIssue as Issue} />
+      // );
     }
   };
 
