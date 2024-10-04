@@ -22,6 +22,7 @@ import { Button } from '@repo/ui/components/ui/button';
 import { FeedPostFormData, feedPostSchema } from './post-validation';
 import useDrawerStore from '../../../lib/global-state';
 import { FileUploadWithPreview } from '../../_components/file-upload-form-field';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   selectedPost?: FeedPostFormData;
@@ -45,6 +46,8 @@ const FeedPostUpsertForm = ({ selectedPost }: Props) => {
     },
   });
 
+  const router = useRouter();
+
   const onSubmit = async (data: FeedPostFormData) => {
     setIsLoading(true);
 
@@ -64,7 +67,7 @@ const FeedPostUpsertForm = ({ selectedPost }: Props) => {
       });
       form.reset();
       if (selectedPost) {
-        closeDrawer();
+        router.back();
       }
     } catch (error) {
       setIsLoading(false);

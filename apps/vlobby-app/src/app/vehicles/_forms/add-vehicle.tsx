@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { Loader2, Plus, X, Car, Users } from 'lucide-react';
 import { VehicleSchema, Vehicle } from './add-vehicle-validation';
 import { useMutation, useQuery } from 'convex/react';

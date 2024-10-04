@@ -7,6 +7,76 @@ export type ImageUrlAndId = {
   storageId: Id<'_storage'>;
 };
 
+export type VehicleRegistrationData = {
+  plate: string;
+  year_of_manufacture: string;
+  make: string;
+  model: string;
+  submodel: string;
+  vin: string;
+  reported_stolen: 'Y' | 'N';
+  plate2?: string | null;
+  replacement_plate?: string;
+  chassis?: string;
+  engine_no?: string;
+  cc_rating?: string;
+  main_colour?: string;
+  second_colour?: string;
+  body_style?: string;
+  vehicle_type?: string;
+  country_of_origin?: string;
+  tare_weight?: string;
+  date_of_first_registration_in_nz?: string;
+  no_of_seats?: string;
+  fuel_type?: string;
+  alternative_fuel_type?: string;
+  previous_country_of_registration?: string;
+  result_of_latest_wof_inspection?: string;
+  expiry_date_of_last_successful_wof?: number;
+  latest_odometer_reading?: string;
+  licence_type?: string;
+  licence_expiry_date?: string;
+  transmission?: string;
+  number_of_owners_no_traders?: string;
+  power?: string;
+  class?: string;
+  industry_class?: string;
+  industry_model_code?: string;
+  mvma_model_code?: string;
+  road_transport_code?: string;
+  transmission_type?: string;
+  plates?: {
+    plate_status: string;
+    plate_type: string;
+    registration_plate: string;
+    effective_date: string;
+  }[];
+  vehicle_usage?: string;
+  number_of_owners?: string;
+  safety_economy?: {
+    electric_range?: number;
+    electric_consumption?: number;
+    fuel_stars?: number;
+    fuel_consumption?: number;
+    co2_stars?: number;
+    co2?: number;
+    yearly_co2?: number;
+    driver_safety_stars?: number;
+    driver_safety_test?: string;
+    pollutants_stars?: number;
+    test_regime?: string;
+    safety_promo_badge?: string;
+    ruc_rate?: number;
+    ruc?: number;
+    others_safety_test?: string;
+    others_safety_stars?: number;
+    warning_severity?: string;
+    warning_message?: string;
+    warning_action?: string;
+    warning_details?: null | string;
+  };
+};
+
 // New type definition
 export type Building = {
   _id?: string;

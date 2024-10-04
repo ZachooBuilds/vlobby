@@ -13,12 +13,14 @@ import { FeedIconPath } from '../../../../public/svg/icons';
 import { Button } from '@repo/ui/components/ui/button';
 import useDrawerStore from '../../../lib/global-state';
 import FeedPostUpsertForm from '../_forms/new-post';
+import { useRouter } from 'next/navigation';
 
 function PageHeader() {
   const openDrawer = useDrawerStore((state) => state.openDrawer);
+  const router = useRouter();
 
   const handleNewPost = () => {
-    openDrawer('New Post', 'Create a new feed post', <FeedPostUpsertForm />);
+    router.push('/social/new-post');
   };
 
   return (

@@ -1,17 +1,18 @@
-"use client"
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import { api } from '@repo/backend/convex/_generated/api';
 import { ActiveRequest, Vehicle } from '../../../lib/app-types';
 import { Card, CardContent } from '@repo/ui/components/ui/card';
 import { Badge } from '@tremor/react';
 import { CarIconPath } from '../../../../public/svg/icons';
-import {  useQuery } from 'convex/react';
-import { Car } from 'lucide-react';
+import { useQuery } from 'convex/react';
+import { Car, ArrowLeft } from 'lucide-react';
 import { Button } from '@repo/ui/components/ui/button';
 import useDrawerStore from '../../../lib/global-state';
 import AddVehicleForm from '../_forms/add-vehicle';
 import { RequestVehicleForm } from '../_forms/request-vehicle';
 import { ActiveRequestCard } from './active-request';
+import VehicleLookup from '../_forms/vehicle-lookup';
 
 export const VehicleCard = ({
   vehicle,
@@ -53,6 +54,10 @@ export const VehicleCard = ({
 export function VehicleOverview() {
   const vehicles = useQuery(api.vehicles.getAllForUser);
   const openDrawer = useDrawerStore((state) => state.openDrawer);
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
+  const [isAddingVehicle, setIsAddingVehicle] = useState(false);
+  const [isManualAdd, setIsManualAdd] = useState(false);
+  const closeDrawer = useDrawerStore((state) => state.closeDrawer);
 
   const activeRequests = useQuery(api.requests.getActiveRequestsForVehicles, {
     vehicleIds: vehicles?.map((vehicle) => vehicle._id) ?? [],
@@ -64,13 +69,27 @@ export function VehicleOverview() {
 
   const handleAddVehicle = () => {
     openDrawer(
-      'Add New Vehicle',
-      'Enter the details of your new vehicle',
-      <AddVehicleForm />
+      'Add Vehicle',
+      'Look up vehicle details or add manually',
+      <div className="flex flex-col gap-4">
+        <VehicleLookup />
+        <Button
+          onClick={() => {
+            setIsManualAdd(true);
+            setIsAddingVehicle(true);
+            closeDrawer();
+          }}
+          type="button"
+          variant="outline"
+        >
+          Add Manually
+        </Button>
+      </div>
     );
   };
 
   const handleSelectVehicle = (vehicle: Vehicle) => {
+    setSelectedVehicle(vehicle);
     if (vehicle.isParked) {
       openDrawer(
         'Vehicle Options',
@@ -80,7 +99,7 @@ export function VehicleOverview() {
             Request Vehicle
           </Button>
           <Button variant="outline" onClick={() => handleEditVehicle(vehicle)}>
-            Edit Vehicle
+            Edit Vehicle Details
           </Button>
         </div>
       );
@@ -90,11 +109,8 @@ export function VehicleOverview() {
   };
 
   const handleEditVehicle = (vehicle: Vehicle) => {
-    openDrawer(
-      'Edit Vehicle',
-      'Update the details of your vehicle',
-      <AddVehicleForm selectedVehicle={vehicle} />
-    );
+    setSelectedVehicle(vehicle);
+    setIsAddingVehicle(false);
   };
 
   const handleRequestVehicle = (vehicle: Vehicle) => {
@@ -105,15 +121,21 @@ export function VehicleOverview() {
     );
   };
 
-  return (
-    <div className="flex flex-col gap-4 w-full">
-      {activeRequests && activeRequests.length > 0 ? (
-        <div className="mb-4 space-y-4">
-          {activeRequests.map((request) => (
-            <ActiveRequestCard key={request.vehicle.rego} request={request} />
-          ))}
-        </div>
-      ) : null}
+  const handleBack = () => {
+    setSelectedVehicle(null);
+    setIsAddingVehicle(false);
+    setIsManualAdd(false); // Add this line to reset the manual add state
+  };
+
+  const renderContent = () => {
+    if (isAddingVehicle || isManualAdd || selectedVehicle) {
+      return renderForm();
+    }
+    return renderVehicleList();
+  };
+
+  const renderVehicleList = () => (
+    <>
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-row items-center gap-2">
           <div className="w-5 h-5 fill-foreground">
@@ -135,6 +157,29 @@ export function VehicleOverview() {
           />
         ))}
       </div>
+    </>
+  );
+
+  const renderForm = () => (
+    <>
+      <Button variant="ghost" onClick={handleBack} className="mb-4">
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back to Vehicles
+      </Button>
+      <AddVehicleForm selectedVehicle={selectedVehicle || undefined} />
+    </>
+  );
+
+  return (
+    <div className="flex flex-col gap-4 w-full">
+      {activeRequests && activeRequests.length > 0 && (
+        <div className="mb-4 space-y-4">
+          {activeRequests.map((request) => (
+            <ActiveRequestCard key={request.vehicle.rego} request={request} />
+          ))}
+        </div>
+      )}
+      {renderContent()}
     </div>
   );
 }

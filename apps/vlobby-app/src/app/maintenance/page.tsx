@@ -23,6 +23,7 @@ import { Id } from '@repo/backend/convex/_generated/dataModel';
 import WorkOrderOverview from './_components/work-order-overview';
 import { CheckCircle, Loader2 } from 'lucide-react';
 import NoData from '../_components/no-data';
+import { useRouter } from 'next/navigation';
 
 export default function MaintenancePage() {
   // Fetch all occupant issues
@@ -49,13 +50,11 @@ export default function MaintenancePage() {
   const [selectedWorkOrder, setSelectedWorkOrder] =
     useState<Id<'workOrders'> | null>(null);
 
+  const router = useRouter();
+
   // Handler for reporting a new issue
   const handleIssueReport = () => {
-    openDrawer(
-      'Report Issue',
-      'Report a new maintenance issue for your space or facility.',
-      <IssuesUpsertForm />
-    );
+    router.push('/maintenance/new-issue');
   };
 
   // Handler for selecting an issue
