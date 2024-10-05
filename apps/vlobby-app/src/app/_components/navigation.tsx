@@ -47,7 +47,7 @@ export default function NavigationBar() {
   };
 
   return (
-    <nav className="fixed bottom-4 left-4 right-4 shadow-lg shadow-foreground-muted/10 bg-background border-muted overflow-hidden">
+    <nav className="fixed bottom-6 left-4 right-4 shadow-lg rounded rounded-md shadow-foreground-muted/10 bg-background border-muted overflow-hidden">
       <AnimatePresence>
         {isExpanded && (
           <motion.div
@@ -88,7 +88,9 @@ export default function NavigationBar() {
               }
             }}
           >
-            <div className={`w-8 h-8 ${item.name === 'Home' ? 'fill-primary' : 'fill-foreground'}`}>
+            <div
+              className={`w-8 h-8 ${item.name === 'Home' ? 'fill-primary' : 'fill-foreground'}`}
+            >
               {item.icon()}
             </div>
           </div>
