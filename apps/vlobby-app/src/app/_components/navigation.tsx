@@ -47,7 +47,7 @@ export default function NavigationBar() {
   };
 
   return (
-    <nav className="fixed bottom-4 left-4 right-4 bg-white shadow-lg shadow-black/10 bg-background border-t border-muted overflow-hidden">
+    <nav className="fixed bottom-4 left-4 right-4 shadow-lg shadow-foreground-muted/10 bg-background border-muted overflow-hidden">
       <AnimatePresence>
         {isExpanded && (
           <motion.div
@@ -75,11 +75,11 @@ export default function NavigationBar() {
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="flex flex-row justify-around items-center p-2">
+      <div className="flex flex-row justify-around items-center p-2 bg-background">
         {navigationItems.map((item) => (
           <div
             key={item.name}
-            className={`p-4 ${pathname === item.href ? 'bg-muted' : ''}`}
+            className="p-4"
             onClick={() => {
               if (item.name === 'Home') {
                 setIsExpanded(!isExpanded);
@@ -88,7 +88,9 @@ export default function NavigationBar() {
               }
             }}
           >
-            <div className="w-8 h-8 fill-muted-foreground">{item.icon()}</div>
+            <div className={`w-8 h-8 ${item.name === 'Home' ? 'fill-primary' : 'fill-foreground'}`}>
+              {item.icon()}
+            </div>
           </div>
         ))}
       </div>
