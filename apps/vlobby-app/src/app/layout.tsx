@@ -3,13 +3,10 @@ import '@repo/ui/globals.css';
 import { GeistSans } from 'geist/font/sans';
 import { ThemeProvider } from 'next-themes';
 import ConvexClientProvider from './ConvexClientProvider';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 import { Toaster } from '@repo/ui/components/ui/toaster';
 import { GlobalDrawer } from './_components/global-drawer';
-import { useConvexAuth } from 'convex/react';
-import { useRouter } from 'next/navigation';
-import { LoadingSpinner } from './_components/loading spinner';
-import { useOrganization, useUser } from '@clerk/clerk-react';
+import { AuthCheck } from './_components/validate-auth';
 
 /**
  * RootLayout Component
@@ -22,30 +19,6 @@ import { useOrganization, useUser } from '@clerk/clerk-react';
  * @returns {JSX.Element} The rendered root layout
  */
 export default function RootLayout({ children }: { children: ReactNode }) {
-  const { isAuthenticated, isLoading } = useConvexAuth();
-  const { organization, isLoaded: isOrgLoaded } = useOrganization();
-  const { user, isLoaded: isUserLoaded } = useUser();
-  const router = useRouter();
-  const [authChecked, setAuthChecked] = useState(false);
-
-  useEffect(() => {
-    if (!isLoading && isOrgLoaded && isUserLoaded) {
-      if (!isAuthenticated || !user) {
-        // Redirect to login page if not authenticated
-        router.push('/sign-in');
-      } else if (!organization) {
-        // Redirect to organization creation/selection page if no org is selected
-        router.push('/select-org');
-      } else {
-        setAuthChecked(true);
-      }
-    }
-  }, [isAuthenticated, isLoading, router, organization, isOrgLoaded, isUserLoaded, user]);
-
-  if (isLoading || !isOrgLoaded || !isUserLoaded || !authChecked) {
-    return <LoadingSpinner />;
-  }
-
   return (
     <html
       suppressHydrationWarning
@@ -63,8 +36,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           >
             {/* ConvexClientProvider: Wraps the app with Convex client for real-time data and authentication */}
             <ConvexClientProvider>
-              {children}
-              <GlobalDrawer />
+              <AuthCheck>
+                {children}
+                <GlobalDrawer />
+              </AuthCheck>
             </ConvexClientProvider>
             {/* Toaster: Provides a container for toast notifications */}
             <Toaster />
