@@ -9,6 +9,7 @@ import { GlobalDrawer } from './_components/global-drawer';
 import { useConvexAuth } from 'convex/react';
 import { useRouter } from 'next/navigation';
 import { LoadingSpinner } from './_components/loading spinner';
+import { useOrganization, useUser } from '@clerk/clerk-react';
 
 /**
  * RootLayout Component
@@ -22,20 +23,26 @@ import { LoadingSpinner } from './_components/loading spinner';
  */
 export default function RootLayout({ children }: { children: ReactNode }) {
   const { isAuthenticated, isLoading } = useConvexAuth();
+  const { organization, isLoaded: isOrgLoaded } = useOrganization();
+  const { user, isLoaded: isUserLoaded } = useUser();
   const router = useRouter();
   const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) {
-      if (!isAuthenticated) {
+    if (!isLoading && isOrgLoaded && isUserLoaded) {
+      if (!isAuthenticated || !user) {
         // Redirect to login page if not authenticated
-        router.push('/');
+        router.push('/sign-in');
+      } else if (!organization) {
+        // Redirect to organization creation/selection page if no org is selected
+        router.push('/select-org');
+      } else {
+        setAuthChecked(true);
       }
-      setAuthChecked(true);
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [isAuthenticated, isLoading, router, organization, isOrgLoaded, isUserLoaded, user]);
 
-  if (isLoading || !authChecked) {
+  if (isLoading || !isOrgLoaded || !isUserLoaded || !authChecked) {
     return <LoadingSpinner />;
   }
 

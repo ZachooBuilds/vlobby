@@ -126,10 +126,15 @@ export const getAll = query({
 export const getAllForCurrentOccupant = query({
   args: { isCollected: v.boolean() },
   handler: async (ctx, args) => {
+    console.log('Starting getAllForCurrentOccupant query');
+    console.log('Args:', args);
+
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error('Unauthenticated');
     const userId = identity.subject;
     const orgId = identity.orgId;
+    console.log('User ID:', userId);
+    console.log('Org ID:', orgId);
 
     const occupant = await ctx.db
       .query('users')
@@ -137,6 +142,7 @@ export const getAllForCurrentOccupant = query({
       .filter((q) => q.eq(q.field('orgId'), orgId))
       .first();
 
+    console.log('Occupant:', occupant);
     if (!occupant) throw new Error('Occupant not found');
 
     const parcels = await ctx.db
@@ -146,14 +152,21 @@ export const getAllForCurrentOccupant = query({
       .filter((q) => q.eq(q.field('isCollected'), args.isCollected))
       .collect();
 
-    return await Promise.all(parcels.map(async (parcel) => {
+    console.log('Parcels found:', parcels.length);
+
+    const result = await Promise.all(parcels.map(async (parcel) => {
+      console.log('Processing parcel:', parcel._id);
       let spaceName = "Unknown";
       if (parcel.spaceId) {
         const space = await ctx.db.get(parcel.spaceId);
         spaceName = space?.spaceName || "Unknown";
+        console.log('Space name for parcel:', spaceName);
       }
       return { ...parcel, spaceName };
     }));
+
+    console.log('Returning result with', result.length, 'parcels');
+    return result;
   },
 });
 
