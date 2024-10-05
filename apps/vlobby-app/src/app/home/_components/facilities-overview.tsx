@@ -6,23 +6,40 @@ import { Card, CardContent } from '@repo/ui/components/ui/card';
 import { Badge } from '@tremor/react';
 import { FacilityIconPath } from '../../../../public/svg/icons';
 import { Facility } from '../../../lib/app-types';
+import BookingUpsertForm from '../../facilities/_forms/booking-upsert-form';
+import useDrawerStore from '../../../lib/global-state';
 
-const FacilityCard = ({ facility }: { facility: Facility }) => (
-  <Card className="relative h-48 w-36 rounded-lg overflow-hidden">
-    <div
-      className="absolute inset-0 bg-cover bg-center"
-      style={{
-        backgroundImage: facility?.files[0]?.url
-          ? `url(${facility.files[0].url})`
-          : 'linear-gradient(to right, #1847ED, #00A3FF)',
-      }}
-    />
-    <div className="absolute inset-0 bg-black bg-opacity-40" />
-    <CardContent className="relative h-full flex flex-col justify-end p-4">
-      <h3 className="text-white text-lg font-semibold">{facility.name}</h3>
-    </CardContent>
-  </Card>
-);
+const FacilityCard = ({ facility }: { facility: Facility }) => {
+  const { openDrawer } = useDrawerStore();
+
+  const handleBookFacility = () => {
+    openDrawer(
+      'Book Facility',
+      'Choose an available slot and confirm booking',
+      <BookingUpsertForm selectedFacility={facility} />
+    );
+  };
+
+  return (
+    <Card 
+      className="relative h-48 w-36 rounded-lg overflow-hidden cursor-pointer"
+      onClick={handleBookFacility}
+    >
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: facility?.files[0]?.url
+            ? `url(${facility.files[0].url})`
+            : 'linear-gradient(to right, #1847ED, #00A3FF)',
+        }}
+      />
+      <div className="absolute inset-0 bg-black bg-opacity-40" />
+      <CardContent className="relative h-full flex flex-col justify-end p-4">
+        <h3 className="text-white text-lg font-semibold">{facility.name}</h3>
+      </CardContent>
+    </Card>
+  );
+};
 
 export function FacilitiesOverview() {
   const allFacilities = useQuery(api.facilities.getAllFacilities);
@@ -37,10 +54,10 @@ export function FacilitiesOverview() {
         <div className="w-5 h-5 fill-foreground">
           <FacilityIconPath />
         </div>
-        <h2 className="text-xl font-semibold">Facilities</h2>
+        <h2 className="text-xl font-semibold">Quick Book</h2>
         <Badge
           size="xs"
-          color="purple"
+          color="pink"
         >{`${allFacilities.length} Available`}</Badge>
       </div>
       <div className="flex overflow-x-auto pb-4 w-full">

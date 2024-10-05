@@ -93,6 +93,12 @@ export type Space = {
   _id: Id<'spaces'>;
   spaceName: string;
   type: string;
+  role: string;
+  buildingName: string;
+  powerMeterNumber: string;
+  waterMeterNumber: string;
+  accessibilityEnabled: boolean;
+  titleNumber: string;
   building: string;
   floor: string;
   typeName: string;
@@ -381,6 +387,8 @@ export type PostData = {
   _id: string;
   authorId: string;
   isAdmin: boolean;
+  status: string;
+  authorName: string;
   _creationTime: string;
   title: string;
   content: string;

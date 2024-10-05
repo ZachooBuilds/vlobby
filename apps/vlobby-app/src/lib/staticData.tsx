@@ -23,4 +23,11 @@ export const colorsList = [
   { name: 'Deep Red', hex: '#C41E3A' },
 ];
 
+export const spaceRoleOptions = [
+  { id: 'vl:owner', name: 'Owner' },
+  { id: 'vl:owner-occupier', name: 'Owner Occupier' },
+  { id: 'vl:occupant', name: 'Occupant' },
+  { id: 'vl:tenant', name: 'Tenant' },
+];
+
 export const requestStatuses = ['pending', 'assigned', 'complete'];

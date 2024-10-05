@@ -32,7 +32,7 @@ export default function SocialPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOption, setSelectedOption] = useState('Announcements');
 
-  const offers = useQuery(api.offers.getAllOffersForUpdate) as OfferDetails[];
+  // const offers = useQuery(api.offers.getAllOffersForUpdate) as OfferDetails[];
 
   useEffect(() => {
     if (isUserLoaded && !isSignedIn) {
@@ -48,7 +48,7 @@ export default function SocialPage() {
     <div className="flex flex-col h-screen">
       <div className="flex-grow overflow-auto">
         <div className="flex flex-col gap-4 items-start justify-start pt-16 p-4 pb-[120px] w-full">
-          <PageHeader offersCount={offers?.length} />
+          <PageHeader />
           <SocialOptions
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
@@ -67,16 +67,13 @@ export default function SocialPage() {
 
 // ... existing LoadingSpinner component ...
 
-function PageHeader({ offersCount }: { offersCount?: number }) {
+function PageHeader() {
   return (
     <div className="flex flex-row items-center gap-2">
       <div className="w-5 h-5 fill-foreground">
         <NoticesIconPath />
       </div>
       <h2 className="text-xl font-semibold">Social</h2>
-      <Badge size="sm" color="blue">
-        {offersCount}
-      </Badge>
     </div>
   );
 }

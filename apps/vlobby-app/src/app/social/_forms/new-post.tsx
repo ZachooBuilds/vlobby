@@ -31,7 +31,6 @@ type Props = {
 const FeedPostUpsertForm = ({ selectedPost }: Props) => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-  const [instantApprove, setInstantApprove] = useState(false);
   const closeDrawer = useDrawerStore((state) => state.closeDrawer);
 
   const upsertFeedPostMutation = useMutation(api.feed.upsertFeedPost);
@@ -62,13 +61,12 @@ const FeedPostUpsertForm = ({ selectedPost }: Props) => {
 
       setIsLoading(false);
       toast({
-        title: 'Feed Post Saved',
+        title: 'Feed Post submitted',
         description: 'The feed post has been successfully saved.',
       });
       form.reset();
-      if (selectedPost) {
-        router.back();
-      }
+
+      router.back();
     } catch (error) {
       setIsLoading(false);
       toast({

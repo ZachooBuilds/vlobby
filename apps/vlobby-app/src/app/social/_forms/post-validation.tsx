@@ -6,7 +6,7 @@ export const feedPostSchema = z.object({
   _id: z.string().optional(),
   title: z.string().min(1, { message: 'Title is required' }),
   content: z.string().min(1, { message: 'Content is required' }),
-  status: z.enum(['pending', 'approved', 'rejected']),
+  status: z.enum(['pending', 'approved', 'rejected']).optional(),
   images: z
     .array(
       z.object({

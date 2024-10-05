@@ -12,6 +12,7 @@ import { SpacesOverview } from './_components/spaces-overview';
 import { Loader2 } from 'lucide-react';
 import { FacilitiesOverview } from './_components/facilities-overview';
 import { MailOverview } from '../parcels/_components/mail-overview';
+import QuickActions from './_components/quick-actions';
 
 export default function HomePage() {
   const { isLoaded: isUserLoaded, isSignedIn, user } = useUser();
@@ -44,6 +45,7 @@ export default function HomePage() {
       <div className="flex-grow overflow-auto">
         <div className="flex flex-col gap-4 items-start justify-start pt-16 p-4 pb-[120px] w-full">
           <BuildingOverview buildings={buildings} />
+          <QuickActions />
           <SpacesOverview />
           <FacilitiesOverview />
           <MailOverview />

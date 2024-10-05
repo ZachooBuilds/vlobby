@@ -24,7 +24,7 @@ export function BuildingOverview({ buildings }: BuildingOverviewProps) {
 
   return (
     <Card
-      className={`flex w-full flex-col min-h-[150px] p-2 ${!bannerImage?.url ? 'bg-white' : ''}`}
+      className={`flex w-full flex-col min-h-[200px] p-2 ${!bannerImage?.url ? 'bg-white' : ''}`}
       style={
         bannerImage?.url
           ? {

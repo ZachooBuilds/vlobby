@@ -25,7 +25,7 @@ export default function NewPostPage() {
   }
 
   const handleBack = () => {
-    router.back();
+    router.push('/social');
   };
 
   return (

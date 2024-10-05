@@ -47,7 +47,7 @@ export default function NavigationBar() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white shadow-lg shadow-black/10 bg-background border-t border-muted overflow-hidden">
+    <nav className="fixed bottom-4 left-4 right-4 bg-white shadow-lg shadow-black/10 bg-background border-t border-muted overflow-hidden">
       <AnimatePresence>
         {isExpanded && (
           <motion.div
