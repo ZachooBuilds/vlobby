@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import Link from 'next/link';
 import { useQuery } from 'convex/react';
 import { api } from '@repo/backend/convex/_generated/api';
 import NavigationBar from '../_components/navigation';
-import { Loader2} from 'lucide-react';
-import {OfferDetails } from '../../lib/app-types';
+import { Loader2 } from 'lucide-react';
+import { OfferDetails } from '../../lib/app-types';
 import {
   AnnouncementIconPath,
   ClubIconPath,
@@ -27,18 +27,11 @@ export default function SocialPage() {
   const { isLoaded: isOrgLoaded } = useOrganizationList({
     userMemberships: { infinite: true },
   });
-  const router = useRouter();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOption, setSelectedOption] = useState('Announcements');
 
   // const offers = useQuery(api.offers.getAllOffersForUpdate) as OfferDetails[];
-
-  useEffect(() => {
-    if (isUserLoaded && !isSignedIn) {
-      router.push('/');
-    }
-  }, [isUserLoaded, isSignedIn, router]);
 
   if (!isUserLoaded || !isOrgLoaded || !isSignedIn || !user) {
     return <Loader2 className="w-4 h-4 animate-spin" />;
@@ -96,26 +89,31 @@ function SocialOptions({
       {options.map((option) => {
         const isSelected = selectedOption === option.name;
         return (
-          <motion.div
+          <Link
             key={option.name}
-            className={`flex flex-col gap-2 items-center p-4 rounded cursor-pointer flex-1 ${
-              isSelected ? 'bg-primary text-white' : 'text-muted-foreground'
-            }`}
-            onClick={() => setSelectedOption(option.name)}
-            initial={{ opacity: 0.8 }}
-            animate={{
-              opacity: isSelected ? 1 : 0.8,
-              scale: isSelected ? 1.05 : 1,
-            }}
-            transition={{ duration: 0.3 }}
+            href={`/social/${option.name.toLowerCase()}`}
+            passHref
           >
-            <div
-              className={`w-4 h-4 ${isSelected ? 'fill-white' : 'fill-muted-foreground'}`}
+            <motion.div
+              className={`flex flex-col gap-2 items-center p-4 rounded cursor-pointer flex-1 ${
+                isSelected ? 'bg-primary text-white' : 'text-muted-foreground'
+              }`}
+              onClick={() => setSelectedOption(option.name)}
+              initial={{ opacity: 0.8 }}
+              animate={{
+                opacity: isSelected ? 1 : 0.8,
+                scale: isSelected ? 1.05 : 1,
+              }}
+              transition={{ duration: 0.3 }}
             >
-              <option.icon />
-            </div>
-            <p className="text-sm">{option.name}</p>
-          </motion.div>
+              <div
+                className={`w-4 h-4 ${isSelected ? 'fill-white' : 'fill-muted-foreground'}`}
+              >
+                <option.icon />
+              </div>
+              <p className="text-sm">{option.name}</p>
+            </motion.div>
+          </Link>
         );
       })}
     </div>

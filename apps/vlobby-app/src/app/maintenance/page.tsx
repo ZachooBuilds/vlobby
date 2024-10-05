@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import NavigationBar from '../_components/navigation';
 import { HammerIconPath } from '../../../public/svg/icons';
 import { api } from '@repo/backend/convex/_generated/api';
@@ -22,7 +23,6 @@ import { Id } from '@repo/backend/convex/_generated/dataModel';
 import WorkOrderOverview from './_components/work-order-overview';
 import { CheckCircle, Loader2 } from 'lucide-react';
 import NoData from '../_components/no-data';
-import { useRouter } from 'next/navigation';
 
 export default function MaintenancePage() {
   // Fetch all occupant issues
@@ -48,13 +48,6 @@ export default function MaintenancePage() {
   );
   const [selectedWorkOrder, setSelectedWorkOrder] =
     useState<Id<'workOrders'> | null>(null);
-
-  const router = useRouter();
-
-  // Handler for reporting a new issue
-  const handleIssueReport = () => {
-    router.push('/maintenance/new-issue');
-  };
 
   // Handler for selecting an issue
   const handleIssueSelect = (issue: EnhancedIssue) => {
@@ -102,11 +95,13 @@ export default function MaintenancePage() {
                 </div>
               </div>
             </div>
-            <Button
-              onClick={selectedIssue ? handleIssueEdit : handleIssueReport}
-            >
-              {selectedIssue ? 'Edit Issue' : 'Report Issue'}
-            </Button>
+            {selectedIssue ? (
+              <Button onClick={handleIssueEdit}>Edit Issue</Button>
+            ) : (
+              <Link href="/maintenance/new-issue" passHref>
+                <Button >Report Issue</Button>
+              </Link>
+            )}
           </div>
 
           {/* Main Content */}

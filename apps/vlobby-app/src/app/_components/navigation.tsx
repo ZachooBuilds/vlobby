@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   DashboardIconPath,
@@ -38,12 +39,10 @@ const additionalOptions = [
 
 export default function NavigationBar() {
   const [isExpanded, setIsExpanded] = useState(false);
-  const router = useRouter();
   const pathname = usePathname();
 
-  const handleItemClick = (href: string) => {
+  const handleItemClick = () => {
     setIsExpanded(false);
-    router.push(href);
   };
 
   return (
@@ -58,19 +57,20 @@ export default function NavigationBar() {
             className="grid grid-cols-3 gap-4 p-4"
           >
             {additionalOptions.map((option, index) => (
-              <motion.div
-                key={option.name}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="flex flex-col items-center justify-center p-2"
-                onClick={() => handleItemClick(option.href)}
-              >
-                <div className="w-8 h-8 fill-muted-foreground">
-                  {option.icon()}
-                </div>
-                <span className="text-xs mt-1">{option.name}</span>
-              </motion.div>
+              <Link key={option.name} href={option.href} passHref>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  className="flex flex-col items-center justify-center p-2"
+                  onClick={handleItemClick}
+                >
+                  <div className="w-8 h-8 fill-muted-foreground">
+                    {option.icon()}
+                  </div>
+                  <span className="text-xs mt-1">{option.name}</span>
+                </motion.div>
+              </Link>
             ))}
           </motion.div>
         )}
@@ -84,15 +84,21 @@ export default function NavigationBar() {
               if (item.name === 'Home') {
                 setIsExpanded(!isExpanded);
               } else {
-                handleItemClick(item.href);
+                handleItemClick();
               }
             }}
           >
-            <div
-              className={`w-8 h-8 ${item.name === 'Home' ? 'fill-primary' : 'fill-foreground'}`}
-            >
-              {item.icon()}
-            </div>
+            {item.name === 'Home' ? (
+              <div className="w-8 h-8 fill-primary">
+                {item.icon()}
+              </div>
+            ) : (
+              <Link href={item.href} passHref>
+                <div className="w-8 h-8 fill-foreground">
+                  {item.icon()}
+                </div>
+              </Link>
+            )}
           </div>
         ))}
       </div>
