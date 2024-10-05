@@ -3,9 +3,12 @@ import '@repo/ui/globals.css';
 import { GeistSans } from 'geist/font/sans';
 import { ThemeProvider } from 'next-themes';
 import ConvexClientProvider from './ConvexClientProvider';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Toaster } from '@repo/ui/components/ui/toaster';
 import { GlobalDrawer } from './_components/global-drawer';
+import { useConvexAuth } from 'convex/react';
+import { useRouter } from 'next/navigation';
+import { LoadingSpinner } from './_components/loading spinner';
 
 /**
  * RootLayout Component
@@ -18,6 +21,24 @@ import { GlobalDrawer } from './_components/global-drawer';
  * @returns {JSX.Element} The rendered root layout
  */
 export default function RootLayout({ children }: { children: ReactNode }) {
+  const { isAuthenticated, isLoading } = useConvexAuth();
+  const router = useRouter();
+  const [authChecked, setAuthChecked] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (!isAuthenticated) {
+        // Redirect to login page if not authenticated
+        router.push('/');
+      }
+      setAuthChecked(true);
+    }
+  }, [isAuthenticated, isLoading, router]);
+
+  if (isLoading || !authChecked) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <html
       suppressHydrationWarning
