@@ -5,12 +5,11 @@ import NavigationBar from '../_components/navigation';
 import { HammerIconPath } from '../../../public/svg/icons';
 import { api } from '@repo/backend/convex/_generated/api';
 import { useQuery } from 'convex/react';
-import { EnhancedIssue, Issue } from '../../lib/app-types';
+import { EnhancedIssue } from '../../lib/app-types';
 import IssueSummaryCard from './_components/issue-card';
 import useDrawerStore from '../../lib/global-state';
 import { Badge } from '@tremor/react';
 import { Button } from '@repo/ui/components/ui/button';
-import IssuesUpsertForm from './_form/issues-upsert-form';
 import IssueOverview from './_components/issue-overview';
 import {
   Tabs,

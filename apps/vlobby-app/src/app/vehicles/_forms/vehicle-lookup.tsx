@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAction } from 'convex/react';
 import { Loader2, Car } from 'lucide-react';
 import { useToast } from '@repo/ui/hooks/use-toast';
@@ -25,6 +25,7 @@ import {
   CardContent,
 } from '@repo/ui/components/ui/card';
 import { Badge } from '@repo/ui/components/ui/badge';
+import useDrawerStore from '../../../lib/global-state';
 
 const lookupSchema = z.object({
   plateNumber: z.string().min(1, 'Plate number is required'),
@@ -38,6 +39,7 @@ export default function VehicleLookup() {
     useState<VehicleRegistrationData | null>(null);
   const { toast } = useToast();
   const fetchCarJamDetails = useAction(api.vehicles.fetchCarJamDetails);
+  const { closeDrawer, openDrawer } = useDrawerStore();
 
   const form = useForm<LookupFormData>({
     resolver: zodResolver(lookupSchema),
@@ -45,6 +47,19 @@ export default function VehicleLookup() {
       plateNumber: '',
     },
   });
+
+  useEffect(() => {
+    if (vehicleData) {
+      closeDrawer();
+      setTimeout(() => {
+        openDrawer(
+          'Vehicle Found',
+          'Vehicle details have been fetched successfully.',
+          <VehicleSummaryCard vehicle={vehicleData} />
+        );
+      }, 100);
+    }
+  }, [vehicleData, closeDrawer, openDrawer]);
 
   const handlePlateSearch = async (data: LookupFormData) => {
     setIsLoading(true);
@@ -72,6 +87,7 @@ export default function VehicleLookup() {
   const handleClearSearch = () => {
     setVehicleData(null);
     form.reset();
+    closeDrawer();
   };
 
   const VehicleSummaryCard = ({
@@ -125,43 +141,37 @@ export default function VehicleLookup() {
   );
 
   return (
-    <>
-      {vehicleData ? (
-        <VehicleSummaryCard vehicle={vehicleData} />
-      ) : (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handlePlateSearch)}
-            className="space-y-6"
-          >
-            <div className="flex flex-col space-y-2">
-              <FormField
-                control={form.control}
-                name="plateNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Plate Number</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter plate number"
-                        {...field}
-                        className="text-base"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : null}
-                Search
-              </Button>
-            </div>
-          </form>
-        </Form>
-      )}
-    </>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(handlePlateSearch)}
+        className="space-y-6"
+      >
+        <div className="flex flex-col space-y-2">
+          <FormField
+            control={form.control}
+            name="plateNumber"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Plate Number</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter plate number"
+                    {...field}
+                    className="text-base"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : null}
+            Search
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 }

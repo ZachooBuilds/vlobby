@@ -2,13 +2,10 @@
 
 import React, { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { cn } from '@repo/ui/lib/utils';
-import { Button } from '@repo/ui/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   DashboardIconPath,
   HomeIconPath,
-  SpacesIconPath,
   SettingIconPath,
   NoticesIconPath,
   ParcelIconPath,
@@ -18,7 +15,6 @@ import {
   FacilityIconPath,
   EventIconPath,
   OffersIconPath,
-  DocumentsIconPath,
   BillingIconPath,
 } from '../../../public/svg/icons';
 
@@ -45,17 +41,13 @@ export default function NavigationBar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
-
   const handleItemClick = (href: string) => {
     setIsExpanded(false);
     router.push(href);
   };
 
   return (
-    <nav className="fixed bottom-5 left-5 right-5 bg-white shadow-lg shadow-black/10 rounded-lg bg-background border border-muted overflow-hidden">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white shadow-lg shadow-black/10 bg-background border-t border-muted overflow-hidden">
       <AnimatePresence>
         {isExpanded && (
           <motion.div
@@ -71,7 +63,7 @@ export default function NavigationBar() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="flex flex-col items-center justify-center hover:bg-muted p-2 cursor-pointer"
+                className="flex flex-col items-center justify-center p-2"
                 onClick={() => handleItemClick(option.href)}
               >
                 <div className="w-8 h-8 fill-muted-foreground">
@@ -83,16 +75,18 @@ export default function NavigationBar() {
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="flex flex-row justify-center items-center p-2 gap-10">
+      <div className="flex flex-row justify-around items-center p-2">
         {navigationItems.map((item) => (
           <div
             key={item.name}
-            className="p-4 hover:bg-muted cursor-pointer"
-            onClick={
-              item.name === 'Home'
-                ? toggleExpand
-                : () => handleItemClick(item.href)
-            }
+            className={`p-4 ${pathname === item.href ? 'bg-muted' : ''}`}
+            onClick={() => {
+              if (item.name === 'Home') {
+                setIsExpanded(!isExpanded);
+              } else {
+                handleItemClick(item.href);
+              }
+            }}
           >
             <div className="w-8 h-8 fill-muted-foreground">{item.icon()}</div>
           </div>
