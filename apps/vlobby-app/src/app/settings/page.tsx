@@ -4,6 +4,7 @@ import React from 'react';
 import NavigationBar from '../_components/navigation';
 import { SettingIconPath } from '../../../public/svg/icons';
 import { SignOutButton } from '../(auth)/_components/sign-out-button';
+import { ModeToggle } from '../_components/dark-mode-toggle';
 
 export default function SettingsPage() {
   return (
@@ -18,6 +19,7 @@ export default function SettingsPage() {
           </div>
           <p>Settings page content goes here</p>
           <SignOutButton />
+          <ModeToggle />
         </div>
       </div>
       <NavigationBar />
