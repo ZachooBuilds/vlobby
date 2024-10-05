@@ -9,19 +9,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@repo/ui/components/ui/card';
-import {
-  Home,
-  Users,
-  Building,
-  Layers,
-  Power,
-  Droplet,
-  FileText,
-  AccessibilityIcon,
-} from 'lucide-react';
+import { Home, Users, Building, Layers, Power, Droplet } from 'lucide-react';
 import { SpacesIconPath } from '../../../../public/svg/icons';
 import { Badge } from '@tremor/react';
 import { spaceRoleOptions } from '../../../lib/staticData';
+import { Skeleton } from '@repo/ui/components/ui/skeleton';
 
 const SpaceCard = ({ space }: { space: Space }) => (
   <Card className="flex flex-col w-full min-w-[380px] max-w-[450px]">
@@ -69,26 +61,6 @@ const SpaceCard = ({ space }: { space: Space }) => (
           Title: {space.titleNumber}
         </Badge>
       </div>
-      {/* <div className="mt-4 flex flex-row gap-2">
-        <Badge
-          size="xs"
-          color={space.accessibilityEnabled ? 'green' : 'red'}
-          className="flex flex-row items-center gap-2"
-        >
-          <AccessibilityIcon className="h-3 w-3" />
-          <span>
-            {space.accessibilityEnabled ? 'Accessible' : 'Not Accessible'}
-          </span>
-        </Badge>
-        <Badge
-          color="gray"
-          size="xs"
-          className="flex flex-row items-center gap-2"
-        >
-          <FileText className="h-3 w-3" />
-          <span>Title: {space.titleNumber}</span>
-        </Badge>
-      </div> */}
     </CardContent>
   </Card>
 );
@@ -97,7 +69,23 @@ export function SpacesOverview() {
   const allSpaces = useQuery(api.spaces.getCurrentUserSpaces);
 
   if (!allSpaces) {
-    return <div>Loading spaces...</div>;
+    return (
+      <div className="flex flex-col gap-2 items-start w-full">
+        <div className="flex flex-row gap-2 items-center mb-2">
+          <Skeleton className="w-5 h-5 rounded-full" />
+          <Skeleton className="w-40 h-6" />
+          <Skeleton className="w-24 h-4" />
+        </div>
+        <div className="flex gap-4 overflow-x-auto w-full">
+          {[...Array(3)].map((_, index) => (
+            <Skeleton
+              key={index}
+              className="w-80 h-40 rounded-lg flex-shrink-0"
+            />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (

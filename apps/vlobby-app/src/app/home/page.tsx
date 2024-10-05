@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useOrganizationList, useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/clerk-react';
 import { useRouter } from 'next/navigation';
-import { SignOutButton } from '../(auth)/_components/sign-out-button';
 import { useQuery } from 'convex/react';
 import { api } from '@repo/backend/convex/_generated/api';
 import { BuildingOverview } from './_components/building-overview';
@@ -15,28 +14,17 @@ import { MailOverview } from '../parcels/_components/mail-overview';
 import QuickActions from './_components/quick-actions';
 
 export default function HomePage() {
-  const { isLoaded: isUserLoaded, isSignedIn, user } = useUser();
-  const {
-    isLoaded: isOrgLoaded,
-    setActive,
-    userMemberships,
-  } = useOrganizationList({
-    userMemberships: {
-      infinite: true,
-    },
-  });
   const router = useRouter();
-
-  const bannerImage = useQuery(api.theme.getBannerImage);
   const buildings = useQuery(api.site.getAllSites);
+  const { isLoaded, isSignedIn } = useUser();
 
   useEffect(() => {
-    if (isUserLoaded && !isSignedIn) {
+    if (isLoaded && !isSignedIn) {
       router.push('/');
     }
-  }, [isUserLoaded, isSignedIn, router]);
+  }, [isLoaded, isSignedIn, router]);
 
-  if (!isUserLoaded || !isOrgLoaded || !isSignedIn || !user) {
+  if (!isLoaded) {
     return <LoadingSpinner />;
   }
 
