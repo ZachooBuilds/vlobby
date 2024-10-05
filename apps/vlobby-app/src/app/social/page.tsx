@@ -89,31 +89,26 @@ function SocialOptions({
       {options.map((option) => {
         const isSelected = selectedOption === option.name;
         return (
-          <Link
+          <motion.div
             key={option.name}
-            href={`/social/${option.name.toLowerCase()}`}
-            passHref
+            className={`flex flex-col gap-2 items-center p-4 rounded cursor-pointer flex-1 ${
+              isSelected ? 'bg-primary text-white' : 'text-muted-foreground'
+            }`}
+            onClick={() => setSelectedOption(option.name)}
+            initial={{ opacity: 0.8 }}
+            animate={{
+              opacity: isSelected ? 1 : 0.8,
+              scale: isSelected ? 1.05 : 1,
+            }}
+            transition={{ duration: 0.3 }}
           >
-            <motion.div
-              className={`flex flex-col gap-2 items-center p-4 rounded cursor-pointer flex-1 ${
-                isSelected ? 'bg-primary text-white' : 'text-muted-foreground'
-              }`}
-              onClick={() => setSelectedOption(option.name)}
-              initial={{ opacity: 0.8 }}
-              animate={{
-                opacity: isSelected ? 1 : 0.8,
-                scale: isSelected ? 1.05 : 1,
-              }}
-              transition={{ duration: 0.3 }}
+            <div
+              className={`w-4 h-4 ${isSelected ? 'fill-white' : 'fill-muted-foreground'}`}
             >
-              <div
-                className={`w-4 h-4 ${isSelected ? 'fill-white' : 'fill-muted-foreground'}`}
-              >
-                <option.icon />
-              </div>
-              <p className="text-sm">{option.name}</p>
-            </motion.div>
-          </Link>
+              <option.icon />
+            </div>
+            <p className="text-sm">{option.name}</p>
+          </motion.div>
         );
       })}
     </div>

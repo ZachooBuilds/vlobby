@@ -11,18 +11,9 @@ import { cn } from '@repo/ui/lib/utils';
 import { PostData } from '../../../lib/app-types';
 import { FeedIconPath } from '../../../../public/svg/icons';
 import { Button } from '@repo/ui/components/ui/button';
-import useDrawerStore from '../../../lib/global-state';
-import FeedPostUpsertForm from '../_forms/new-post';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 function PageHeader() {
-  const openDrawer = useDrawerStore((state) => state.openDrawer);
-  const router = useRouter();
-
-  const handleNewPost = () => {
-    router.push('/social/new-post');
-  };
-
   return (
     <div className="flex flex-row w-full items-center justify-between">
       <div className="flex flex-row items-center gap-2">
@@ -31,7 +22,9 @@ function PageHeader() {
         </div>
         <h2 className="text-base font-semibold">Building Feed</h2>
       </div>
-      <Button onClick={handleNewPost}>New Post</Button>
+      <Link href="/social/new-post" passHref>
+        <Button>New Post</Button>
+      </Link>
     </div>
   );
 }
