@@ -219,23 +219,32 @@ export const getAllFacilities = query({
 
 export const getAllOccupantFacilities = query({
   handler: async (ctx) => {
+    console.log('Starting getAllOccupantFacilities query');
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
+    console.log('Authenticated user with orgId:', orgId);
 
     // Call the internal function to get audience groups
+    console.log('Fetching audience groups');
     const audienceGroups = await ctx.runQuery(
       internal.helperFunctions.getOccupantAudienceGroups,
       {}
     );
+    console.log('Fetched audience groups:', audienceGroups);
 
+    console.log('Querying facilities');
     const facilities = await ctx.db
       .query('facilities')
       .filter((q) => q.eq(q.field('orgId'), orgId))
       .collect();
+    console.log('Fetched facilities:', facilities);
 
+    console.log('Filtering facilities');
     const filteredFacilities = facilities.filter((facility) => {
+      console.log('Processing facility:', facility);
       if (!facility.audience || facility.audience.length === 0) {
+        console.log('Facility has no audience, including');
         return true; // Include facilities without specific audience
       }
 
@@ -249,10 +258,15 @@ export const getAllOccupantFacilities = query({
           ).length > 0
       );
 
+      console.log('Matching audiences for facility:', matchingAudiences);
       return matchingAudiences.length > 0;
     });
 
-    return await processFacilities(ctx, filteredFacilities);
+    console.log('Filtered facilities:', filteredFacilities);
+    console.log('Processing facilities');
+    const result = await processFacilities(ctx, filteredFacilities);
+    console.log('Processed facilities:', result);
+    return result;
   },
 });
 

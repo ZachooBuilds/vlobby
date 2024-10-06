@@ -12,6 +12,7 @@ import useDrawerStore from '../../../lib/global-state';
 import AddVehicleForm from '../_forms/add-vehicle';
 import { RequestVehicleForm } from '../_forms/request-vehicle';
 import { ActiveRequestCard } from './active-request';
+import Link from 'next/link';
 import VehicleLookup from '../_forms/vehicle-lookup';
 
 export const VehicleCard = ({
@@ -66,27 +67,6 @@ export function VehicleOverview() {
   if (!vehicles) {
     return <div>Loading vehicles...</div>;
   }
-
-  const handleAddVehicle = () => {
-    openDrawer(
-      'Add Vehicle',
-      'Look up vehicle details or add manually',
-      <div className="flex flex-col gap-4">
-        <VehicleLookup />
-        <Button
-          onClick={() => {
-            setIsManualAdd(true);
-            setIsAddingVehicle(true);
-            closeDrawer();
-          }}
-          type="button"
-          variant="outline"
-        >
-          Add Manually
-        </Button>
-      </div>
-    );
-  };
 
   const handleSelectVehicle = (vehicle: Vehicle) => {
     setSelectedVehicle(vehicle);
@@ -146,7 +126,9 @@ export function VehicleOverview() {
             {vehicles.length}
           </Badge>
         </div>
-        <Button onClick={handleAddVehicle}>Add Vehicle</Button>
+        <Link href="/vehicles/vehicle-lookup" >
+          <Button className="w-full">Add Vehicle</Button>
+        </Link>
       </div>
       <div className="grid grid-cols-1 gap-4 w-full">
         {vehicles.map((vehicle) => (

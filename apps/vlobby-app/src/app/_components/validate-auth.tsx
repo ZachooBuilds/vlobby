@@ -31,6 +31,13 @@ export function AuthCheck({ children }: { children: React.ReactNode }) {
 
     if (publicRoutes.includes(pathname)) {
       console.log('[AuthCheck] Public route detected:', pathname);
+      if (user && (pathname === '/sign-in' || pathname === '/sign-up')) {
+        console.log(
+          '[AuthCheck] User logged in on auth route, redirecting to home'
+        );
+        router.push('/home');
+        return;
+      }
       setAuthChecked(true);
       return;
     }

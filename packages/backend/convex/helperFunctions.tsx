@@ -1,16 +1,17 @@
-import { v } from "convex/values";
-import { internalQuery } from "./_generated/server";
+import { v } from 'convex/values';
+import { internalQuery } from './_generated/server';
 
 export const getOccupantAudienceGroups = internalQuery({
-  args: { },
+  args: {},
   handler: async (ctx, args) => {
     const audienceGroups = [];
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const userId = identity.userId;
     const orgId = identity.orgId;
 
-    const occupant = await ctx.db.query('users')
+    const occupant = await ctx.db
+      .query('users')
       .filter((q) => q.eq(q.field('userId'), userId))
       .first();
 
@@ -26,7 +27,7 @@ export const getOccupantAudienceGroups = internalQuery({
       .filter((q) => q.eq(q.field('userId'), userId))
       .collect();
 
-    // Loop through each user space and get the space details 
+    // Loop through each user space and get the space details
     for (const userSpace of userSpaces) {
       const space = await ctx.db.get(userSpace.spaceId);
       if (!space) continue;
@@ -38,9 +39,9 @@ export const getOccupantAudienceGroups = internalQuery({
       });
 
       // Add floor to audience groups
-      if (space.floorId) {
+      if (space.floor) {
         audienceGroups.push({
-          entity: space.floorId,
+          entity: space.floor,
           type: 'floor',
         });
       }

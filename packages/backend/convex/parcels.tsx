@@ -139,7 +139,7 @@ export const getAllForCurrentOccupant = query({
     const occupant = await ctx.db
       .query('users')
       .filter((q) => q.eq(q.field('userId'), userId))
-      .filter((q) => q.eq(q.field('orgId'), orgId))
+      // .filter((q) => q.eq(q.field('orgId'), orgId))
       .first();
 
     console.log('Occupant:', occupant);
@@ -148,7 +148,7 @@ export const getAllForCurrentOccupant = query({
     const parcels = await ctx.db
       .query('parcels')
       .filter((q) => q.eq(q.field('occupantId'), occupant._id))
-      .filter((q) => q.eq(q.field('orgId'), orgId))
+      // .filter((q) => q.eq(q.field('orgId'), orgId))
       .filter((q) => q.eq(q.field('isCollected'), args.isCollected))
       .collect();
 

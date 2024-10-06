@@ -26,6 +26,7 @@ import {
 } from '@repo/ui/components/ui/card';
 import { Badge } from '@repo/ui/components/ui/badge';
 import useDrawerStore from '../../../lib/global-state';
+import AddVehicleForm from './add-vehicle';
 
 const lookupSchema = z.object({
   plateNumber: z.string().min(1, 'Plate number is required'),
@@ -95,7 +96,7 @@ export default function VehicleLookup() {
   }: {
     vehicle: VehicleRegistrationData;
   }) => (
-    <Card className="mt-6">
+    <Card className="mt-6 w-full">
       <CardHeader>
         <CardTitle className="flex items-center">
           <Car className="mr-2 h-6 w-6" />
@@ -144,9 +145,9 @@ export default function VehicleLookup() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handlePlateSearch)}
-        className="space-y-6"
+        className="space-y-6 w-full"
       >
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-2 w-full">
           <FormField
             control={form.control}
             name="plateNumber"
@@ -164,7 +165,8 @@ export default function VehicleLookup() {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={isLoading}>
+
+          <Button type="submit" disabled={isLoading} className="w-full h-12">
             {isLoading ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : null}
