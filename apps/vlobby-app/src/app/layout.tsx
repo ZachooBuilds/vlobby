@@ -7,7 +7,7 @@ import { ReactNode } from 'react';
 import { Toaster } from '@repo/ui/components/ui/toaster';
 import { GlobalDrawer } from './_components/global-drawer';
 import { AuthCheck } from './_components/validate-auth';
-import PushyInitializer from './_components/pushy-init';
+import PushNotificationInitializer from './_components/PushNotificationInitializer';
 
 /**
  * RootLayout Component
@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           >
             <ConvexClientProvider>
               <AuthCheck>
-                <PushyInitializer />
+                <PushNotificationInitializer />
                 {children}
                 <GlobalDrawer />
               </AuthCheck>

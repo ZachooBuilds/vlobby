@@ -11,6 +11,7 @@
   "dependencies": {
     "@clerk/backend": "^1.13.6",
     "convex": "^1.15.0",
+    "firebase-admin": "^12.6.0",
     "svix": "^1.37.0"
   },
   "devDependencies": {
