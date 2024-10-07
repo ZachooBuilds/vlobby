@@ -21,16 +21,17 @@ workflows:
           else
             echo "pnpm is already installed"
           fi
-      - name: Install dependencies
+       - name: Install dependencies and sync Capacitor
         script: |
           pnpm install
+          cd apps/vlobby-app
+          npx cap sync ios
       - name: Cocoapods installation
         script: |
           cd apps/vlobby-app/ios/App && pod install
       - name: Update dependencies and copy web assets to native project
         script: |
           cd apps/vlobby-app
-          npx cap sync
           pnpm run build
           
       - name: Set up code signing settings on Xcode project
