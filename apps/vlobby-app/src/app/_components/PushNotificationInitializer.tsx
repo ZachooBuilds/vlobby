@@ -71,7 +71,9 @@ export default function PushNotificationInitializer() {
 
   useEffect(() => {
     if (!isInitialized && isSignedIn) {
-      initializePushNotifications();
+      setTimeout(() => {
+        initializePushNotifications();
+      }, 5000);
     }
 
     return () => {
