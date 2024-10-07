@@ -5,30 +5,62 @@ import { Capacitor } from '@capacitor/core';
 import { PushNotifications } from '@capacitor/push-notifications';
 import { useMutation, useQuery } from 'convex/react';
 import { api } from '@repo/backend/convex/_generated/api';
+import { useAuth } from '@clerk/clerk-react';
 
 export default function PushNotificationInitializer() {
   const storeDeviceToken = useMutation(api.pushNotifications.storeDeviceToken);
   const userToken = useQuery(api.pushNotifications.getUserToken);
+  const { isSignedIn } = useAuth();
 
   useEffect(() => {
-    if (Capacitor.getPlatform() !== 'ios') return;
+    if (!isSignedIn) {
+      console.log('PushNotificationInitializer: User not signed in, exiting');
+      return;
+    }
+
+    console.log('PushNotificationInitializer: Effect started');
+    if (Capacitor.getPlatform() !== 'ios') {
+      console.log('PushNotificationInitializer: Not iOS platform, exiting');
+      return;
+    }
 
     const initializePushNotifications = async () => {
+      console.log(
+        'PushNotificationInitializer: Initializing push notifications'
+      );
       // Check if the user already has a token
       if (!userToken) {
+        console.log(
+          'PushNotificationInitializer: No user token found, requesting permissions'
+        );
         try {
           const result = await PushNotifications.requestPermissions();
+          console.log(
+            'PushNotificationInitializer: Permission request result:',
+            result
+          );
           if (result.receive === 'granted') {
+            console.log(
+              'PushNotificationInitializer: Permission granted, registering'
+            );
             await PushNotifications.register();
+            console.log('PushNotificationInitializer: Registration complete');
           } else {
-            console.log('Push notification permission denied');
+            console.log(
+              'PushNotificationInitializer: Push notification permission denied'
+            );
           }
         } catch (error) {
           console.error(
-            'Error requesting push notification permissions:',
+            'PushNotificationInitializer: Error requesting push notification permissions:',
             error
           );
         }
+      } else {
+        console.log(
+          'PushNotificationInitializer: User token already exists:',
+          userToken
+        );
       }
     };
 
@@ -36,8 +68,12 @@ export default function PushNotificationInitializer() {
 
     // Add listeners for push notifications
     PushNotifications.addListener('registration', async (token) => {
-      console.log('Push registration success, token:', token.value);
+      console.log(
+        'PushNotificationInitializer: Push registration success, token:',
+        token.value
+      );
       await storeDeviceToken({ deviceToken: token.value });
+      console.log('PushNotificationInitializer: Device token stored');
     });
 
     PushNotifications.addListener('registrationError', (error) => {
@@ -59,9 +95,10 @@ export default function PushNotificationInitializer() {
     );
 
     return () => {
+      console.log('PushNotificationInitializer: Cleaning up listeners');
       PushNotifications.removeAllListeners();
     };
-  }, [userToken]);
+  }, [isSignedIn, userToken, storeDeviceToken]);
 
   // This component doesn't render anything visible
   return null;
