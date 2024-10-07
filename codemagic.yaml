@@ -29,11 +29,6 @@ workflows:
       - name: Cocoapods installation
         script: |
           cd apps/vlobby-app/ios/App && pod install
-      - name: Update dependencies and copy web assets to native project
-        script: |
-          cd apps/vlobby-app
-          pnpm run build
-      
       - name: Set up code signing settings on Xcode project
         script: |
           cd apps/vlobby-app/ios/App
