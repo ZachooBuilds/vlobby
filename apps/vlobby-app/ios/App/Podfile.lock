@@ -4,11 +4,28 @@ PODS:
   - CapacitorCordova (6.1.2)
   - CapacitorKeyboard (6.0.2):
     - Capacitor
+  - CocoaMQTT (2.1.0):
+    - CocoaMQTT/Core (= 2.1.0)
+  - CocoaMQTT/Core (2.1.0):
+    - MqttCocoaAsyncSocket (~> 1.0.8)
+  - CordovaPluginsStatic (6.1.2):
+    - CapacitorCordova
+    - Pushy (~> 1.0.53)
+  - MqttCocoaAsyncSocket (1.0.8)
+  - Pushy (1.0.54):
+    - CocoaMQTT (= 2.1.0)
 
 DEPENDENCIES:
   - "Capacitor (from `../../../../node_modules/.pnpm/@capacitor+ios@6.1.2_@capacitor+core@6.1.2/node_modules/@capacitor/ios`)"
   - "CapacitorCordova (from `../../../../node_modules/.pnpm/@capacitor+ios@6.1.2_@capacitor+core@6.1.2/node_modules/@capacitor/ios`)"
   - "CapacitorKeyboard (from `../../../../node_modules/.pnpm/@capacitor+keyboard@6.0.2_@capacitor+core@6.1.2/node_modules/@capacitor/keyboard`)"
+  - CordovaPluginsStatic (from `../capacitor-cordova-ios-plugins`)
+
+SPEC REPOS:
+  trunk:
+    - CocoaMQTT
+    - MqttCocoaAsyncSocket
+    - Pushy
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -17,12 +34,18 @@ EXTERNAL SOURCES:
     :path: "../../../../node_modules/.pnpm/@capacitor+ios@6.1.2_@capacitor+core@6.1.2/node_modules/@capacitor/ios"
   CapacitorKeyboard:
     :path: "../../../../node_modules/.pnpm/@capacitor+keyboard@6.0.2_@capacitor+core@6.1.2/node_modules/@capacitor/keyboard"
+  CordovaPluginsStatic:
+    :path: "../capacitor-cordova-ios-plugins"
 
 SPEC CHECKSUMS:
   Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
   CapacitorCordova: f48c89f96c319101cd2f0ce8a2b7449b5fb8b3dd
   CapacitorKeyboard: 2700f9b18687be021e28b5a09b59eb151a46d5e0
+  CocoaMQTT: 43666585403f664bb55361189c03c54897060324
+  CordovaPluginsStatic: 90c1bca3fb32990f33717627cac01fd9eb1713ea
+  MqttCocoaAsyncSocket: 77d3b74f76228dd5a05d1f9526eab101d415b30c
+  Pushy: 21f159ce2693fe8fa518047bdf73ca14f02267a4
 
-PODFILE CHECKSUM: dab71a3710cff23d2d28322e1013f9949c7478f3
+PODFILE CHECKSUM: d6bf50715c9cfb0985e6f6c4aa32adb62c5d82bc
 
 COCOAPODS: 1.15.2

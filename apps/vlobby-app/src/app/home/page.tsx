@@ -19,6 +19,7 @@ export default function HomePage() {
   const { isLoaded, isSignedIn } = useUser();
 
   useEffect(() => {
+     
     if (isLoaded && !isSignedIn) {
       router.push('/');
     }

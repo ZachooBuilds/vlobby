@@ -7,6 +7,7 @@ import { ReactNode } from 'react';
 import { Toaster } from '@repo/ui/components/ui/toaster';
 import { GlobalDrawer } from './_components/global-drawer';
 import { AuthCheck } from './_components/validate-auth';
+import PushyInitializer from './_components/pushy-init';
 
 /**
  * RootLayout Component
@@ -27,21 +28,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     >
       <body className="h-screen w-screen overflow-hidden">
         <div className="flex h-full w-full flex-col bg-background">
-          {/* ThemeProvider: Manages the application's theme */}
           <ThemeProvider
             attribute="class"
             defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >
-            {/* ConvexClientProvider: Wraps the app with Convex client for real-time data and authentication */}
             <ConvexClientProvider>
               <AuthCheck>
+                <PushyInitializer />
                 {children}
                 <GlobalDrawer />
               </AuthCheck>
             </ConvexClientProvider>
-            {/* Toaster: Provides a container for toast notifications */}
             <Toaster />
           </ThemeProvider>
         </div>

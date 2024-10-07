@@ -14,7 +14,6 @@ import {
 } from '@repo/ui/components/ui/card';
 import { Button } from '@repo/ui/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import { Badge } from '@tremor/react';
 
 export default function VehicleLookupPage() {
   return (

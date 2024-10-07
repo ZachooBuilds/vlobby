@@ -42,6 +42,7 @@ import type * as parcels from "../parcels.js";
 import type * as parkTypes from "../parkTypes.js";
 import type * as parking from "../parking.js";
 import type * as parkingOperators from "../parkingOperators.js";
+import type * as pushNotifications from "../pushNotifications.js";
 import type * as requests from "../requests.js";
 import type * as site from "../site.js";
 import type * as spaces from "../spaces.js";
@@ -88,6 +89,7 @@ declare const fullApi: ApiFromModules<{
   parkTypes: typeof parkTypes;
   parking: typeof parking;
   parkingOperators: typeof parkingOperators;
+  pushNotifications: typeof pushNotifications;
   requests: typeof requests;
   site: typeof site;
   spaces: typeof spaces;

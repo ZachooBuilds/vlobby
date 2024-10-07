@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      pushy-cordova:
+        specifier: ^1.0.59
+        version: 1.0.59
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -482,6 +486,12 @@ importers:
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      pushy-cordova:
+        specifier: ^1.0.59
+        version: 1.0.59
+      pushy-cordova-receiver:
+        specifier: link:node_modules/pushy-cordova/receiver
+        version: link:node_modules/pushy-cordova/receiver
       react:
         specifier: ^18
         version: 18.3.1
@@ -4985,6 +4995,9 @@ packages:
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
+
+  pushy-cordova@1.0.59:
+    resolution: {integrity: sha512-xfOMOgUALZczU/8ESAwLUVHAD4w1GUQjlUApObgZr1pADMQVeFN3rhkCbR1tvbHzbVfsPGxuRJlFs3rnsEaHFA==}
 
   qs@6.13.0:
     resolution: {integrity: sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==}
@@ -10729,6 +10742,8 @@ snapshots:
   punycode.js@2.3.1: {}
 
   punycode@2.3.1: {}
+
+  pushy-cordova@1.0.59: {}
 
   qs@6.13.0:
     dependencies:
