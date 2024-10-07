@@ -69,7 +69,6 @@ export function VehicleOverview() {
   }
 
   const handleSelectVehicle = (vehicle: Vehicle) => {
-    setSelectedVehicle(vehicle);
     if (vehicle.isParked) {
       openDrawer(
         'Vehicle Options',
@@ -110,8 +109,9 @@ export function VehicleOverview() {
   const renderContent = () => {
     if (isAddingVehicle || isManualAdd || selectedVehicle) {
       return renderForm();
+    } else {
+      return renderVehicleList();
     }
-    return renderVehicleList();
   };
 
   const renderVehicleList = () => (
@@ -126,7 +126,7 @@ export function VehicleOverview() {
             {vehicles.length}
           </Badge>
         </div>
-        <Link href="/vehicles/vehicle-lookup" >
+        <Link href="/vehicles/vehicle-lookup">
           <Button className="w-full">Add Vehicle</Button>
         </Link>
       </div>
@@ -143,13 +143,15 @@ export function VehicleOverview() {
   );
 
   const renderForm = () => (
-    <>
-      <Button variant="ghost" onClick={handleBack} className="mb-4">
+    <div className="flex flex-col w-full">
+      <Button variant="secondary" onClick={handleBack} className="mb-4">
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back to Vehicles
       </Button>
-      <AddVehicleForm selectedVehicle={selectedVehicle || undefined} />
-    </>
+      <div className="w-full">
+        <AddVehicleForm selectedVehicle={selectedVehicle || undefined} />
+      </div>
+    </div>
   );
 
   return (
