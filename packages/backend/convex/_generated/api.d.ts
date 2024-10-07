@@ -31,6 +31,7 @@ import type * as events from "../events.js";
 import type * as facilities from "../facilities.js";
 import type * as features from "../features.js";
 import type * as feed from "../feed.js";
+import type * as firebaseAdmin from "../firebaseAdmin.js";
 import type * as handoverNotes from "../handoverNotes.js";
 import type * as helperFunctions from "../helperFunctions.js";
 import type * as http from "../http.js";
@@ -78,6 +79,7 @@ declare const fullApi: ApiFromModules<{
   facilities: typeof facilities;
   features: typeof features;
   feed: typeof feed;
+  firebaseAdmin: typeof firebaseAdmin;
   handoverNotes: typeof handoverNotes;
   helperFunctions: typeof helperFunctions;
   http: typeof http;

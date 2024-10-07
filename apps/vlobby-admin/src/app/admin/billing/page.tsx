@@ -1,6 +1,6 @@
-import SectionHeader from "../_components/global-components/section-header";
-import UnderConstructionMessage from "../_components/global-components/under-construction";
-
+import SectionHeader from '../_components/global-components/section-header';
+import UnderConstructionMessage from '../_components/global-components/under-construction';
+import { SendNotificationButton } from './send-notification';
 
 export default function DevicesPage() {
   return (
@@ -15,6 +15,7 @@ export default function DevicesPage() {
       />
       <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-lg bg-background p-4">
         <UnderConstructionMessage />
+        <SendNotificationButton />
       </div>
     </div>
   );

@@ -575,10 +575,16 @@ importers:
       firebase-admin:
         specifier: ^12.6.0
         version: 12.6.0
+      jsonwebtoken:
+        specifier: ^9.0.2
+        version: 9.0.2
       svix:
         specifier: ^1.37.0
         version: 1.37.0
     devDependencies:
+      '@types/jsonwebtoken':
+        specifier: ^9.0.7
+        version: 9.0.7
       '@types/node':
         specifier: ^22.7.3
         version: 22.7.4

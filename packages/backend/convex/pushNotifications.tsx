@@ -1,5 +1,6 @@
-import { mutation, query } from './_generated/server';
+import { action, internalAction, mutation, query } from './_generated/server';
 import { v } from 'convex/values';
+import { internal } from './_generated/api';
 
 export const storeDeviceToken = mutation({
   args: { deviceToken: v.string() },
@@ -19,6 +20,13 @@ export const storeDeviceToken = mutation({
   },
 });
 
+export const getAllUserIdsWithTokens = query({
+  handler: async (ctx) => {
+    const tokenRecords = await ctx.db.query('userDeviceTokens').collect();
+    return tokenRecords.map((record) => record.userId);
+  },
+});
+
 export const getUserToken = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -35,5 +43,37 @@ export const getUserToken = query({
       .first();
 
     return tokenRecord?.deviceToken || null;
+  },
+});
+
+export const sendPushNotificationToUser = mutation({
+  args: {
+    userId: v.string(),
+    title: v.string(),
+    body: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const { userId, title, body } = args;
+
+    const tokenRecord = await ctx.db
+      .query('userDeviceTokens')
+      .filter((q) => q.eq(q.field('userId'), userId))
+      .first();
+
+    if (!tokenRecord || !tokenRecord.deviceToken) {
+      return { success: false, reason: 'No valid token found' };
+    }
+
+    await ctx.scheduler.runAfter(
+      0,
+      internal.firebaseAdmin.sendFCMNotification,
+      {
+        token: tokenRecord.deviceToken,
+        title,
+        body,
+      }
+    );
+
+    return { success: true };
   },
 });

@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useAction } from 'convex/react';
+import { useAction, useMutation, useQuery } from 'convex/react';
 import { Loader2, Car } from 'lucide-react';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { api } from '@repo/backend/convex/_generated/api';
@@ -27,6 +27,7 @@ import {
 import { Badge } from '@repo/ui/components/ui/badge';
 import useDrawerStore from '../../../lib/global-state';
 import AddVehicleForm from './add-vehicle';
+import { useAuth } from '@clerk/clerk-react';
 
 const lookupSchema = z.object({
   plateNumber: z.string().min(1, 'Plate number is required'),
@@ -41,6 +42,9 @@ export default function VehicleLookup() {
   const { toast } = useToast();
   const fetchCarJamDetails = useAction(api.vehicles.fetchCarJamDetails);
   const { closeDrawer, openDrawer } = useDrawerStore();
+  const upsertVehicleMutation = useMutation(api.vehicles.upsertVehicle);
+  const occupant = useQuery(api.occupants.getCurrentOccupant);
+  const { userId } = useAuth();
 
   const form = useForm<LookupFormData>({
     resolver: zodResolver(lookupSchema),
@@ -91,6 +95,23 @@ export default function VehicleLookup() {
     closeDrawer();
   };
 
+  const handleAddVehicle = () => {
+    console.log('add vehicle clicked');
+    upsertVehicleMutation({
+      rego: vehicleData?.plate ?? '',
+      make: vehicleData?.make ?? '',
+      model: vehicleData?.model ?? '',
+      year: vehicleData?.year_of_manufacture ?? '',
+      color: vehicleData?.main_colour ?? '',
+      type: vehicleData?.vehicle_type ?? '',
+      drivers: [{ id: occupant?._id ?? '' }],
+      availableTo: 'specific',
+    });
+    setVehicleData(null);
+    form.reset();
+    closeDrawer();
+  };
+
   const VehicleSummaryCard = ({
     vehicle,
   }: {
@@ -134,6 +155,10 @@ export default function VehicleLookup() {
           <p className="text-sm font-medium text-muted-foreground">VIN</p>
           <p className="text-lg font-mono">{vehicle.vin}</p>
         </div>
+        <Button onClick={handleAddVehicle} className="w-full">
+          {' '}
+          Add Vehicle{' '}
+        </Button>
         <Button onClick={handleClearSearch} className="mt-4">
           Back to Search
         </Button>
