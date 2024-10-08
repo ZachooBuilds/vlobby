@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useDropzone } from "react-dropzone";
 import { cn } from "@repo/ui/lib/utils";
 import { UploadCloudIcon } from "lucide-react";
+import { Camera, CameraResultType } from '@capacitor/camera';
 
 const mainVariant = {
   initial: {
@@ -43,8 +44,23 @@ export const FileUploadForm = ({
     }
   };
 
-  const handleClick = () => {
-    fileInputRef.current?.click();
+  const handleClick = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Uri
+      });
+      
+      if (image.webPath) {
+        const response = await fetch(image.webPath);
+        const blob = await response.blob();
+        const file = new File([blob], "camera_image.jpg", { type: "image/jpeg" });
+        handleFileChange([file]);
+      }
+    } catch (error) {
+      console.error('Error taking photo:', error);
+    }
   };
 
   const { getRootProps, isDragActive } = useDropzone({

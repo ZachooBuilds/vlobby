@@ -8,6 +8,7 @@ import { Toaster } from '@repo/ui/components/ui/toaster';
 import { GlobalDrawer } from './_components/global-drawer';
 import { AuthCheck } from './_components/validate-auth';
 import PushNotificationInitializer from './_components/PushNotificationInitializer';
+import { Camera } from '@capacitor/camera';
 
 /**
  * RootLayout Component
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <ConvexClientProvider>
               <AuthCheck>
                 <PushNotificationInitializer />
+                Camera.requestPermissions();
                 {children}
                 <GlobalDrawer />
               </AuthCheck>

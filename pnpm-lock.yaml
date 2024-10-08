@@ -321,6 +321,9 @@ importers:
       '@capacitor/android':
         specifier: ^6.1.2
         version: 6.1.2(@capacitor/core@6.1.2)
+      '@capacitor/camera':
+        specifier: ^6.0.2
+        version: 6.0.2(@capacitor/core@6.1.2)
       '@capacitor/core':
         specifier: ^6.1.2
         version: 6.1.2
@@ -916,6 +919,11 @@ packages:
     resolution: {integrity: sha512-Yh0gQDY1bgRrL25J6ecIlvvs2kF8iNSwIPXjyw6Yz9mnwYxBazF5KZbjpKtGPnJgicJhFkYGsqOkEtxrve0EoQ==}
     peerDependencies:
       '@capacitor/core': ^6.1.0
+
+  '@capacitor/camera@6.0.2':
+    resolution: {integrity: sha512-bC2xxCcNTyfKYuLNLbGIyLlK9fok2MDhF4v8s01jusYAxoBI7LaKWQMQoGBA1MY/Ec6x/2pjIr+7k89Kmdr74g==}
+    peerDependencies:
+      '@capacitor/core': ^6.0.0
 
   '@capacitor/cli@6.1.2':
     resolution: {integrity: sha512-HKCNGE0RP8U7aiEF2vg5wTivJROS8BVfu8a3yYJb1mRQvzv+czpmtHNsTWS/WukvwoxUjyjRmsNQSAACHfMTmQ==}
@@ -6737,6 +6745,10 @@ snapshots:
       firebase: 10.14.0
 
   '@capacitor/android@6.1.2(@capacitor/core@6.1.2)':
+    dependencies:
+      '@capacitor/core': 6.1.2
+
+  '@capacitor/camera@6.0.2(@capacitor/core@6.1.2)':
     dependencies:
       '@capacitor/core': 6.1.2
 

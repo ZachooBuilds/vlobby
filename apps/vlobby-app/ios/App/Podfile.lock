@@ -1,6 +1,8 @@
 PODS:
   - Capacitor (6.1.2):
     - CapacitorCordova
+  - CapacitorCamera (6.0.2):
+    - Capacitor
   - CapacitorCordova (6.1.2)
   - CapacitorFirebaseMessaging (6.1.0):
     - Capacitor
@@ -77,6 +79,7 @@ PODS:
 
 DEPENDENCIES:
   - "Capacitor (from `../../../../node_modules/.pnpm/@capacitor+ios@6.1.2_@capacitor+core@6.1.2/node_modules/@capacitor/ios`)"
+  - "CapacitorCamera (from `../../../../node_modules/.pnpm/@capacitor+camera@6.0.2_@capacitor+core@6.1.2/node_modules/@capacitor/camera`)"
   - "CapacitorCordova (from `../../../../node_modules/.pnpm/@capacitor+ios@6.1.2_@capacitor+core@6.1.2/node_modules/@capacitor/ios`)"
   - "CapacitorFirebaseMessaging (from `../../../../node_modules/.pnpm/@capacitor-firebase+messaging@6.1.0_@capacitor+core@6.1.2_firebase@10.14.0/node_modules/@capacitor-firebase/messaging`)"
   - "CapacitorKeyboard (from `../../../../node_modules/.pnpm/@capacitor+keyboard@6.0.2_@capacitor+core@6.1.2/node_modules/@capacitor/keyboard`)"
@@ -101,6 +104,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Capacitor:
     :path: "../../../../node_modules/.pnpm/@capacitor+ios@6.1.2_@capacitor+core@6.1.2/node_modules/@capacitor/ios"
+  CapacitorCamera:
+    :path: "../../../../node_modules/.pnpm/@capacitor+camera@6.0.2_@capacitor+core@6.1.2/node_modules/@capacitor/camera"
   CapacitorCordova:
     :path: "../../../../node_modules/.pnpm/@capacitor+ios@6.1.2_@capacitor+core@6.1.2/node_modules/@capacitor/ios"
   CapacitorFirebaseMessaging:
@@ -114,6 +119,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
+  CapacitorCamera: ed022171dbf3853e68eec877b4d78995378af6b7
   CapacitorCordova: f48c89f96c319101cd2f0ce8a2b7449b5fb8b3dd
   CapacitorFirebaseMessaging: 116031aec3ed6d61a14f58cd6bd4b3a51e6a82c8
   CapacitorKeyboard: 2700f9b18687be021e28b5a09b59eb151a46d5e0
@@ -131,6 +137,6 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   Pushy: 21f159ce2693fe8fa518047bdf73ca14f02267a4
 
-PODFILE CHECKSUM: a6f3b92d73181dbf03c12e60bf1d4e15dc000b2d
+PODFILE CHECKSUM: 70d49dc056deaaf2306b6ff4f980f1619026019c
 
 COCOAPODS: 1.15.2
