@@ -3,7 +3,7 @@ import '@repo/ui/globals.css';
 import { GeistSans } from 'geist/font/sans';
 import { ThemeProvider } from 'next-themes';
 import ConvexClientProvider from './ConvexClientProvider';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Toaster } from '@repo/ui/components/ui/toaster';
 import { GlobalDrawer } from './_components/global-drawer';
 import { AuthCheck } from './_components/validate-auth';
@@ -21,6 +21,10 @@ import { Camera } from '@capacitor/camera';
  * @returns {JSX.Element} The rendered root layout
  */
 export default function RootLayout({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    Camera.requestPermissions();
+  }, []);
+
   return (
     <html
       suppressHydrationWarning
@@ -38,7 +42,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <ConvexClientProvider>
               <AuthCheck>
                 <PushNotificationInitializer />
-                Camera.requestPermissions();
                 {children}
                 <GlobalDrawer />
               </AuthCheck>
