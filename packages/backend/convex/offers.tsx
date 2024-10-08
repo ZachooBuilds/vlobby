@@ -1,5 +1,6 @@
-import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
+import { mutation, query } from './_generated/server';
+import { v } from 'convex/values';
+import { sendPushNotificationToCurrentOrg } from './pushNotifications';
 
 /**
  * @function upsertOfferCategory
@@ -12,20 +13,20 @@ import { v } from "convex/values";
  */
 export const upsertOfferCategory = mutation({
   args: {
-    id: v.optional(v.id("offerCategories")),
+    id: v.optional(v.id('offerCategories')),
     name: v.string(),
     description: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     if (args.id) {
       // Update existing offer category
       const existing = await ctx.db.get(args.id);
       if (!existing || existing.orgId !== orgId) {
-        throw new Error("Offer category not found or access denied");
+        throw new Error('Offer category not found or access denied');
       }
       await ctx.db.patch(args.id, {
         name: args.name,
@@ -34,7 +35,7 @@ export const upsertOfferCategory = mutation({
       return args.id;
     } else {
       // Insert new offer category
-      return await ctx.db.insert("offerCategories", {
+      return await ctx.db.insert('offerCategories', {
         name: args.name,
         description: args.description,
         orgId,
@@ -50,15 +51,15 @@ export const upsertOfferCategory = mutation({
  * @param {string} args.id - ID of the offer category to delete.
  */
 export const removeOfferCategory = mutation({
-  args: { id: v.id("offerCategories") },
+  args: { id: v.id('offerCategories') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const existing = await ctx.db.get(args.id);
     if (!existing || existing.orgId !== orgId) {
-      throw new Error("Offer category not found or access denied");
+      throw new Error('Offer category not found or access denied');
     }
     await ctx.db.delete(args.id);
   },
@@ -72,10 +73,10 @@ export const removeOfferCategory = mutation({
  * @returns {Promise<Object|null>} The offer category object or null if not found.
  */
 export const getOfferCategory = query({
-  args: { id: v.id("offerCategories") },
+  args: { id: v.id('offerCategories') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const offerCategory = await ctx.db.get(args.id);
@@ -94,12 +95,12 @@ export const getOfferCategory = query({
 export const getAllOfferCategories = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     return await ctx.db
-      .query("offerCategories")
-      .filter((q) => q.eq(q.field("orgId"), orgId))
+      .query('offerCategories')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
       .collect();
   },
 });
@@ -120,7 +121,7 @@ export const getAllOfferCategories = query({
  */
 export const upsertOffer = mutation({
   args: {
-    id: v.optional(v.id("offers")),
+    id: v.optional(v.id('offers')),
     title: v.string(),
     type: v.string(),
     offerDescription: v.string(),
@@ -129,14 +130,14 @@ export const upsertOffer = mutation({
       v.object({
         url: v.string(),
         storageId: v.string(),
-      }),
+      })
     ),
     startDate: v.string(),
     endDate: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const offerData = {
@@ -154,13 +155,18 @@ export const upsertOffer = mutation({
       // Update existing offer
       const existing = await ctx.db.get(args.id);
       if (!existing || existing.orgId !== orgId) {
-        throw new Error("Offer not found or access denied");
+        throw new Error('Offer not found or access denied');
       }
       await ctx.db.patch(args.id, offerData);
       return args.id;
     } else {
       // Insert new offer
-      return await ctx.db.insert("offers", offerData);
+      const offer = await ctx.db.insert('offers', offerData);
+      await sendPushNotificationToCurrentOrg(ctx, {
+        title: '🔔 New Offer',
+        body: args.title,
+      });
+      return offer;
     }
   },
 });
@@ -173,10 +179,10 @@ export const upsertOffer = mutation({
  * @returns {Promise<Object|null>} The offer object with additional update data or null if not found.
  */
 export const getOfferForUpdate = query({
-  args: { id: v.id("offers") },
+  args: { id: v.id('offers') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const offer = await ctx.db.get(args.id);
@@ -212,12 +218,12 @@ export const getOfferForUpdate = query({
 export const getAllOffersForUpdate = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const offers = await ctx.db
-      .query("offers")
-      .filter((q) => q.eq(q.field("orgId"), orgId))
+      .query('offers')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
       .collect();
 
     return Promise.all(
@@ -235,7 +241,7 @@ export const getAllOffersForUpdate = query({
         ],
         startDate: offer.startDate,
         endDate: offer.endDate,
-      })),
+      }))
     );
   },
 });
@@ -248,10 +254,10 @@ export const getAllOffersForUpdate = query({
  * @returns {Promise<Object|null>} The offer object or null if not found.
  */
 export const getOffer = query({
-  args: { id: v.id("offers") },
+  args: { id: v.id('offers') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const offer = await ctx.db.get(args.id);
@@ -270,19 +276,19 @@ export const getOffer = query({
 export const getAllOffers = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const offers = await ctx.db
-      .query("offers")
-      .filter((q) => q.eq(q.field("orgId"), orgId))
+      .query('offers')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
       .collect();
 
     return Promise.all(
       offers.map(async (offer) => ({
         ...offer,
         imageUrl: offer.image ? await ctx.storage.getUrl(offer.image) : null,
-      })),
+      }))
     );
   },
 });
@@ -294,15 +300,15 @@ export const getAllOffers = query({
  * @param {string} args.id - ID of the offer to delete.
  */
 export const deleteOffer = mutation({
-  args: { id: v.id("offers") },
+  args: { id: v.id('offers') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const existing = await ctx.db.get(args.id);
     if (!existing || existing.orgId !== orgId) {
-      throw new Error("Offer not found or access denied");
+      throw new Error('Offer not found or access denied');
     }
     await ctx.db.delete(args.id);
   },

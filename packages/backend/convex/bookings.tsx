@@ -2,6 +2,7 @@ import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
 import { getUserById } from './allUsers';
 import { getCurrentOccupant } from './occupants';
+import { sendPushNotificationToUser } from './pushNotifications';
 
 export const upsertBooking = mutation({
   args: {
@@ -115,6 +116,18 @@ export const setBookingStatus = mutation({
       entityId: args.bookingId,
       orgId,
     });
+
+    // Send notification if status is approved or rejected
+    if (args.status === 'approved' || args.status === 'rejected') {
+      const user = await ctx.db.get(booking.userId);
+      if (user) {
+        await sendPushNotificationToUser(ctx, {
+          userId: user.userId,
+          title: '🔔 Booking Status Update',
+          body: `Your booking has been ${args.status}.`,
+        });
+      }
+    }
 
     return args.bookingId;
   },

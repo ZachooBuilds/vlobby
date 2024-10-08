@@ -1,9 +1,11 @@
-import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
+import { mutation, query } from './_generated/server';
+import { v } from 'convex/values';
+import { sendPushNotificationToUser } from './pushNotifications';
+import { Id } from './_generated/dataModel';
 
 export const upsertParcel = mutation({
   args: {
-    _id: v.optional(v.id("parcels")),
+    _id: v.optional(v.id('parcels')),
     spaceId: v.string(),
     occupantId: v.string(),
     parcelTypeId: v.string(),
@@ -14,8 +16,10 @@ export const upsertParcel = mutation({
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
+
+    const occupant = await ctx.db.get(args.occupantId as Id<string>);
 
     let result: string;
 
@@ -23,7 +27,7 @@ export const upsertParcel = mutation({
       // Update existing parcel
       const existing = await ctx.db.get(args._id);
       if (!existing || existing.orgId !== orgId) {
-        throw new Error("Parcel not found or access denied");
+        throw new Error('Parcel not found or access denied');
       }
       await ctx.db.patch(args._id, {
         spaceId: args.spaceId,
@@ -37,16 +41,16 @@ export const upsertParcel = mutation({
       result = args._id;
 
       // Log the update as an activity
-      await ctx.db.insert("globalActivity", {
-        title: "Parcel Details Updated",
+      await ctx.db.insert('globalActivity', {
+        title: 'Parcel Details Updated',
         description: `Parcel details have been updated.`,
-        type: "Details Updated",
+        type: 'Details Updated',
         entityId: args._id,
         orgId,
       });
     } else {
       // Insert new parcel
-      result = await ctx.db.insert("parcels", {
+      result = await ctx.db.insert('parcels', {
         spaceId: args.spaceId,
         occupantId: args.occupantId,
         parcelTypeId: args.parcelTypeId,
@@ -58,12 +62,19 @@ export const upsertParcel = mutation({
       });
 
       // Log the new parcel as an activity
-      await ctx.db.insert("globalActivity", {
-        title: "Parcel Added",
+      await ctx.db.insert('globalActivity', {
+        title: 'Parcel Added',
         description: `Parcel was added to the system`,
-        type: "Parcel Added",
+        type: 'Parcel Added',
         entityId: result,
         orgId,
+      });
+
+      // Send notification
+      await sendPushNotificationToUser(ctx, {
+        userId: occupant.userId,
+        title: '📬 You have mail!',
+        body: `Hey ${occupant.firstName.charAt(0).toUpperCase() + occupant.firstName.slice(1)}, some mail has arrived for you.`,
       });
     }
 
@@ -72,23 +83,23 @@ export const upsertParcel = mutation({
 });
 
 export const remove = mutation({
-  args: { id: v.id("parcels") },
+  args: { id: v.id('parcels') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const existing = await ctx.db.get(args.id);
     if (!existing || existing.orgId !== orgId) {
-      throw new Error("Parcel not found or access denied");
+      throw new Error('Parcel not found or access denied');
     }
     await ctx.db.delete(args.id);
 
     // Log the removal as an activity
-    await ctx.db.insert("globalActivity", {
-      title: "Parcel Removed",
+    await ctx.db.insert('globalActivity', {
+      title: 'Parcel Removed',
       description: `Parcel was removed from the system`,
-      type: "Parcel Removed",
+      type: 'Parcel Removed',
       entityId: args.id,
       orgId,
     });
@@ -96,10 +107,10 @@ export const remove = mutation({
 });
 
 export const get = query({
-  args: { id: v.id("parcels") },
+  args: { id: v.id('parcels') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const parcel = await ctx.db.get(args.id);
@@ -113,12 +124,12 @@ export const get = query({
 export const getAll = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     return await ctx.db
-      .query("parcels")
-      .filter((q) => q.eq(q.field("orgId"), orgId))
+      .query('parcels')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
       .collect();
   },
 });
@@ -154,16 +165,18 @@ export const getAllForCurrentOccupant = query({
 
     console.log('Parcels found:', parcels.length);
 
-    const result = await Promise.all(parcels.map(async (parcel) => {
-      console.log('Processing parcel:', parcel._id);
-      let spaceName = "Unknown";
-      if (parcel.spaceId) {
-        const space = await ctx.db.get(parcel.spaceId);
-        spaceName = space?.spaceName || "Unknown";
-        console.log('Space name for parcel:', spaceName);
-      }
-      return { ...parcel, spaceName };
-    }));
+    const result = await Promise.all(
+      parcels.map(async (parcel) => {
+        console.log('Processing parcel:', parcel._id);
+        let spaceName = 'Unknown';
+        if (parcel.spaceId) {
+          const space = await ctx.db.get(parcel.spaceId);
+          spaceName = space?.spaceName || 'Unknown';
+          console.log('Space name for parcel:', spaceName);
+        }
+        return { ...parcel, spaceName };
+      })
+    );
 
     console.log('Returning result with', result.length, 'parcels');
     return result;
@@ -171,15 +184,15 @@ export const getAllForCurrentOccupant = query({
 });
 
 export const getParcelForEdit = query({
-  args: { id: v.id("parcels") },
+  args: { id: v.id('parcels') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const parcel = await ctx.db.get(args.id);
     if (!parcel || parcel.orgId !== orgId) {
-      throw new Error("Parcel not found or access denied");
+      throw new Error('Parcel not found or access denied');
     }
 
     return {
@@ -198,15 +211,15 @@ export const getParcelForEdit = query({
 export const getAllParcelsFormatted = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const parcels = await ctx.db
-      .query("parcels")
-      .filter((q) => q.eq(q.field("orgId"), orgId))
+      .query('parcels')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
       .collect();
 
-    console.log("parcels", parcels);
+    console.log('parcels', parcels);
 
     const formattedParcels = await Promise.all(
       parcels.map(async (parcel) => {
@@ -216,18 +229,18 @@ export const getAllParcelsFormatted = query({
         return {
           _id: parcel._id,
           spaceId: parcel.spaceId,
-          spaceName: space?.spaceName || "Unknown",
+          spaceName: space?.spaceName || 'Unknown',
           occupantId: parcel.occupantId,
           occupantName:
-            `${occupant?.firstName} ${occupant?.lastName}` || "Unknown",
+            `${occupant?.firstName} ${occupant?.lastName}` || 'Unknown',
           parcelTypeId: parcel.parcelTypeId,
-          parcelTypeName: parcel?.parcelTypeId || "Unknown",
+          parcelTypeName: parcel?.parcelTypeId || 'Unknown',
           numPackages: parcel.numPackages,
           description: parcel.description,
           location: parcel.location,
           isCollected: parcel.isCollected,
         };
-      }),
+      })
     );
 
     return formattedParcels;
@@ -235,24 +248,24 @@ export const getAllParcelsFormatted = query({
 });
 
 export const markAsCollected = mutation({
-  args: { id: v.id("parcels") },
+  args: { id: v.id('parcels') },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Unauthenticated");
+    if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
 
     const parcel = await ctx.db.get(args.id);
     if (!parcel || parcel.orgId !== orgId) {
-      throw new Error("Parcel not found or access denied");
+      throw new Error('Parcel not found or access denied');
     }
 
     await ctx.db.patch(args.id, { isCollected: true });
 
     // Log the collection as an activity
-    await ctx.db.insert("globalActivity", {
-      title: "Parcel Collected",
+    await ctx.db.insert('globalActivity', {
+      title: 'Parcel Collected',
       description: `A parcel has been marked as collected.`,
-      type: "Parcel Collection",
+      type: 'Parcel Collection',
       entityId: args.id,
       orgId,
     });
@@ -260,4 +273,3 @@ export const markAsCollected = mutation({
     return args.id;
   },
 });
-

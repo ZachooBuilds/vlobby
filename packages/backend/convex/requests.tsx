@@ -1,10 +1,12 @@
 import { action, internalQuery, mutation, query } from './_generated/server';
 import { v } from 'convex/values';
+import { sendPushNotificationToUser } from './pushNotifications';
 
 // Define the request schema for Convex
 const requestSchema = {
   requestType: v.string(),
   vehicleId: v.string(),
+  createdBy: v.optional(v.string()),
   notes: v.optional(v.string()),
   allocationId: v.optional(v.string()),
   evidenceImages: v.optional(
@@ -33,6 +35,7 @@ export const upsertRequest = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error('Unauthenticated');
     const orgId = identity.orgId;
+    const userId = identity.userId;
 
     let result: string;
 
@@ -50,6 +53,7 @@ export const upsertRequest = mutation({
         evidenceImages: args.evidenceImages,
         parkId: args.parkId,
         status: args.status,
+        createdBy: userId,
         assignedTo: args.assignedTo,
         assignedAt: args.assignedAt,
         completedAt: args.completedAt,
@@ -88,6 +92,7 @@ export const upsertRequest = mutation({
         parkId,
         allocationId,
         orgId,
+        createdBy: userId,
         status: 'received',
         createdAt: new Date().toISOString(),
       });
@@ -213,6 +218,13 @@ export const assignRequest = mutation({
       entityId: args.id,
       orgId,
     });
+
+    // Send notification
+    await sendPushNotificationToUser(ctx, {
+      userId: existing.createdBy,
+      title: '🚙 Request Status Update',
+      body: `Your request has been assigned to ${assignedToName}.`,
+    });
   },
 });
 
@@ -271,6 +283,13 @@ export const completeRequest = mutation({
         orgId,
       });
     }
+
+    // Send notification
+    await sendPushNotificationToUser(ctx, {
+      userId: existing.createdBy,
+      title: '✅ Request Status Update',
+      body: `Your request has been completed.`,
+    });
   },
 });
 

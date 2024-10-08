@@ -1,6 +1,7 @@
 import { Id } from './_generated/dataModel';
 import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
+import { sendPushNotificationToUser } from './pushNotifications';
 
 export const upsertWorkOrder = mutation({
   args: {
@@ -120,6 +121,29 @@ export const upsertWorkOrder = mutation({
         orgId,
       });
     }
+
+    // New code to send notifications for linked tickets
+    if (args.linkedTickets && args.linkedTickets.length > 0) {
+      const ticketIds = args.linkedTickets.map((ticket) => ticket.value);
+      const tickets = await ctx.db
+        .query('issues')
+        .filter((q) => q.eq(q.field('orgId'), orgId))
+        .collect();
+
+      const filteredTickets = tickets.filter((ticket) =>
+        ticketIds.includes(ticket._id)
+      );
+
+      const userIds = new Set(tickets.map((ticket) => ticket.userId));
+
+      for (const userId of userIds) {
+        await sendPushNotificationToUser(ctx, {
+          userId,
+          title: '🔨 Work Order Update',
+          body: `A work order related to your ticket has been ${args._id ? 'updated' : 'created'}.`,
+        });
+      }
+    }
   },
 });
 
@@ -162,6 +186,30 @@ export const updateWorkOrderStatus = mutation({
       entityId: args.workOrderId,
       orgId,
     });
+
+    if (workOrder.linkedTickets && workOrder.linkedTickets.length > 0) {
+      const ticketIds = workOrder.linkedTickets.map(
+        (ticket: { value: string }) => ticket.value
+      );
+      const tickets: { _id: string; userId: string }[] = await ctx.db
+        .query('issues')
+        .filter((q) => q.eq(q.field('orgId'), orgId))
+        .collect();
+
+      const filteredTickets = tickets.filter((ticket) =>
+        ticketIds.includes(ticket._id)
+      );
+
+      const userIds = new Set(tickets.map((ticket) => ticket.userId));
+
+      for (const userId of userIds) {
+        await sendPushNotificationToUser(ctx, {
+          userId,
+          title: '🔨 Work Order Update',
+          body: `A work order related to your ticket has been updated to status: ${args.status}.`,
+        });
+      }
+    }
   },
 });
 

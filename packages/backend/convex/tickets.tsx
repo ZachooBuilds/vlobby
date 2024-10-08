@@ -2,6 +2,7 @@ import { Id } from './_generated/dataModel';
 import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
 import { upsertGlobalActivity } from './activity'; // Add this import
+import { sendPushNotificationToUser } from './pushNotifications';
 
 export const upsertTicketType = mutation({
   args: {
@@ -356,10 +357,14 @@ export const updateIssueStatus = mutation({
       type: 'issue_status_updated',
       entityId: args.issueId,
     });
+
+    await sendPushNotificationToUser(ctx, {
+      userId: issue.userId,
+      title: '🔨 Issue Status Updated',
+      body: `Your issue status has been updated to: ${args.status}`,
+    });
   },
 });
-
-
 
 // Get all issues for the current occupant with detailed information
 export const getAllOccupantIssues = query({

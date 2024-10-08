@@ -25,6 +25,18 @@ export const sendFCMNotification = internalAction({
         title,
         body,
       },
+      android: {
+        notification: {
+          sound: 'default',
+        },
+      },
+      apns: {
+        payload: {
+          aps: {
+            sound: 'default',
+          },
+        },
+      },
       token,
     };
     console.log('Constructed message:', message);

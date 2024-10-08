@@ -3,6 +3,7 @@ import { Id } from './_generated/dataModel';
 import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
 import { getCurrentOccupant } from './occupants';
+import { sendPushNotificationToCurrentOrg } from './pushNotifications';
 
 export const upsertEvent = mutation({
   args: {
@@ -81,6 +82,11 @@ export const upsertEvent = mutation({
         type: 'Event Created',
         entityId: result,
         orgId,
+      });
+
+      await sendPushNotificationToCurrentOrg(ctx, {
+        title: '📆 New Event',
+        body: args.title,
       });
     }
 
