@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useRef } from "react";
-import { motion } from "framer-motion";
-import { useDropzone } from "react-dropzone";
-import { cn } from "@repo/ui/lib/utils";
-import { UploadCloudIcon } from "lucide-react";
+import React, { useRef } from 'react';
+import { motion } from 'framer-motion';
+import { useDropzone } from 'react-dropzone';
+import { cn } from '@repo/ui/lib/utils';
+import { UploadCloudIcon } from 'lucide-react';
 import { Camera, CameraResultType } from '@capacitor/camera';
 
 const mainVariant = {
@@ -40,27 +40,12 @@ export const FileUploadForm = ({
   const handleFileChange = (newFiles: File[]) => {
     onChange(newFiles);
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     }
   };
 
-  const handleClick = async () => {
-    try {
-      const image = await Camera.getPhoto({
-        quality: 90,
-        allowEditing: false,
-        resultType: CameraResultType.Uri
-      });
-      
-      if (image.webPath) {
-        const response = await fetch(image.webPath);
-        const blob = await response.blob();
-        const file = new File([blob], "camera_image.jpg", { type: "image/jpeg" });
-        handleFileChange([file]);
-      }
-    } catch (error) {
-      console.error('Error taking photo:', error);
-    }
+  const handleClick = () => {
+    fileInputRef.current?.click();
   };
 
   const { getRootProps, isDragActive } = useDropzone({
@@ -71,8 +56,8 @@ export const FileUploadForm = ({
       console.log(error);
     },
     accept: {
-      "image/*": [],
-      "application/pdf": [".pdf"],
+      'image/*': [],
+      'application/pdf': ['.pdf'],
     }, // Accept only images and PDFs
   });
 
@@ -103,13 +88,13 @@ export const FileUploadForm = ({
               layoutId="file-upload"
               variants={mainVariant}
               transition={{
-                type: "spring",
+                type: 'spring',
                 stiffness: 300,
                 damping: 20,
               }}
               className={cn(
-                "relative z-40 mx-auto mt-4 flex h-32 w-full max-w-[8rem] items-center justify-center rounded-md bg-muted group-hover/file:shadow-2xl ",
-                "shadow-[0px_10px_50px_rgba(0,0,0,0.1)]",
+                'relative z-40 mx-auto mt-4 flex h-32 w-full max-w-[8rem] items-center justify-center rounded-md bg-muted group-hover/file:shadow-2xl ',
+                'shadow-[0px_10px_50px_rgba(0,0,0,0.1)]'
               )}
             >
               {isDragActive ? (
@@ -150,12 +135,12 @@ export function GridPattern() {
               key={`${col}-${row}`}
               className={`flex h-10 w-10 flex-shrink-0 rounded-[2px] ${
                 index % 2 === 0
-                  ? "bg-background"
-                  : "bg-background shadow-[0px_0px_1px_3px_theme(colors.background/30%)_inset] dark:shadow-[0px_0px_1px_3px_theme(colors.background/30%)_inset]"
+                  ? 'bg-background'
+                  : 'bg-background shadow-[0px_0px_1px_3px_theme(colors.background/30%)_inset] dark:shadow-[0px_0px_1px_3px_theme(colors.background/30%)_inset]'
               }`}
             />
           );
-        }),
+        })
       )}
     </div>
   );
