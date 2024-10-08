@@ -37,7 +37,7 @@ workflows:
         script: | 
           #!/bin/sh
           cd $CM_BUILD_DIR/apps/vlobby-app/ios/App
-          NEW_BUILD_NUMBER="1.0.9"
+          NEW_BUILD_NUMBER="1.1.0"
           echo "Setting build number to: $NEW_BUILD_NUMBER"
           agvtool new-version -all $NEW_BUILD_NUMBER
           
