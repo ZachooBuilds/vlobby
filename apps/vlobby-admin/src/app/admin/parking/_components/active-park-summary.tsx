@@ -1,26 +1,34 @@
-
-import { Badge } from "@tremor/react";
-import { ParkingSpot } from "../_forms/parking-validation";
-import { useQuery } from "convex/react";
-import useModalStore from "../../../lib/global-state/modal-state";
-import { api } from "@repo/backend/convex/_generated/api";
-import { Id } from "@repo/backend/convex/_generated/dataModel";
-import { ParkingSpotDetails } from "../../../lib/app-data/app-types";
-import { Card, CardContent } from "@repo/ui/components/ui/card";
-import { Button } from "@repo/ui/components/ui/button";
+import { Badge } from '@tremor/react';
+import { ParkingSpot } from '../_forms/parking-validation';
+import { useQuery } from 'convex/react';
+import useModalStore from '../../../lib/global-state/modal-state';
+import { api } from '@repo/backend/convex/_generated/api';
+import { Id } from '@repo/backend/convex/_generated/dataModel';
+import { ParkingSpotDetails } from '../../../lib/app-data/app-types';
+import { Card, CardContent } from '@repo/ui/components/ui/card';
+import { Button } from '@repo/ui/components/ui/button';
+import { useState } from 'react';
 
 interface ActiveParkSummaryProps {
   parkingSpot: ParkingSpot;
+  onMoveVehicle: (parkingLogId: Id<'parkingLogs'>) => void;
 }
-const ActiveParkSummary = ({ parkingSpot }: ActiveParkSummaryProps) => {
-  const openModal = useModalStore((state) => state.openModal);
+
+const ActiveParkSummary = ({
+  parkingSpot,
+  onMoveVehicle,
+}: ActiveParkSummaryProps) => {
+  const closeModal = useModalStore((state) => state.closeModal);
 
   const handleMoveVehicle = () => {
-    // Implement move vehicle functionality
+    if (parkInfo.activeParkingLog) {
+      onMoveVehicle(parkInfo.activeParkingLog._id as Id<'parkingLogs'>);
+    }
+    closeModal();
   };
 
   const parkInfo = useQuery(api.parking.getParkingSpotById, {
-    id: parkingSpot._id! as Id<"parkingSpots">,
+    id: parkingSpot._id! as Id<'parkingSpots'>,
   }) as ParkingSpotDetails;
 
   if (!parkInfo) return null;
@@ -38,7 +46,7 @@ const ActiveParkSummary = ({ parkingSpot }: ActiveParkSummaryProps) => {
         <div className="flex flex-col gap-2">
           <div className="flex flex-row justify-between">
             <span className="font-medium">Status:</span>
-            <span>{parkInfo.activeParkingLog ? "Occupied" : "Available"}</span>
+            <span>{parkInfo.activeParkingLog ? 'Occupied' : 'Available'}</span>
           </div>
           {parkInfo.activeParkingLog && (
             <>

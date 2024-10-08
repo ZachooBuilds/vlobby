@@ -1,13 +1,23 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { TrendingUp } from "lucide-react";
-import { Label, Pie, PieChart } from "recharts";
-import { colorsList } from "../../../lib/app-data/static-data";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@repo/ui/components/ui/chart";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
-
-
+import * as React from 'react';
+import { TrendingUp } from 'lucide-react';
+import { Label, Pie, PieChart } from 'recharts';
+import { colorsList } from '../../../lib/app-data/static-data';
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@repo/ui/components/ui/chart';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@repo/ui/components/ui/card';
 
 export interface PieChartData {
   key: string;
@@ -25,14 +35,14 @@ interface PieChartProps {
 }
 
 const getColorForIndex = (index: number) => {
-  return colorsList[index % colorsList.length]?.hex ?? "#000000";
+  return colorsList[index % colorsList.length]?.hex ?? '#000000';
 };
 
 export function CustomPieChart({
   data,
   title,
   description,
-  totalLabel = "Total",
+  totalLabel = 'Total',
   trendPercentage,
   trendDescription,
 }: PieChartProps) {
@@ -45,7 +55,7 @@ export function CustomPieChart({
     data.map((item, index) => [
       item.key,
       { label: item.label, color: getColorForIndex(index) },
-    ]),
+    ])
   );
 
   const total = React.useMemo(() => {
@@ -53,7 +63,7 @@ export function CustomPieChart({
   }, [chartData]);
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col w-full">
       <CardHeader className="items-start pb-0">
         <CardTitle className="text-lg font-medium text-foreground">
           {title}
@@ -83,7 +93,7 @@ export function CustomPieChart({
             >
               <Label
                 content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                  if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
                     return (
                       <text
                         x={viewBox.cx}
@@ -118,10 +128,10 @@ export function CustomPieChart({
         <CardFooter className="flex-col gap-2 text-sm">
           {trendPercentage !== undefined && (
             <div className="flex items-center gap-2 font-medium leading-none">
-              Trending {trendPercentage >= 0 ? "up" : "down"} by{" "}
-              {Math.abs(trendPercentage)}% this month{" "}
+              Trending {trendPercentage >= 0 ? 'up' : 'down'} by{' '}
+              {Math.abs(trendPercentage)}% this month{' '}
               <TrendingUp
-                className={`h-4 w-4 ${trendPercentage >= 0 ? "text-green-500" : "text-red-500"}`}
+                className={`h-4 w-4 ${trendPercentage >= 0 ? 'text-green-500' : 'text-red-500'}`}
               />
             </div>
           )}

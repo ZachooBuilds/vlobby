@@ -1,8 +1,8 @@
 'use client';
 
 /**
- * @file DynamicCarParkMap Component
- * @description This component provides an interactive car park map for parking management.
+ * @file FloorPlanMap Component
+ * @description This component provides an interactive floor plan map for parking management.
  * It uses react-leaflet for map rendering and Convex for data management.
  */
 
@@ -12,6 +12,7 @@ import {
   ImageOverlay,
   useMapEvents,
   CircleMarker,
+  useMap,
 } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -52,6 +53,10 @@ const imageBounds: [L.LatLngTuple, L.LatLngTuple] = [
 /**
  * @component LevelSelection
  * @description Component for level and location selection
+ * @param {Object} props - Component props
+ * @param {boolean} props.isEditing - Flag indicating if edit mode is active
+ * @param {function} props.onEditToggle - Function to toggle edit mode
+ * @param {function} props.onLevelChange - Function to handle level change
  */
 function LevelSelection({
   isEditing,
@@ -171,23 +176,22 @@ function LevelSelection({
 /**
  * @component ParkingSpots
  * @description Component for adding and managing parking spot markers on the map
+ * @param {Object} props - Component props
+ * @param {boolean} props.isEditing - Flag indicating if edit mode is active
+ * @param {Id<"parkingLevels">} props.levelId - ID of the selected parking level
  */
 function ParkingSpots({
   isEditing,
-  isSelecting,
-  selectedSpotId,
   levelId,
-  isMoving,
+  isSelecting,
   onSpotSelect,
   activeParkingLogs,
 }: {
   isEditing: boolean;
-  isMoving: boolean;
   levelId: Id<'parkingLevels'>;
-  onSpotSelect: (spot: ParkingSpot) => void;
-  activeParkingLogs: ParkingLog[];
-  selectedSpotId: string | null;
   isSelecting: boolean;
+  onSpotSelect?: (spotId: string | null) => void;
+  activeParkingLogs: ParkingLog[];
 }) {
   const openModal = useModalStore((state) => state.openModal);
   const upsertParkingSpotMutation = useMutation(api.parking.upsertParkingSpot);
@@ -195,11 +199,16 @@ function ParkingSpots({
     (useQuery(api.parking.getParkingSpotsByLevel, {
       levelId,
     }) as ParkingSpot[]) ?? [];
-  // const [selectedSpotId, setSelectedSpotId] = useState<string | null>(null);
+  const [selectedSpotId, setSelectedSpotId] = useState<string | null>(null);
   const markerRefs = useRef<Record<string, L.CircleMarker>>({});
+  const closeModal = useModalStore((state) => state.closeModal);
+  const [isMovingVehicle, setIsMovingVehicle] = useState(false);
+  const [movingParkingLogId, setMovingParkingLogId] =
+    useState<Id<'parkingLogs'> | null>(null);
 
-  const isSpotOccupied = (spotId: string) =>
-    activeParkingLogs.some((log) => log.parkId === spotId);
+  const isSpotOccupied = (spotId: string) => {
+    return activeParkingLogs.some((log) => log.parkId === spotId);
+  };
 
   const getMarkerColor = (spotId: string) => {
     if (spotId === selectedSpotId) return 'green';
@@ -215,13 +224,92 @@ function ParkingSpots({
     });
   }, [selectedSpotId, activeParkingLogs]);
 
+  const handleMarkerClick = (spot: ParkingSpot) => {
+    const isOccupied = isSpotOccupied(spot._id!);
+
+    if (isEditing) {
+      // In edit mode, allow selection of any spot
+      openModal(
+        'Edit Point',
+        'Update or delete the point',
+        <ParkingSpotForm
+          selectedSpot={spot}
+          levelId={levelId}
+          onSubmit={(values) =>
+            handleUpsertMarker(values, L.latLng(spot.x, spot.y))
+          }
+        />
+      );
+    } else if (isSelecting && !isOccupied) {
+      // Allow selection of unoccupied spots for both normal selection and moving
+      const newSelectedId = spot._id === selectedSpotId ? null : spot._id!;
+      setSelectedSpotId(newSelectedId);
+      if (onSpotSelect) {
+        onSpotSelect(newSelectedId);
+      }
+    } else if (!isSelecting && isOccupied) {
+      openModal(
+        'Parking Spot Details',
+        `Viewing info for: ${spot.name}`,
+        <ActiveParkSummary
+          parkingSpot={spot}
+          onMoveVehicle={(parkingLogId) => {
+            closeModal();
+            if (onSpotSelect) {
+              onSpotSelect(null); // Deselect current spot
+            }
+            setIsMovingVehicle(true);
+            setMovingParkingLogId(parkingLogId);
+          }}
+        />
+      );
+    }
+  };
+
+  // Handle map click events
+  useMapEvents({
+    click(e) {
+      if (
+        isEditing &&
+        L.latLngBounds(imageBounds[0], imageBounds[1]).contains(e.latlng)
+      ) {
+        openModal(
+          'Add New Point',
+          'Enter a name for the new point',
+          <ParkingSpotForm
+            levelId={levelId}
+            onSubmit={(values) => handleUpsertMarker(values, e.latlng)}
+          />
+        );
+      }
+    },
+  });
+
+  /**
+   * @function handleUpsertMarker
+   * @description Handles adding or updating a parking spot marker
+   * @param {Object} values - Form values for the parking spot
+   * @param {L.LatLng} position - Position of the marker on the map
+   */
+  const handleUpsertMarker = async (
+    values: { name: string; _id?: string },
+    position: L.LatLng
+  ) => {
+    try {
+      await upsertParkingSpotMutation({
+        _id: values._id as Id<'parkingSpots'>,
+        name: values.name,
+        levelId,
+        x: position.lat,
+        y: position.lng,
+      });
+    } catch (error) {
+      console.error('Error saving parking spot:', error);
+    }
+  };
+
   return (
     <>
-      {isMoving && (
-        <div className="absolute top-4 right-4 z-20">
-          <Badge variant="secondary">Moving Vehicle</Badge>
-        </div>
-      )}
       {parkingSpots.map((spot) => (
         <CircleMarker
           key={spot._id}
@@ -233,7 +321,7 @@ function ParkingSpots({
           eventHandlers={{
             click: (e) => {
               L.DomEvent.stopPropagation(e);
-              onSpotSelect(spot);
+              handleMarkerClick(spot);
             },
           }}
           ref={(ref) => {
@@ -248,8 +336,9 @@ function ParkingSpots({
 }
 
 /**
- * @component CarParkMap
- * @description Main component for the car park map
+ * @component FloorPlanMap
+ * @description Main component for the floor plan map
+ * @returns {JSX.Element} The rendered FloorPlanMap component
  */
 interface CarParkMapProps {
   onSpotSelect?: (spotId: string | null) => void;
@@ -261,20 +350,11 @@ export default function CarParkMap({
   isSelecting = false,
 }: CarParkMapProps) {
   const [isEditing, setIsEditing] = useState(false);
+
   const [selectedLevelId, setSelectedLevelId] =
     useState<Id<'parkingLevels'> | null>(null);
-  const [isMoving, setIsMoving] = useState(false);
-  const [selectedLog, setSelectedLog] = useState<Id<'parkingLogs'> | null>(
-    null
-  );
-  const [selectedSpotId, setSelectedSpotId] = useState<string | null>(null);
-
-  const updateParkingLog = useMutation(api.requests.moveParkingLog);
 
   const closeModal = useModalStore((state) => state.closeModal);
-  const openModal = useModalStore((state) => state.openModal);
-
-  const upsertParkingSpotMutation = useMutation(api.parking.upsertParkingSpot);
 
   const levelData = useQuery(
     api.parking.getParkingLevel,
@@ -285,6 +365,62 @@ export default function CarParkMap({
     api.requests.getActiveParkingLogs,
     {}
   ) as ParkingLog[];
+
+  const [isMovingVehicle, setIsMovingVehicle] = useState(false);
+  
+  const [movingParkingLogId, setMovingParkingLogId] =
+    useState<Id<'parkingLogs'> | null>(null);
+
+  const moveParkingLogMutation = useMutation(api.requests.moveParkingLog);
+
+  const handleMoveVehicle = useCallback(
+    (parkingLogId: Id<'parkingLogs'>) => {
+      console.log('handleMoveVehicle called with parkingLogId:', parkingLogId);
+      setIsMovingVehicle(true);
+      setMovingParkingLogId(parkingLogId);
+      closeModal();
+      console.log('isMovingVehicle set to true, movingParkingLogId set to:', parkingLogId);
+    },
+    [closeModal]
+  );
+
+  const handleSpotSelect = useCallback(
+    (spotId: string | null) => {
+      console.log('handleSpotSelect called with spotId:', spotId);
+      console.log('Current state - isMovingVehicle:', isMovingVehicle, 'movingParkingLogId:', movingParkingLogId);
+      if (isMovingVehicle && spotId && movingParkingLogId) {
+        console.log('Attempting to move vehicle to new spot');
+        // Use the moveParkingLog mutation instead of updateParkingLog
+        moveParkingLogMutation({
+          parkingLogId: movingParkingLogId,
+          newParkId: spotId as Id<'parkingSpots'>,
+        })
+          .then(() => {
+            console.log('Vehicle successfully moved to new spot');
+            toast({
+              title: 'Vehicle Moved',
+              description:
+                'The vehicle has been successfully moved to the new spot.',
+            });
+            setIsMovingVehicle(false);
+            setMovingParkingLogId(null);
+            console.log('isMovingVehicle and movingParkingLogId reset');
+          })
+          .catch((error) => {
+            console.error('Error moving vehicle:', error);
+            toast({
+              title: 'Error',
+              description: 'Failed to move the vehicle. Please try again.',
+              variant: 'destructive',
+            });
+          });
+      } else if (onSpotSelect) {
+        console.log('Calling onSpotSelect with spotId:', spotId);
+        onSpotSelect(spotId);
+      }
+    },
+    [isMovingVehicle, movingParkingLogId, moveParkingLogMutation, onSpotSelect]
+  );
 
   // Apply custom styles to Leaflet container and tiles
   useEffect(() => {
@@ -303,76 +439,6 @@ export default function CarParkMap({
       document.head.removeChild(style);
     };
   }, []);
-
-  const handleUpsertMarker = async (
-    values: { name: string; _id?: string },
-    position: L.LatLng
-  ) => {
-    try {
-      await upsertParkingSpotMutation({
-        _id: values._id as Id<'parkingSpots'>,
-        name: values.name,
-        levelId: selectedLevelId! as Id<'parkingLevels'>,
-        x: position.lat,
-        y: position.lng,
-      });
-    } catch (error) {
-      console.error('Error saving parking spot:', error);
-    }
-  };
-
-  const isSpotOccupied = (spotId: string) =>
-    activeParkingLogs.some((log) => log.parkId === spotId);
-
-  const handleSpotSelect = (spot: ParkingSpot) => {
-    if (isEditing) {
-      openModal(
-        'Edit Point',
-        'Update or delete the point',
-        <ParkingSpotForm
-          selectedSpot={spot}
-          levelId={selectedLevelId! as Id<'parkingLevels'>}
-          onSubmit={(values) =>
-            handleUpsertMarker(values, L.latLng(spot.x, spot.y))
-          }
-        />
-      );
-    }
-
-    // If we are in selecting mode and the spot is not occupied
-    else if (isSelecting && !isSpotOccupied(spot._id!)) {
-      onSpotSelect!(spot._id!);
-      // Add this line to update the selected spot visually
-      setSelectedSpotId(spot._id!);
-    }
-
-    // Else if we are in moving mode and need to select new slot
-    else if (isMoving && !isSpotOccupied(spot._id!)) {
-      const newSelectedId = spot._id;
-      updateParkingLog({
-        parkingLogId: selectedLog!,
-        newParkId: newSelectedId as Id<'parkingSpots'>,
-      });
-      setIsMoving(false);
-      setSelectedLog(null);
-    }
-
-    // Else if we are not in edit mode and we select and active park show the vehicle details
-    else if (!isSelecting && isSpotOccupied(spot._id!)) {
-      openModal(
-        'Parking Spot Details',
-        `Viewing info for: ${spot.name}`,
-        <ActiveParkSummary
-          parkingSpot={spot}
-          onMoveVehicle={(parkingLogId) => {
-            setIsMoving(true);
-            setSelectedLog(parkingLogId);
-          }}
-        />
-      );
-    }
-  };
-
   return (
     <div className="flex h-full flex-col">
       {/* Level selection and edit toggle */}
@@ -412,11 +478,9 @@ export default function CarParkMap({
               bounds={imageBounds}
             />
             <ParkingSpots
-              selectedSpotId={selectedSpotId}
-              isSelecting={isSelecting}
               isEditing={isEditing}
-              isMoving={isMoving}
               levelId={selectedLevelId}
+              isSelecting={isSelecting || isMovingVehicle}
               onSpotSelect={handleSpotSelect}
               activeParkingLogs={activeParkingLogs}
             />
@@ -429,6 +493,12 @@ export default function CarParkMap({
           </div>
         )}
       </div>
+
+      {isMovingVehicle && (
+        <div className="absolute top-4 right-4 z-20">
+          <Badge variant="secondary">Moving Vehicle</Badge>
+        </div>
+      )}
     </div>
   );
 }

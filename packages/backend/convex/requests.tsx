@@ -1,6 +1,7 @@
 import { action, internalQuery, mutation, query } from './_generated/server';
 import { v } from 'convex/values';
 import { sendPushNotificationToUser } from './pushNotifications';
+import { Id } from './_generated/dataModel';
 
 // Define the request schema for Convex
 const requestSchema = {
@@ -18,6 +19,7 @@ const requestSchema = {
     )
   ),
   parkId: v.optional(v.string()),
+  parkTypeId: v.optional(v.string()),
   status: v.optional(v.string()),
   createdAt: v.optional(v.string()),
   assignedTo: v.optional(v.id('operators')),
@@ -37,7 +39,7 @@ export const upsertRequest = mutation({
     const orgId = identity.orgId;
     const userId = identity.userId;
 
-    let result: string;
+    let result: Id<'requests'>;
 
     if (args._id) {
       // Update existing request
@@ -87,11 +89,18 @@ export const upsertRequest = mutation({
         }
       }
 
+      const parkTypeId =
+        args.parkTypeId ||
+        (allocationId
+          ? (await ctx.db.get(allocationId as Id<'allocations'>))?.parkTypeId
+          : undefined);
+
       result = await ctx.db.insert('requests', {
         ...args,
         parkId,
         allocationId,
         orgId,
+        parkTypeId,
         createdBy: userId,
         status: 'received',
         createdAt: new Date().toISOString(),
@@ -162,17 +171,170 @@ export const getRequestsForCards = query({
   },
 });
 
+export const getOccupancy = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    // Get all userSpaces for the organization
+    const userSpaces = await ctx.db
+      .query('userSpaces')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .collect();
+
+    // Extract unique space IDs
+    const uniqueSpaceIds = new Set(
+      userSpaces.map((userSpace) => userSpace.spaceId)
+    );
+
+    // Get all spaces for the organization
+    const spaces = await ctx.db
+      .query('spaces')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .collect();
+
+    // Calculate occupancy
+    let occupiedCount = 0;
+    let unoccupiedCount = 0;
+
+    spaces.forEach((space) => {
+      if (uniqueSpaceIds.has(space._id)) {
+        occupiedCount++;
+      } else {
+        unoccupiedCount++;
+      }
+    });
+
+    return [
+      { value: occupiedCount, label: 'Occupied', key: 'occupied' },
+      { value: unoccupiedCount, label: 'Un-Occupied', key: 'unoccupied' },
+    ];
+  },
+});
+
+export const getActiveParkTypeSummary = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    // Get all active parking logs grouped by parkTypeId
+    const activeParkingLogs = await ctx.db
+      .query('parkingLogs')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .filter((q) => q.neq(q.field('status'), 'completed'))
+      .collect();
+
+    // Group parking logs by parkTypeId
+    const groupedLogs = activeParkingLogs.reduce((acc, log) => {
+      const parkTypeId = log.parkTypeId;
+      if (!acc[parkTypeId]) {
+        acc[parkTypeId] = 0;
+      }
+      acc[parkTypeId]++;
+      return acc;
+    }, {});
+
+    // Get park type names
+    const parkTypeIds = Object.keys(groupedLogs);
+    const parkTypes = await Promise.all(
+      parkTypeIds.map((id) => ctx.db.get(id as Id<'parkTypes'>))
+    );
+
+    // Create final result
+    const result = parkTypes.map((parkType, index) => {
+      const parkTypeId = parkTypeIds[index];
+      if (!parkTypeId) {
+        return null; // or handle this case as appropriate for your use case
+      }
+      return {
+        value: groupedLogs[parkTypeId] || 0,
+        label: parkType?.name || 'Unknown',
+        key: parkTypeId,
+      };
+    }).filter((item): item is NonNullable<typeof item> => item !== null);
+
+    return result;
+  },
+});
+
+export const getCurrentlyParkedCars = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    // Query active parking requests
+    const activeParks = await ctx.db
+      .query('parkingLogs')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .filter((q) => q.eq(q.field('status'), 'active'))
+      .collect();
+
+    return activeParks.length;
+  },
+});
+
+export const getAverageDailyServiceTime = query({
+  args: {
+    startDate: v.string(),
+    endDate: v.string(),
+    requestType: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    let requestsQuery = ctx.db
+      .query('requests')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .filter((q) => q.eq(q.field('status'), 'completed'))
+      .filter((q) => q.gte(q.field('completedAt'), args.startDate))
+      .filter((q) => q.lt(q.field('completedAt'), args.endDate));
+
+    if (args.requestType) {
+      requestsQuery = requestsQuery.filter((q) =>
+        q.eq(q.field('requestType'), args.requestType)
+      );
+    }
+
+    const completedRequests = await requestsQuery.collect();
+
+    if (completedRequests.length === 0) {
+      return '0:00';
+    }
+
+    let totalServiceTimeMs = 0;
+    for (const request of completedRequests) {
+      const serviceTime = calculateServiceTime(
+        request.createdAt,
+        request.completedAt
+      );
+      if (serviceTime !== 'In progress') {
+        totalServiceTimeMs += serviceTime;
+      }
+    }
+
+    const averageServiceTimeMs = totalServiceTimeMs / completedRequests.length;
+    const minutes = Math.floor(averageServiceTimeMs / 60000);
+    const seconds = Math.round((averageServiceTimeMs % 60000) / 1000);
+
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  },
+});
+
 // Helper function to calculate service time
 function calculateServiceTime(
   createdAt: string,
   completedAt: string | undefined
-): string {
+): number | 'In progress' {
   if (!completedAt) return 'In progress';
   const start = new Date(createdAt).getTime();
   const end = new Date(completedAt).getTime();
-  const diff = end - start;
-  const minutes = Math.floor(diff / 60000);
-  return `${minutes} minutes`;
+  return end - start; // Return difference in milliseconds
 }
 
 export const assignRequest = mutation({
@@ -225,6 +387,91 @@ export const assignRequest = mutation({
       title: '🚙 Request Status Update',
       body: `Your request has been assigned to ${assignedToName}.`,
     });
+  },
+});
+
+export const getTotalCompletedRequestsByOperator = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    // Get all completed requests for the organization
+    const completedRequests = await ctx.db
+      .query('requests')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .filter((q) => q.eq(q.field('status'), 'completed'))
+      .collect();
+
+    // Count requests for each operator
+    const operatorCounts: Record<string, number> = {};
+    for (const request of completedRequests) {
+      const assignedTo = request.assignedTo || 'unassigned';
+      operatorCounts[assignedTo] = (operatorCounts[assignedTo] || 0) + 1;
+    }
+
+    // Format the counts for return
+    const formattedCounts = await Promise.all(
+      Object.entries(operatorCounts).map(async ([operatorId, count]) => {
+        let label = 'Unassigned';
+        if (operatorId === 'system') {
+          label = 'System';
+        } else if (operatorId !== 'unassigned') {
+          const operator = await ctx.db.get(operatorId as Id<string>);
+          label = operator ? operator.name : 'Unknown Operator';
+        }
+
+        return {
+          key: operatorId,
+          value: count,
+          label: label,
+        };
+      })
+    );
+
+    return formattedCounts;
+  },
+});
+
+export const getTotalRequestsByType = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    // Get all requests for the organization
+    const requests = await ctx.db
+      .query('requests')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .collect();
+
+    // Count requests for each type
+    const requestCounts: Record<string, number> = {};
+    requests.forEach((request) => {
+      const requestType = request.requestType;
+      if (requestCounts[requestType]) {
+        requestCounts[requestType]++;
+      } else {
+        requestCounts[requestType] = 1;
+      }
+    });
+
+    // Format the counts for return
+    const formattedCounts = Object.entries(requestCounts).map(
+      ([type, count]) => ({
+        key: type,
+        value: count,
+        label: type.startsWith('dropoff:vehicle')
+          ? 'Dropoff'
+          : type.startsWith('pickup:vehicle')
+            ? 'Pickup'
+            : type.startsWith('pickup:item')
+              ? 'Item'
+              : type.charAt(0).toUpperCase() + type.slice(1).replace(':', ' '),
+      })
+    );
+
+    return formattedCounts;
   },
 });
 
@@ -290,6 +537,49 @@ export const completeRequest = mutation({
       title: '✅ Request Status Update',
       body: `Your request has been completed.`,
     });
+  },
+});
+
+export const moveParkingLog = mutation({
+  args: {
+    parkingLogId: v.id('parkingLogs'),
+    newParkId: v.id('parkingSpots'),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    const parkingLog = await ctx.db.get(args.parkingLogId);
+    if (!parkingLog || parkingLog.orgId !== orgId) {
+      throw new Error('Parking log not found or access denied');
+    }
+
+    const newParkingSpot = await ctx.db.get(args.newParkId);
+    if (!newParkingSpot || newParkingSpot.orgId !== orgId) {
+      throw new Error('New parking spot not found or access denied');
+    }
+
+    // Update the parking log with the new park ID
+    await ctx.db.patch(args.parkingLogId, {
+      parkId: args.newParkId,
+    });
+
+    // Log the move as an activity
+    await ctx.db.insert('globalActivity', {
+      title: 'Vehicle Moved',
+      description: `Vehicle was moved to a new parking spot`,
+      type: 'Vehicle Moved',
+      entityId: args.parkingLogId,
+      orgId,
+    });
+
+    // Optionally, you could send a notification here if needed
+    // await sendPushNotificationToUser(ctx, {
+    //   userId: parkingLog.createdBy,
+    //   title: '🚗 Vehicle Moved',
+    //   body: `Your vehicle has been moved to a new parking spot.`,
+    // });
   },
 });
 

@@ -1,20 +1,22 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
-import { dropoffSchema, DropoffRequest } from "./request-validation";
-import { useMutation, useQuery } from "convex/react";
+'use client';
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Check, ChevronsUpDown, Loader2 } from 'lucide-react';
+import { dropoffSchema, DropoffRequest } from './request-validation';
+import { useMutation, useQuery } from 'convex/react';
 
+import { ParkType } from './park-type-validation';
+import { Badge } from '@tremor/react';
 
-import { ParkType } from "./park-type-validation";
-import { Badge } from "@tremor/react";
-
-import CarParkMap from "../_components/parkingMapLoader";
+import CarParkMap from '../_components/parkingMapLoader';
 
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { api } from '@repo/backend/convex/_generated/api';
-import { AllocationDetails, ValueLabelPair } from '../../../lib/app-data/app-types';
+import {
+  AllocationDetails,
+  ValueLabelPair,
+} from '../../../lib/app-data/app-types';
 import { Id } from '@repo/backend/convex/_generated/dataModel';
 import {
   Form,
@@ -26,16 +28,28 @@ import {
   FormMessage,
 } from '@repo/ui/components/ui/form';
 import { Button } from '@repo/ui/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/ui/popover";
-import { cn } from "@repo/ui/lib/utils";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@repo/ui/components/ui/command";
-import { Card, CardContent } from "@repo/ui/components/ui/card";
-import { FileUploadWithPreview } from "../../_components/custom-form-fields/file-upload-form-field";
-
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@repo/ui/components/ui/popover';
+import { cn } from '@repo/ui/lib/utils';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@repo/ui/components/ui/command';
+import { Card, CardContent } from '@repo/ui/components/ui/card';
+import { FileUploadWithPreview } from '../../_components/custom-form-fields/file-upload-form-field';
+import useSheetStore from '../../../lib/global-state/sheet-state';
 
 export default function NewDropoffRequestForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { closeSheet } = useSheetStore();
 
   const upsertRequestMutation = useMutation(api.requests.upsertRequest);
 
@@ -46,82 +60,82 @@ export default function NewDropoffRequestForm() {
   const form = useForm<DropoffRequest>({
     resolver: zodResolver(dropoffSchema),
     defaultValues: {
-      requestType: "dropoff:vehicle",
-      vehicleId: "",
-      allocationId: "",
+      requestType: 'dropoff:vehicle',
+      vehicleId: '',
+      allocationId: '',
       evidenceImages: [],
-      parkId: "",
+      parkId: '',
     },
   });
 
-  const vehicleId = form.watch("vehicleId");
+  const vehicleId = form.watch('vehicleId');
   const getAllocations = useQuery(
     api.allocations.getAllocationsForVehicle,
-    vehicleId ? { vehicleId: vehicleId as Id<"vehicles"> } : "skip",
+    vehicleId ? { vehicleId: vehicleId as Id<'vehicles'> } : 'skip'
   ) as AllocationDetails[];
 
   const getParkTypes = useQuery(api.parkTypes.getAll) as ParkType[];
 
-  console.log("allocations:", getAllocations);
+  console.log('allocations:', getAllocations);
 
   // Debug statements for getting allocation data
   useEffect(() => {
-    console.log("Vehicle ID:", vehicleId);
-    console.log("Raw Allocations Data:", getAllocations);
+    console.log('Vehicle ID:', vehicleId);
+    console.log('Raw Allocations Data:', getAllocations);
   }, [vehicleId, getAllocations]);
 
   // Add this effect to handle the logic
   useEffect(() => {
-    const allocationId = form.watch("allocationId");
-    const isCasualParking = form.watch("isCasualParking");
+    const allocationId = form.watch('allocationId');
+    const isCasualParking = form.watch('isCasualParking');
 
     if (allocationId) {
-      form.setValue("isCasualParking", false);
+      form.setValue('isCasualParking', false);
     }
 
     if (isCasualParking) {
-      form.setValue("allocationId", "");
+      form.setValue('allocationId', '');
     }
-  }, [form.watch("allocationId"), form.watch("isCasualParking")]);
+  }, [form.watch('allocationId'), form.watch('isCasualParking')]);
 
   // const [selectedSpotId, setSelectedSpotId] = useState<string | null>(null);
 
   const onSubmit = async (data: DropoffRequest) => {
     setIsLoading(true);
-    console.log("Form Data:", data);
-
+    console.log('Form Data:', data);
     try {
       const result = await upsertRequestMutation({
-        _id: data._id as Id<"requests">,
-        requestType: "dropoff:vehicle",
+        _id: data._id as Id<'requests'>,
+        requestType: 'dropoff:vehicle',
         vehicleId: data.vehicleId,
         allocationId: data.allocationId,
         evidenceImages: data.evidenceImages,
         parkId: selectedSpotId!, // Use the selected spot ID
+        parkTypeId: data.parkTypeId,
       });
-      console.log("Mutation Result:", result);
-
+      console.log('Mutation Result:', result);
       setIsLoading(false);
       toast({
-        title: "Request Saved",
-        description: "The request has been successfully saved.",
+        title: 'Request Saved',
+        description: 'The request has been successfully saved.',
       });
       form.reset();
+      closeSheet();
     } catch (error) {
       setIsLoading(false);
       toast({
-        title: "Error",
-        description: "Failed to save the request. Please try again.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to save the request. Please try again.',
+        variant: 'destructive',
       });
-      console.error("Error saving request:", error);
+      console.error('Error saving request:', error);
     }
   };
   const [selectedSpotId, setSelectedSpotId] = useState<string | null>(null);
 
   function handleSpotSelect(spotId: string | null) {
     setSelectedSpotId(spotId);
-    form.setValue("parkId", spotId ?? "");
+    form.setValue('parkId', spotId ?? '');
   }
 
   return (
@@ -140,15 +154,15 @@ export default function NewDropoffRequestForm() {
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        "w-full justify-between",
-                        !field.value && "text-muted-foreground",
+                        'w-full justify-between',
+                        !field.value && 'text-muted-foreground'
                       )}
                     >
                       {field.value
                         ? getVehicles?.find(
-                            (vehicle) => vehicle.value === field.value,
+                            (vehicle) => vehicle.value === field.value
                           )?.label
-                        : "Select vehicle"}
+                        : 'Select vehicle'}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
@@ -164,17 +178,17 @@ export default function NewDropoffRequestForm() {
                             value={vehicle.label}
                             key={vehicle.value}
                             onSelect={() => {
-                              form.setValue("vehicleId", vehicle.value);
-                              console.log("Selected Vehicle:", vehicle);
+                              form.setValue('vehicleId', vehicle.value);
+                              console.log('Selected Vehicle:', vehicle);
                             }}
                             className="w-full"
                           >
                             <Check
                               className={cn(
-                                "mr-2 h-4 w-4",
+                                'mr-2 h-4 w-4',
                                 vehicle.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0",
+                                  ? 'opacity-100'
+                                  : 'opacity-0'
                               )}
                             />
                             {vehicle.label}
@@ -205,15 +219,15 @@ export default function NewDropoffRequestForm() {
                     <Card
                       key={allocation._id}
                       className={cn(
-                        "cursor-pointer hover:bg-accent",
+                        'cursor-pointer hover:bg-accent',
                         allocation._id === field.value
-                          ? "border-primary"
-                          : "border-border",
+                          ? 'border-primary'
+                          : 'border-border'
                       )}
                       onClick={() => {
-                        form.setValue("allocationId", allocation._id ?? "");
-                        form.setValue("isCasualParking", false);
-                        console.log("Selected Allocation:", allocation);
+                        form.setValue('allocationId', allocation._id ?? '');
+                        form.setValue('isCasualParking', false);
+                        console.log('Selected Allocation:', allocation);
                       }}
                     >
                       <CardContent className="p-4">
@@ -247,8 +261,8 @@ export default function NewDropoffRequestForm() {
                 <div className="grid grid-cols-2 gap-4">
                   <Card
                     className={cn(
-                      "cursor-pointer hover:bg-accent",
-                      !field.value ? "border-primary" : "border-border",
+                      'cursor-pointer hover:bg-accent',
+                      !field.value ? 'border-primary' : 'border-border'
                     )}
                     onClick={() => {
                       field.onChange(false);
@@ -264,12 +278,12 @@ export default function NewDropoffRequestForm() {
                   </Card>
                   <Card
                     className={cn(
-                      "cursor-pointer hover:bg-accent",
-                      field.value ? "border-primary" : "border-border",
+                      'cursor-pointer hover:bg-accent',
+                      field.value ? 'border-primary' : 'border-border'
                     )}
                     onClick={() => {
                       field.onChange(true);
-                      form.setValue("allocationId", undefined);
+                      form.setValue('allocationId', undefined);
                     }}
                   >
                     <CardContent className="p-4">
@@ -289,7 +303,7 @@ export default function NewDropoffRequestForm() {
           )}
         />
 
-        {form.watch("isCasualParking") && (
+        {form.watch('isCasualParking') && (
           <FormField
             control={form.control}
             name="parkTypeId"
@@ -302,14 +316,14 @@ export default function NewDropoffRequestForm() {
                       <Card
                         key={parkType._id}
                         className={cn(
-                          "cursor-pointer hover:bg-accent",
+                          'cursor-pointer hover:bg-accent',
                           parkType._id === field.value
-                            ? "border-primary"
-                            : "border-border",
+                            ? 'border-primary'
+                            : 'border-border'
                         )}
                         onClick={() => {
-                          form.setValue("parkTypeId", parkType._id ?? "");
-                          console.log("Selected Park Type:", parkType);
+                          form.setValue('parkTypeId', parkType._id ?? '');
+                          console.log('Selected Park Type:', parkType);
                         }}
                       >
                         <CardContent className="p-4">
@@ -329,11 +343,11 @@ export default function NewDropoffRequestForm() {
                                   </span>
                                   <span className="mx-1">:</span>
                                   <span>
-                                    ${condition.rate.toFixed(2)} every{" "}
+                                    ${condition.rate.toFixed(2)} every{' '}
                                     {condition.interval} minutes
                                   </span>
                                 </Badge>
-                              ),
+                              )
                             )}
                           </div>
                         </CardContent>
