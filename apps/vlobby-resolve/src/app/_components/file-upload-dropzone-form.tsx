@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useDropzone } from 'react-dropzone';
 import { cn } from '@repo/ui/lib/utils';
 import { UploadCloudIcon } from 'lucide-react';
-import { Camera, CameraResultType } from '@capacitor/camera';
+import MultiPhotoCapture from './multi-image-capture';
 
 const mainVariant = {
   initial: {
@@ -61,6 +61,10 @@ export const FileUploadForm = ({
     }, // Accept only images and PDFs
   });
 
+  const handleCapturePhotos = (capturedFiles: File[]) => {
+    onChange(capturedFiles);
+  };
+
   return (
     <div className="w-full" {...getRootProps()}>
       <motion.div
@@ -82,7 +86,7 @@ export const FileUploadForm = ({
         <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]">
           <GridPattern />
         </div>
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center space-y-4">
           <div className="relative mx-auto mt-10 w-full max-w-xl">
             <motion.div
               layoutId="file-upload"
@@ -118,6 +122,7 @@ export const FileUploadForm = ({
           </div>
         </div>
       </motion.div>
+      <MultiPhotoCapture onCapture={handleCapturePhotos} />
     </div>
   );
 };

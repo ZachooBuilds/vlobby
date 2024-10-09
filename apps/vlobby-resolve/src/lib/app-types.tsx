@@ -156,6 +156,27 @@ export type ParkingSpotDetails = {
   } | null;
 };
 
+export type ParkType = {
+  _id: string;
+  name: string;
+  description: string;
+  pricingConditions: PricingCondition[];
+}
+
+export type PricingCondition = {
+  _id: string;
+  startMinutes: number;
+  endMinutes: number | null;
+  interval: number;
+  rate: number;
+  isFinalCondition: boolean;
+}
+
+export type AllocationDetails = Allocation & {
+  parkTypeName: string;
+};
+
+
 export type ParkingLog = {
   _id: string;
   requestId: string;

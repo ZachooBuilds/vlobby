@@ -13,6 +13,8 @@ import {
   TabsTrigger,
   TabsContent,
 } from '@repo/ui/components/ui/tabs';
+import { FileUploadWithPreview } from '../../_components/file-upload-form-field';
+import NewDropoffRequestForm from './_forms/new-dropoff-request';
 
 export default function OptionsPage() {
   const router = useRouter();
@@ -22,7 +24,7 @@ export default function OptionsPage() {
     <div className="flex flex-col h-screen">
       <div className="flex-grow overflow-auto">
         <div className="flex flex-col gap-4 items-start justify-start pt-16 p-4 pb-[120px] w-full">
-          <Tabs defaultValue="search" className="w-full h-14">
+          <Tabs defaultValue="search" className="w-full">
             <TabsList className="grid w-full grid-cols-2 h-14">
               <TabsTrigger value="search" className="h-full">
                 Request Vehicle
@@ -34,8 +36,11 @@ export default function OptionsPage() {
             <TabsContent value="search">
               <VehicleSearch />
             </TabsContent>
-            <TabsContent value="dropoff">
+            <TabsContent value="dropoff" className="flex flex-col h-full">
               <DropoffSearch />
+              <div>
+                <NewDropoffRequestForm />
+              </div>
             </TabsContent>
           </Tabs>
         </div>
