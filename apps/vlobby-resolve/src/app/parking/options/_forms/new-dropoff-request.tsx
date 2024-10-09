@@ -37,6 +37,7 @@ import {
 import { Card, CardContent } from '@repo/ui/components/ui/card';
 import CarParkMap from '../../map/_components/parkingMapLoader';
 import { FileUploadWithPreview } from '../../../_components/file-upload-form-field';
+import MultiPhotoCapture from '../../../_components/multi-image-capture';
 
 export default function NewDropoffRequestForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -127,6 +128,12 @@ export default function NewDropoffRequestForm() {
     setSelectedSpotId(spotId);
     form.setValue('parkId', spotId ?? '');
   }
+
+  const handleCapturedPhotos = (capturedFiles: File[]) => {
+    const currentFiles = form.getValues('evidenceImages') || [];
+    const updatedFiles = [...currentFiles, ...capturedFiles];
+    // form.setValue('evidenceImages', updatedFiles);
+  };
 
   return (
     <Form {...form}>
@@ -372,13 +379,8 @@ export default function NewDropoffRequestForm() {
           )}
         />
 
-        <div className="flex w-full">
-          <FileUploadWithPreview
-            name="evidenceImages"
-            label="Evidence Images (Max 20)"
-            multiple={true}
-            maxFiles={20}
-          />
+        <div className="flex w-full flex-col space-y-4">
+          <MultiPhotoCapture onCapture={handleCapturedPhotos} />
         </div>
 
         <Button type="submit" disabled={isLoading}>
