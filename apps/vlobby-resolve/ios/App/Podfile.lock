@@ -3,6 +3,8 @@ PODS:
     - CapacitorCordova
   - CapacitorCamera (6.0.2):
     - Capacitor
+  - CapacitorCommunityCameraPreview (6.0.0):
+    - Capacitor
   - CapacitorCordova (6.1.2)
   - CapacitorDevice (6.0.1):
     - Capacitor
@@ -82,6 +84,7 @@ PODS:
 DEPENDENCIES:
   - "Capacitor (from `../../../../node_modules/.pnpm/@capacitor+ios@6.1.2_@capacitor+core@6.1.2/node_modules/@capacitor/ios`)"
   - "CapacitorCamera (from `../../../../node_modules/.pnpm/@capacitor+camera@6.0.2_@capacitor+core@6.1.2/node_modules/@capacitor/camera`)"
+  - "CapacitorCommunityCameraPreview (from `../../../../node_modules/.pnpm/@capacitor-community+camera-preview@6.0.0_@capacitor+core@6.1.2/node_modules/@capacitor-community/camera-preview`)"
   - "CapacitorCordova (from `../../../../node_modules/.pnpm/@capacitor+ios@6.1.2_@capacitor+core@6.1.2/node_modules/@capacitor/ios`)"
   - "CapacitorDevice (from `../../../../node_modules/.pnpm/@capacitor+device@6.0.1_@capacitor+core@6.1.2/node_modules/@capacitor/device`)"
   - "CapacitorFirebaseMessaging (from `../../../../node_modules/.pnpm/@capacitor-firebase+messaging@6.1.0_@capacitor+core@6.1.2_firebase@10.14.0/node_modules/@capacitor-firebase/messaging`)"
@@ -108,6 +111,8 @@ EXTERNAL SOURCES:
     :path: "../../../../node_modules/.pnpm/@capacitor+ios@6.1.2_@capacitor+core@6.1.2/node_modules/@capacitor/ios"
   CapacitorCamera:
     :path: "../../../../node_modules/.pnpm/@capacitor+camera@6.0.2_@capacitor+core@6.1.2/node_modules/@capacitor/camera"
+  CapacitorCommunityCameraPreview:
+    :path: "../../../../node_modules/.pnpm/@capacitor-community+camera-preview@6.0.0_@capacitor+core@6.1.2/node_modules/@capacitor-community/camera-preview"
   CapacitorCordova:
     :path: "../../../../node_modules/.pnpm/@capacitor+ios@6.1.2_@capacitor+core@6.1.2/node_modules/@capacitor/ios"
   CapacitorDevice:
@@ -124,6 +129,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
   CapacitorCamera: ed022171dbf3853e68eec877b4d78995378af6b7
+  CapacitorCommunityCameraPreview: 9319cde1da660b7643833dac20aaa85135bd1441
   CapacitorCordova: f48c89f96c319101cd2f0ce8a2b7449b5fb8b3dd
   CapacitorDevice: 7097a1deb4224b77fd13a6e60a355d0062a5d772
   CapacitorFirebaseMessaging: 116031aec3ed6d61a14f58cd6bd4b3a51e6a82c8
@@ -142,6 +148,6 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   Pushy: 21f159ce2693fe8fa518047bdf73ca14f02267a4
 
-PODFILE CHECKSUM: c3930cf39d3f476ec69550866c7785b56095ae04
+PODFILE CHECKSUM: 6c05be86e67d4a87b2d51302599e31537dd2c775
 
 COCOAPODS: 1.15.2

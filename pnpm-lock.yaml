@@ -569,6 +569,9 @@ importers:
 
   apps/vlobby-resolve:
     dependencies:
+      '@capacitor-community/camera-preview':
+        specifier: ^6.0.0
+        version: 6.0.0(@capacitor/core@6.1.2)
       '@capacitor-firebase/messaging':
         specifier: ^6.1.0
         version: 6.1.0(@capacitor/core@6.1.2)(firebase@10.14.0)
@@ -1168,6 +1171,11 @@ packages:
   '@babel/types@7.25.6':
     resolution: {integrity: sha512-/l42B1qxpG6RdfYf343Uw1vmDjeNhneUXtzhojE7pDgfpEypmRhI6j1kr17XCVv4Cgl9HdAiQY2x0GwKm7rWCw==}
     engines: {node: '>=6.9.0'}
+
+  '@capacitor-community/camera-preview@6.0.0':
+    resolution: {integrity: sha512-HfQ0umYZOJ/mR6Bk3ktlwD9yGud77hdtCZ2GAQqM7je6u5xKqmoRh6TXnzOx4fkmjzXvWf34Pz0ol8QCbR8B3g==}
+    peerDependencies:
+      '@capacitor/core': ^6.0.0
 
   '@capacitor-firebase/messaging@6.1.0':
     resolution: {integrity: sha512-Sne3WC1nmTt2FuxNfiVvBim+mYjaV47eYLzUmcVyEqGDz+m9NqC6mp+Q81B/X7p5LKiXSUv0A/lpkQVIYRmyAw==}
@@ -7005,6 +7013,10 @@ snapshots:
       '@babel/helper-string-parser': 7.24.8
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
+
+  '@capacitor-community/camera-preview@6.0.0(@capacitor/core@6.1.2)':
+    dependencies:
+      '@capacitor/core': 6.1.2
 
   '@capacitor-firebase/messaging@6.1.0(@capacitor/core@6.1.2)(firebase@10.14.0)':
     dependencies:
