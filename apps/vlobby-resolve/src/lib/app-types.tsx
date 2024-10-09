@@ -1,10 +1,21 @@
 "use client"
 import { Id } from '@repo/backend/convex/_generated/dataModel';
-import { BookingFormData } from '../app/facilities/_forms/booking-validation';
 
 export type ImageUrlAndId = {
   url: string;
   storageId: Id<'_storage'>;
+};
+
+export type RequestCardData = {
+  _id: string;
+  requestType: string;
+  status: string;
+  vehicleDetails: string;
+  parkName: string;
+  assignedToName: string;
+  assignedAt: string;
+  serviceTime: string;
+  createdAt: string;
 };
 
 export type VehicleRegistrationData = {
@@ -87,6 +98,75 @@ export type Building = {
     name: string;
   }>;
   description?: string;
+};
+
+export type Level = {
+  _id: Id<'levels'>;
+  name: string;
+  locationId: Id<'locations'>;
+  image: Array<{
+    url: string;
+    storageId: string;
+  }>;
+};
+
+export type ParkingSpot = {
+  _id: Id<'parkingSpots'>;
+  name: string;
+  levelId: Id<'levels'>;
+  x: number;
+  y: number;
+};
+
+export type ParkingSpotDetails = {
+  parkingSpot: {
+    _id: string;
+    _creationTime: number;
+    name: string;
+    levelId: string;
+    x: number;
+    y: number;
+    orgId: string;
+  };
+  activeParkingLog: {
+    _id: string;
+    _creationTime: number;
+    parkId: string;
+    vehicleId: string;
+    status: 'active';
+    startTime: number;
+    endTime?: number;
+    orgId: string;
+  } | null;
+  vehicle: {
+    _id: string;
+    _creationTime: number;
+    rego: string;
+    make: string;
+    model: string;
+    color: string;
+    spaceId?: string;
+    orgId: string;
+  } | null;
+  space: {
+    _id: string;
+    _creationTime: number;
+    spaceName: string;
+    orgId: string;
+  } | null;
+};
+
+export type ParkingLog = {
+  _id: string;
+  requestId: string;
+  vehicleId: string;
+  parkId: string;
+  parkTypeId: string;
+  allocationId: string;
+  sessionStart: string;
+  sessionEnd?: string;
+  status: 'active' | 'completed';
+  orgId: string;
 };
 
 export type Space = {
@@ -262,15 +342,6 @@ export type BookingType = {
   }>;
   requiresApproval: boolean;
   autoProvisionAccess: boolean;
-};
-
-export type BookingFormDataWithNames = BookingFormData & {
-  startTime: Date;
-  status?: 'pending' | 'approved' | 'rejected';
-  endTime: Date;
-  bookingTypeName: string;
-  userName: string;
-  facilityName: string;
 };
 
 export type WorkOrderSummaryCardData = {

@@ -17,7 +17,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      router.push('/home');
+      router.push('/maintenance');
     }
   }, [isLoaded, isSignedIn, router]);
 

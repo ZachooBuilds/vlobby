@@ -1,4 +1,5 @@
-"use client"
+'use client';
+import { CarIconPath, HammerIconPath } from '../../public/svg/icons';
 import { ValueLabelPair } from './app-types';
 
 import { Mail, Box, Utensils, HelpCircle } from 'lucide-react';
@@ -28,6 +29,11 @@ export const spaceRoleOptions = [
   { id: 'vl:owner-occupier', name: 'Owner Occupier' },
   { id: 'vl:occupant', name: 'Occupant' },
   { id: 'vl:tenant', name: 'Tenant' },
+];
+
+export const viewOptions = [
+  { id: 'maintenance', label: 'Maintenance View', href: '/maintenance',icon:HammerIconPath },
+  { id: 'parking', label: 'Parking View', href: '/parking',icon:CarIconPath },
 ];
 
 export const requestStatuses = ['pending', 'assigned', 'complete'];

@@ -45,7 +45,7 @@ export function BuildingOverview({ buildings }: BuildingOverviewProps) {
           Welcome back, {user?.firstName}
         </CardTitle>
         <CardDescription>
-          <div className="flex flex-row gap-2 w-full">
+          <div className="flex flex-row gap-2 w-full items-center">
             <div
               className={`w-4 h-4 ${bannerImage?.url ? 'fill-white' : 'fill-black'} font-bold`}
             >
@@ -73,16 +73,16 @@ function BuildingInfo({
     return (
       <div className="flex items-center space-x-2">
         <Loader2 className="h-4 w-4 animate-spin text-primary" />
-        <p className={textColor}>Gathering building information...</p>
+        <span className={textColor}>Gathering building information...</span>
       </div>
     );
   }
 
   return (
-    <p className={textColor}>
+    <span className={textColor}>
       {buildings && buildings.length > 0
         ? buildings[0]?.name
         : 'No Building Connected'}
-    </p>
+    </span>
   );
 }

@@ -9,6 +9,7 @@ import { GlobalDrawer } from './_components/global-drawer';
 import { AuthCheck } from './_components/validate-auth';
 import PushNotificationInitializer from './_components/PushNotificationInitializer';
 import { Camera } from '@capacitor/camera';
+import { Device } from '@capacitor/device';
 
 /**
  * RootLayout Component
@@ -22,7 +23,14 @@ import { Camera } from '@capacitor/camera';
  */
 export default function RootLayout({ children }: { children: ReactNode }) {
   useEffect(() => {
-    Camera.requestPermissions();
+    const requestCameraPermission = async () => {
+      const info = await Device.getInfo();
+      if (info.platform !== 'web') {
+        await Camera.requestPermissions();
+      }
+    };
+
+    requestCameraPermission();
   }, []);
 
   return (
