@@ -32,6 +32,7 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
       position: 'rear',
       parent: 'cameraPreview',
       className: 'cameraPreview',
+      disableAudio: true,
       width: window.screen.width,
       height: window.screen.height,
       toBack: true,
