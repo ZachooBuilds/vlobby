@@ -28,7 +28,7 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
       disableAudio: true,
       width: window.innerWidth,
       height: window.innerHeight,
-      toBack: false, // Changed from true to false
+      toBack: true, // Changed from true to false
     };
 
     try {
