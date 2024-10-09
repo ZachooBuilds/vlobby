@@ -25,7 +25,7 @@ const QuickActions = () => {
       {actions.map((action, index) => (
         <Link key={index} href={action.path} passHref>
           <Button variant="outline" className="flex-shrink-0">
-            <div className="flex flex-row gap-2 items-center justify-center">
+            <div className="flex flex-row gap-2 items-center justify-center p-2">
               <div className="flex fill-primary w-4 h-4 items-center justify-center">
                 {action.icon}
               </div>
