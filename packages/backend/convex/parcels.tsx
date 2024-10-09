@@ -82,6 +82,36 @@ export const upsertParcel = mutation({
   },
 });
 
+export const setCollectionDate = mutation({
+  args: { 
+    parcelId: v.id('parcels'),
+    collectionDate: v.string()
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    const parcel = await ctx.db.get(args.parcelId);
+    if (!parcel || parcel.orgId !== orgId) {
+      throw new Error('Parcel not found or access denied');
+    }
+
+    await ctx.db.patch(args.parcelId, { collectionDate: args.collectionDate });
+
+    // Log the update as an activity
+    await ctx.db.insert('globalActivity', {
+      title: 'Parcel Collection Date Set',
+      description: `Collection date set for parcel`,
+      type: 'Collection Date Set',
+      entityId: args.parcelId,
+      orgId,
+    });
+
+    return args.parcelId;
+  },
+});
+
 export const remove = mutation({
   args: { id: v.id('parcels') },
   handler: async (ctx, args) => {

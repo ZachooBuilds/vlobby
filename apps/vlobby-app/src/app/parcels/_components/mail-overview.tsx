@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import React, { useState } from 'react';
 import { api } from '@repo/backend/convex/_generated/api';
 import { ParcelData } from '../../../lib/app-types';
@@ -10,7 +10,16 @@ import { Button } from '@repo/ui/components/ui/button';
 import useDrawerStore from '../../../lib/global-state';
 import { format } from 'date-fns';
 import { parcelTypeOptions } from '../../../lib/staticData';
-import { Text } from 'lucide-react';
+import { CalendarIcon, Text } from 'lucide-react';
+import { FormField, FormItem } from '@repo/ui/components/ui/form';
+import { TimePicker } from '@repo/ui/components/custom-form-fields/time-picker/time-picker';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@repo/ui/components/ui/popover';
+import { Calendar } from '@repo/ui/components/ui/calendar';
+import { useMutation } from 'convex/react';
 
 const MailCard = ({ parcel }: { parcel: ParcelData }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -67,7 +76,11 @@ export function MailOverview() {
   const allMail = useQuery(api.parcels.getAllForCurrentOccupant, {
     isCollected: false,
   });
-  const { openDrawer } = useDrawerStore();
+  const { openDrawer, closeDrawer } = useDrawerStore();
+  const [collectionDate, setCollectionDate] = useState<Date | undefined>(
+    undefined
+  );
+  const setCollectionDateMutation = useMutation(api.parcels.setCollectionDate);
 
   if (!allMail) {
     return <div>Catching the postman ...</div>;
@@ -77,9 +90,53 @@ export function MailOverview() {
     openDrawer(
       'Schedule Collection',
       'Choose a time to collect your mail and parcels.',
-      <div>
-        {/* Add your scheduling form or content here */}
-        <Button>Schedule Collection</Button>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full justify-start text-left font-normal"
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {collectionDate ? (
+                  format(collectionDate, 'PPP HH:mm:ss')
+                ) : (
+                  <span>Pick a date and time</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                mode="single"
+                selected={collectionDate}
+                onSelect={(date) => setCollectionDate(date)}
+                initialFocus
+              />
+              <div className="border-t border-border p-3">
+                <TimePicker
+                  setDate={(date) => setCollectionDate(date)}
+                  date={collectionDate}
+                />
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
+        <Button
+          onClick={() => {
+            if (collectionDate) {
+              allMail.forEach((parcel) => {
+                setCollectionDateMutation({
+                  parcelId: parcel._id,
+                  collectionDate: collectionDate.toISOString(),
+                });
+              });
+              closeDrawer();
+            }
+          }}
+        >
+          Schedule Collection
+        </Button>
       </div>
     );
   };
