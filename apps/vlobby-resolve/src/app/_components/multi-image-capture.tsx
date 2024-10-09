@@ -44,7 +44,9 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
   };
 
   const capturePhoto = async () => {
+    
     try {
+    console.log("button clicked to capture");
       const result = await CameraPreview.capture({ quality: 90 });
       if (result.value) {
         const dataUrl = `data:image/jpeg;base64,${result.value}`;
