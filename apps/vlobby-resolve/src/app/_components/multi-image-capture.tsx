@@ -13,8 +13,15 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const openCamera = async () => {
-    // ... existing code to open camera ...
-    setIsCameraOpen(true);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+      setIsCameraOpen(true);
+    } catch (error) {
+      console.error('Error opening camera:', error);
+    }
   };
 
   const capturePhoto = async () => {
