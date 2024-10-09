@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
-import { CameraIcon } from 'lucide-react';
+import { CameraIcon, FlipVertical } from 'lucide-react';
 import {
   CameraPreview,
   CameraPreviewOptions,
@@ -12,10 +12,10 @@ interface MultiPhotoCaptureProps {
 
 const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [capturedPhotos, setCapturedPhotos] = useState<string[]>([]);
 
   useEffect(() => {
     return () => {
-      // Cleanup function to stop the camera when component unmounts
       CameraPreview.stop();
     };
   }, []);
@@ -25,47 +25,101 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
       position: 'rear',
       parent: 'cameraPreview',
       className: 'cameraPreview',
+      disableAudio: true,
       width: window.innerWidth,
       height: window.innerHeight,
-      toBack: true,
+      toBack: false, // Changed from true to false
     };
 
     try {
-      await CameraPreview.start(cameraPreviewOptions);
-      setIsCameraOpen(true);
+      setIsCameraOpen(true); // Set this to true before starting the camera
+      // Wait for the next render cycle to ensure the cameraPreview element exists
+      setTimeout(async () => {
+        await CameraPreview.start(cameraPreviewOptions);
+      }, 0);
     } catch (error) {
       console.error('Error opening camera:', error);
+      setIsCameraOpen(false); // Reset if there's an error
     }
   };
 
-  const capturePhotos = async () => {
+  const capturePhoto = async () => {
     try {
       const result = await CameraPreview.capture({ quality: 90 });
       if (result.value) {
         const dataUrl = `data:image/jpeg;base64,${result.value}`;
-        const response = await fetch(dataUrl);
-        const blob = await response.blob();
-        const file = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
-        onCapture([file]);
+        setCapturedPhotos((prev) => [...prev, dataUrl]);
       }
     } catch (error) {
       console.error('Error capturing photo:', error);
-    } finally {
-      await CameraPreview.stop();
-      setIsCameraOpen(false);
     }
+  };
+
+  const flipCamera = async () => {
+    try {
+      await CameraPreview.flip();
+    } catch (error) {
+      console.error('Error flipping camera:', error);
+    }
+  };
+
+  const closeCamera = async () => {
+    await CameraPreview.stop();
+    setIsCameraOpen(false);
+  };
+
+  const finishCapture = () => {
+    const files = capturedPhotos.map((dataUrl, index) => {
+      const [, base64] = dataUrl.split(',');
+      const byteCharacters = atob(base64 || '');
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'image/jpeg' });
+      return new File([blob], `photo_${index + 1}.jpg`, { type: 'image/jpeg' });
+    });
+    onCapture(files);
+    closeCamera();
   };
 
   if (isCameraOpen) {
     return (
       <div className="relative h-screen w-full" id="cameraPreview">
+        <div className="absolute top-4 left-4 right-4 flex justify-between z-10">
+          <Button
+            onClick={flipCamera}
+            variant="outline"
+            className="rounded-full p-2"
+          >
+            <FlipVertical className="h-6 w-6" />
+          </Button>
+          <Button
+            onClick={finishCapture}
+            variant="outline"
+            className="rounded-full p-2"
+          >
+            Finish
+          </Button>
+        </div>
         <Button
-          onClick={capturePhotos}
+          onClick={capturePhoto}
           variant="outline"
           className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 rounded-full p-2"
         >
           <CameraIcon className="h-6 w-6" />
         </Button>
+        <div className="absolute bottom-4 left-4 right-4 flex overflow-x-auto z-10">
+          {capturedPhotos.map((photo, index) => (
+            <img
+              key={index}
+              src={photo}
+              alt={`Captured ${index + 1}`}
+              className="h-16 w-16 object-cover mr-2 rounded"
+            />
+          ))}
+        </div>
       </div>
     );
   }
