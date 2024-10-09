@@ -1,5 +1,4 @@
-import React, { useState, useRef } from 'react';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { CameraIcon, XIcon, CheckIcon } from 'lucide-react';
 
@@ -11,40 +10,45 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
   const [capturedPhotos, setCapturedPhotos] = useState<File[]>([]);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, []);
 
   const openCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' } // This requests the back camera
+      });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
       }
+      streamRef.current = stream;
       setIsCameraOpen(true);
     } catch (error) {
       console.error('Error opening camera:', error);
     }
   };
 
-  const capturePhoto = async () => {
-    try {
-      const image = await Camera.getPhoto({
-        quality: 50,
-        allowEditing: false,
-        resultType: CameraResultType.Uri,
-        source: CameraSource.Camera
-      });
-
-      if (image.webPath) {
-        const response = await fetch(image.webPath);
-        const blob = await response.blob();
-        const file = new File([blob], `photo_${Date.now()}.jpg`, {
-          type: 'image/jpeg',
-        });
-
-        setCapturedPhotos((prev) => [...prev, file]);
-        onCapture([file]);
-      }
-    } catch (error) {
-      console.error('Error capturing photo:', error);
+  const capturePhoto = () => {
+    if (videoRef.current) {
+      const canvas = document.createElement('canvas');
+      canvas.width = videoRef.current.videoWidth;
+      canvas.height = videoRef.current.videoHeight;
+      canvas.getContext('2d')?.drawImage(videoRef.current, 0, 0);
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const file = new File([blob], `photo_${Date.now()}.jpg`, {
+            type: 'image/jpeg',
+          });
+          setCapturedPhotos((prev) => [...prev, file]);
+        }
+      }, 'image/jpeg');
     }
   };
 
@@ -54,6 +58,9 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
 
   const finishCapture = () => {
     setIsCameraOpen(false);
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+    }
     onCapture(capturedPhotos);
   };
 
