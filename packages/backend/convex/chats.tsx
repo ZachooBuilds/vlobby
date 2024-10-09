@@ -80,6 +80,7 @@ export const addMessage = mutation({
 
     await ctx.db.patch(args.chatId, {
       updatedAt: new Date().toISOString(),
+      unreadMessage: args.isFromOccupant ? true : chat.unreadMessage,
     });
 
     // Send a notification to the occupant if the message is not from them
@@ -107,7 +108,6 @@ export const getChatSummaries = query({
     const chats = await ctx.db
       .query('chats')
       .filter((q) => q.eq(q.field('orgId'), orgId))
-      .order('desc')
       .collect();
 
     const chatSummaries = await Promise.all(
@@ -122,6 +122,7 @@ export const getChatSummaries = query({
 
         return {
           _id: chat._id,
+          unreadMessage: chat.unreadMessage,
           occupantId: chat.occupantId,
           OccupantName: occupant
             ? `${occupant.firstName} ${occupant.lastName}`
@@ -133,6 +134,13 @@ export const getChatSummaries = query({
         };
       })
     );
+
+    // Sort chatSummaries to put unread messages at the top
+    chatSummaries.sort((a, b) => {
+      if (a.unreadMessage && !b.unreadMessage) return -1;
+      if (!a.unreadMessage && b.unreadMessage) return 1;
+      return 0;
+    });
 
     return chatSummaries;
   },
@@ -190,6 +198,33 @@ export const getChatSummaryForOccupant = mutation({
   },
 });
 
+// export const getChat = query({
+//   args: { chatId: v.id('chats') },
+//   handler: async (ctx, args) => {
+//     const identity = await ctx.auth.getUserIdentity();
+//     if (!identity) throw new Error('Unauthenticated');
+//     const orgId = identity.orgId;
+
+//     const chat = await ctx.db.get(args.chatId);
+//     if (!chat || chat.orgId !== orgId) {
+//       throw new Error('Chat not found or access denied');
+//     }
+
+//     const messages = await ctx.db
+//       .query('messages')
+//       .filter((q) => q.eq(q.field('chatId'), args.chatId))
+//       .order('asc')
+//       .collect();
+
+//     return messages.map((message) => ({
+//       chatId: message.chatId,
+//       content: message.content,
+//       createdAt: message.createdAt,
+//       isFromOccupant: message.isFromOccupant,
+//     }));
+//   },
+// });
+
 export const getChat = query({
   args: { chatId: v.id('chats') },
   handler: async (ctx, args) => {
@@ -214,5 +249,22 @@ export const getChat = query({
       createdAt: message.createdAt,
       isFromOccupant: message.isFromOccupant,
     }));
+  },
+});
+
+// Add a new mutation to mark the chat as read
+export const markChatAsRead = mutation({
+  args: { chatId: v.id('chats') },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    const chat = await ctx.db.get(args.chatId);
+    if (!chat || chat.orgId !== orgId) {
+      throw new Error('Chat not found or access denied');
+    }
+
+    await ctx.db.patch(args.chatId, { unreadMessage: false });
   },
 });

@@ -1,10 +1,8 @@
-import { mutation, query } from './_generated/server';
+import { mutation, action, query, internalMutation } from './_generated/server';
 import { v } from 'convex/values';
 import { internal } from './_generated/api';
-import {
-  sendPushNotificationToCurrentOrg,
-  sendPushNotificationToUser,
-} from './pushNotifications';
+import { sendPushNotificationToCurrentOrg } from './pushNotifications';
+import { Id } from './_generated/dataModel';
 
 export const upsertAnnouncement = mutation({
   args: {
@@ -29,6 +27,7 @@ export const upsertAnnouncement = mutation({
     const orgId = identity.orgId;
 
     let result: string;
+    let status = args.scheduleSend ? 'scheduled' : 'sent';
 
     if (args._id) {
       // Update existing announcement
@@ -43,16 +42,9 @@ export const upsertAnnouncement = mutation({
         audience: args.audience,
         scheduleSend: args.scheduleSend,
         dateTime: args.dateTime,
+        status,
       });
       result = args._id;
-
-      await ctx.db.insert('globalActivity', {
-        title: 'Announcement Updated',
-        description: `Announcement details have been updated.`,
-        type: 'Announcement Updated',
-        entityId: args._id,
-        orgId,
-      });
     } else {
       // Insert new announcement
       result = await ctx.db.insert('announcements', {
@@ -63,19 +55,22 @@ export const upsertAnnouncement = mutation({
         scheduleSend: args.scheduleSend,
         dateTime: args.dateTime,
         orgId,
-      });
-
-      await ctx.db.insert('globalActivity', {
-        title: 'Announcement Created',
-        description: `A new announcement was created`,
-        type: 'Announcement Created',
-        entityId: result,
-        orgId,
+        status,
       });
     }
 
-    // Send notification if not scheduled
-    if (!args.scheduleSend) {
+    // Schedule notification if scheduleSend is true
+    if (args.scheduleSend && args.dateTime) {
+      const scheduledTime = new Date(args.dateTime);
+      await ctx.scheduler.runAt(
+        scheduledTime,
+        internal.announcements.sendScheduledAnnouncement,
+        {
+          announcementId: result as Id<'announcements'>,
+        }
+      );
+    } else if (!args.scheduleSend) {
+      // Send notification immediately if not scheduled
       await sendPushNotificationToCurrentOrg(ctx, {
         title: 'New Announcement',
         body: args.title,
@@ -83,6 +78,35 @@ export const upsertAnnouncement = mutation({
     }
 
     return result;
+  },
+});
+
+export const sendScheduledAnnouncement = internalMutation({
+  args: { announcementId: v.id('announcements') },
+  handler: async (ctx, args) => {
+    // Fetch the announcement directly from the database
+    const announcement = await ctx.db.get(args.announcementId);
+    if (!announcement) {
+      throw new Error('Announcement not found');
+    }
+
+    // Use the orgId from the announcement for the push notification
+    await sendPushNotificationToCurrentOrg(ctx, {
+      title: '🔔 New Announcement',
+      body: announcement.title,
+      orgId: announcement.orgId,
+      isScheduled: true,
+    });
+
+    // Update announcement status to 'sent'
+    await ctx.db.patch(args.announcementId, { status: 'sent' });
+  },
+});
+
+export const updateAnnouncementStatus = mutation({
+  args: { id: v.id('announcements'), status: v.string() },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.id, { status: args.status });
   },
 });
 
@@ -141,6 +165,7 @@ export const getAllOccupantAnnouncements = query({
           )
         )
       )
+      .order('desc')
       .collect();
 
     return announcements.filter((announcement) => {

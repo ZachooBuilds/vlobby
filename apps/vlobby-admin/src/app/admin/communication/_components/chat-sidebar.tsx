@@ -59,14 +59,19 @@ export default function ChatSidebar({
         onClick={() => onChatSelect(chat)}
       >
         <div className="flex items-center gap-3">
-          <Avatar className="h-12 w-12 transition-all duration-300 group-hover:scale-110">
-            <AvatarFallback>{chat.OccupantName.charAt(0).toUpperCase() + chat.OccupantName.charAt(1).toUpperCase()}</AvatarFallback>
-          </Avatar>
+          <div className="relative">
+            <Avatar className="h-12 w-12 transition-all duration-300 group-hover:scale-110">
+              <AvatarFallback>{chat.OccupantName.charAt(0).toUpperCase() + chat.OccupantName.charAt(1).toUpperCase()}</AvatarFallback>
+            </Avatar>
+            {chat.unreadMessage && (
+              <div className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-blue-500 animate-pulse"></div>
+            )}
+          </div>
           <div className="flex-1">
             <div className="flex items-center justify-between">
               <p
                 className={`text-sm transition-all duration-300 group-hover:font-bold ${
-                  selectedChat && chat._id === selectedChat._id
+                  (selectedChat && chat._id === selectedChat._id) || chat.unreadMessage
                     ? "font-bold"
                     : ""
                 }`}

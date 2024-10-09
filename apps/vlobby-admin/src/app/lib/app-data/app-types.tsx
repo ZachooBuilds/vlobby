@@ -318,6 +318,7 @@ export type ChatSummary = {
   OccupantName: string;
   lastMessage: string;
   lastMessageDate: Date;
+  unreadMessage: boolean;
 };
 
 export type Message = {

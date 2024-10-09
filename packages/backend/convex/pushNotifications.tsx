@@ -62,16 +62,22 @@ export const sendPushNotificationToCurrentOrg = mutation({
   args: {
     title: v.string(),
     body: v.string(),
+    orgId: v.optional(v.string()),
+    isScheduled: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const { title, body } = args;
 
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new Error('Not authenticated');
+    let orgId;
+    if (!args.isScheduled) {
+      const identity = await ctx.auth.getUserIdentity();
+      if (!identity) {
+        throw new Error('Not authenticated');
+      }
+      orgId = identity.orgId;
+    } else {
+      orgId = args.orgId;
     }
-
-    const orgId = identity.orgId;
 
     // Fetch all device tokens for the current user's orgId
     const tokenRecords = await ctx.db
