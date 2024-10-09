@@ -92,6 +92,7 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
             onClick={flipCamera}
             variant="outline"
             className="rounded-full p-2"
+            type="button"
           >
             <FlipVertical className="h-6 w-6" />
           </Button>
@@ -99,6 +100,7 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
             onClick={finishCapture}
             variant="outline"
             className="rounded-full p-2"
+               type="button"
           >
             Finish
           </Button>
@@ -107,6 +109,7 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
           onClick={capturePhoto}
           variant="outline"
           className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 rounded-full p-2"
+          type="button"
         >
           <CameraIcon className="h-6 w-6" />
         </Button>
