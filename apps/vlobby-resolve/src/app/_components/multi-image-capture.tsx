@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { CameraIcon } from 'lucide-react';
 import {
@@ -13,9 +13,21 @@ interface MultiPhotoCaptureProps {
 const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
 
+  useEffect(() => {
+    return () => {
+      // Cleanup function to stop the camera when component unmounts
+      CameraPreview.stop();
+    };
+  }, []);
+
   const openCamera = async () => {
     const cameraPreviewOptions: CameraPreviewOptions = {
-      // ... existing camera options ...
+      position: 'rear',
+      parent: 'cameraPreview',
+      className: 'cameraPreview',
+      width: window.innerWidth,
+      height: window.innerHeight,
+      toBack: true,
     };
 
     try {
@@ -46,7 +58,7 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
 
   if (isCameraOpen) {
     return (
-      <div className="relative h-full w-full" id="cameraPreview">
+      <div className="relative h-screen w-full" id="cameraPreview">
         <Button
           onClick={capturePhotos}
           variant="outline"
