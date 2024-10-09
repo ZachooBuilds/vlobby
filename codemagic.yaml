@@ -1,6 +1,6 @@
 workflows:
   ios-workflow:
-    name: iOS Workflow
+    name: iOS Workflow - VLobby Occuopant
     max_build_duration: 120
     integrations:
       app_store_connect: Virtual Lobby Technology
@@ -57,6 +57,81 @@ workflows:
             --scheme "$XCODE_SCHEME"
     artifacts:
       - apps/vlobby-app/ios/App/build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+    publishing:
+      email:
+        recipients:
+          - zach.kingsford@gmail.com
+        notify:
+          success: true
+          failure: false
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - vlobby-beta-testers
+        submit_to_app_store: false
+
+  vlobby-resolve-ios-workflow:
+    name: iOS Workflow - VLobby Resolve
+    max_build_duration: 120
+    integrations:
+      app_store_connect: Virtual Lobby Technology
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.vlobby.resolve.app
+      vars:
+        APP_STORE_APPLE_ID: 6736678348  # You may need to update this with the correct Apple ID for VLobby Resolve
+        XCODE_WORKSPACE: "apps/vlobby-resolve/ios/App/App.xcworkspace"
+        XCODE_SCHEME: "App"
+        
+    scripts:
+      - name: Install pnpm
+        script: |
+          if ! command -v pnpm &> /dev/null; then
+            npm install -g pnpm
+          else
+            echo "pnpm is already installed"
+          fi
+      - name: Install dependencies and sync Capacitor
+        script: |
+          pnpm install
+          cd apps/vlobby-resolve
+          npx cap sync
+      - name: Cocoapods installation
+        script: |
+          cd apps/vlobby-resolve/ios/App && pod install
+      - name: Set up code signing settings on Xcode project
+        script: |
+          cd apps/vlobby-resolve/ios/App
+          xcode-project use-profiles
+      - name: Set build number
+        script: | 
+          #!/bin/sh
+          cd $CM_BUILD_DIR/apps/vlobby-resolve/ios/App
+          NEW_BUILD_NUMBER="1.0.0"  # You may want to adjust this for VLobby Resolve
+          echo "Setting build number to: $NEW_BUILD_NUMBER"
+          agvtool new-version -all $NEW_BUILD_NUMBER
+          
+          # Verify the new build number
+          CURRENT_BUILD_NUMBER=$(agvtool what-version -terse)
+          echo "Current build number after update: $CURRENT_BUILD_NUMBER"
+          
+          if [ "$CURRENT_BUILD_NUMBER" != "$NEW_BUILD_NUMBER" ]; then
+            echo "Error: Build number was not updated correctly"
+            exit 1
+          fi
+      - name: Build ipa for distribution
+        script: |
+          cd $CM_BUILD_DIR/apps/vlobby-resolve/ios/App
+          xcode-project build-ipa \
+            --workspace "App.xcworkspace" \
+            --scheme "$XCODE_SCHEME"
+    artifacts:
+      - apps/vlobby-resolve/ios/App/build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM

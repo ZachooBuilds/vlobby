@@ -6,8 +6,8 @@ const config: CapacitorConfig = {
   webDir: 'out',
   server: {
     cleartext: true,
-    // url: "https://vlobby-occupant-app.vercel.app",
-    url: "http://192.168.1.64:3000",
+    url: "https://vlobby-9jw3.vercel.app",
+    // url: "http://192.168.1.64:3000",
   },
   plugins: {
     PushNotifications: {
