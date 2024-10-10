@@ -33,7 +33,18 @@ export default function OptionsPage() {
   };
 
   if (isCameraOpen) {
-    return <MultiImageCapture onCapture={handleCapturedPhotos} onClose={() => setIsCameraOpen(false)} />;
+    return (
+      <div className="flex flex-col h-screen">
+        <div className="flex-grow overflow-auto">
+          <div className="flex flex-col gap-4 items-start justify-start pt-16 p-4 pb-[120px] w-full">
+            <MultiImageCapture
+              onCapture={handleCapturedPhotos}
+              onClose={() => setIsCameraOpen(false)}
+            />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

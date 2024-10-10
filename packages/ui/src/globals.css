@@ -150,9 +150,9 @@ nextjs-portal {
   border-radius: 0.25rem !important;
 }
 
-.bg-transparent {
+/* .bg-transparent {
 --background: transparent !important;
-}
+} */
 
 ion-content {
    --background: transparent !important;
@@ -161,7 +161,7 @@ ion-content {
   position: absolute;
   z-index: 1;
 }
-.overlay-hole {
+/* .overlay-hole {
   position: absolute;
   width: 500;
   height: 500;
@@ -171,7 +171,7 @@ ion-content {
   border: 1px solid #BFBFBF;
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.2);
   z-index: 999999998;
-}
+} */
 
 .fc {
   width: 100%;
