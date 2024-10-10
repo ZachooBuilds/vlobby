@@ -87,8 +87,8 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
 
   if (isCameraOpen) {
     return (
-      <div className="relative h-screen w-full" id="cameraPreview">
-        <div className="absolute top-4 left-4 right-4 flex justify-between z-10">
+      <div className="flex flex-col h-full w-full relative" id="cameraPreview">
+        <div className="flex flex-row justify-between z-10 p-4">
           <Button
             onClick={flipCamera}
             variant="outline"
@@ -106,23 +106,26 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
             Finish
           </Button>
         </div>
-        <Button
-          onClick={capturePhoto}
-          variant="outline"
-          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 rounded-full p-2"
-          type="button"
-        >
-          <CameraIcon className="h-6 w-6" />
-        </Button>
-        <div className="absolute bottom-4 left-4 right-4 flex overflow-x-auto z-10">
-          {capturedPhotos.map((photo, index) => (
-            <img
-              key={index}
-              src={photo}
-              alt={`Captured ${index + 1}`}
-              className="h-16 w-16 object-cover mr-2 rounded"
-            />
-          ))}
+        <div className="flex-grow"></div>
+        <div className="flex flex-col items-center z-10 p-4">
+          <Button
+            onClick={capturePhoto}
+            variant="outline"
+            className="rounded-full p-2 mb-4"
+            type="button"
+          >
+            <CameraIcon className="h-6 w-6" />
+          </Button>
+          <div className="flex flex-row overflow-x-auto w-full">
+            {capturedPhotos.map((photo, index) => (
+              <img
+                key={index}
+                src={photo}
+                alt={`Captured ${index + 1}`}
+                className="h-16 w-16 object-cover mr-2 rounded"
+              />
+            ))}
+          </div>
         </div>
       </div>
     );

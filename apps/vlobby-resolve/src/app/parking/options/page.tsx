@@ -13,7 +13,6 @@ import {
   TabsTrigger,
   TabsContent,
 } from '@repo/ui/components/ui/tabs';
-
 import { FileUploadWithPreview } from '../../_components/file-upload-form-field';
 import NewDropoffRequestForm from './_forms/new-dropoff-request';
 import MultiImageCapture from '../../_components/multi-image-capture';
@@ -53,11 +52,8 @@ export default function OptionsPage() {
               </div>
             </TabsContent>
           </Tabs>
-
-          <div>
-            <div id="divCameraPreviewContent">
-              <div id="divOverlayHole" className="overlay-hole"></div>
-            </div>
+          <div className="w-full aspect-[3/4] relative overflow-hidden">
+            <MultiImageCapture onCapture={handleCapturedPhotos} />
           </div>
         </div>
       </div>
