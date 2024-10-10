@@ -52,7 +52,9 @@ export default function OptionsPage() {
               </div>
             </TabsContent>
           </Tabs>
-          <MultiImageCapture onCapture={handleCapturedPhotos} />
+          <div className="w-full aspect-[3/4] relative">
+            <MultiImageCapture onCapture={handleCapturedPhotos} />
+          </div>
         </div>
       </div>
       <NavigationBar />
