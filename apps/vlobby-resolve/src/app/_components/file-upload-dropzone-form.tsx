@@ -122,7 +122,7 @@ export const FileUploadForm = ({
           </div>
         </div>
       </motion.div>
-      <MultiPhotoCapture onCapture={handleCapturePhotos} />
+      {/* <MultiPhotoCapture onCapture={handleCapturePhotos} /> */}
     </div>
   );
 };
