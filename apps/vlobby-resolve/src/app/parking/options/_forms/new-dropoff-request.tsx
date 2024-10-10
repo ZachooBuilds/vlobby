@@ -2,14 +2,18 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Check, ChevronsUpDown, Loader2 } from 'lucide-react';
+import { CameraIcon, Check, ChevronsUpDown, Loader2 } from 'lucide-react';
 import { dropoffSchema, DropoffRequest } from './request-validation';
 import { useMutation, useQuery } from 'convex/react';
 import { Badge } from '@tremor/react';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { api } from '@repo/backend/convex/_generated/api';
 import { Id } from '@repo/backend/convex/_generated/dataModel';
-import { AllocationDetails, ParkType, ValueLabelPair } from '../../../../lib/app-types';
+import {
+  AllocationDetails,
+  ParkType,
+  ValueLabelPair,
+} from '../../../../lib/app-types';
 import {
   Form,
   FormControl,
@@ -36,10 +40,19 @@ import {
 } from '@repo/ui/components/ui/command';
 import { Card, CardContent } from '@repo/ui/components/ui/card';
 import CarParkMap from '../../map/_components/parkingMapLoader';
-import { FileUploadWithPreview } from '../../../_components/file-upload-form-field';
-import MultiPhotoCapture from '../../../_components/multi-image-capture';
+import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
+// import router from 'next/router';
 
-export default function NewDropoffRequestForm() {
+interface NewDropoffRequestFormProps {
+  capturedFiles: File[];
+  onOpenCamera: () => void;
+}
+
+export default function NewDropoffRequestForm({
+  capturedFiles,
+  onOpenCamera,
+}: NewDropoffRequestFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -90,6 +103,8 @@ export default function NewDropoffRequestForm() {
     }
   }, [form.watch('allocationId'), form.watch('isCasualParking')]);
 
+  const router = useRouter();
+
   // const [selectedSpotId, setSelectedSpotId] = useState<string | null>(null);
 
   const onSubmit = async (data: DropoffRequest) => {
@@ -112,6 +127,7 @@ export default function NewDropoffRequestForm() {
         description: 'The request has been successfully saved.',
       });
       form.reset();
+      router.push('/parking/requests');
     } catch (error) {
       setIsLoading(false);
       toast({
@@ -129,11 +145,29 @@ export default function NewDropoffRequestForm() {
     form.setValue('parkId', spotId ?? '');
   }
 
-  const handleCapturedPhotos = (capturedFiles: File[]) => {
-    const currentFiles = form.getValues('evidenceImages') || [];
-    const updatedFiles = [...currentFiles, ...capturedFiles];
-    // form.setValue('evidenceImages', updatedFiles);
-  };
+  // const [currentFiles, setCurrentFiles] = useState<File[]>([]);
+  // const [isCameraOpen, setIsCameraOpen] = useState(false);
+
+  // const handleCapturedPhotos = (capturedFiles: File[]) => {
+  //   const updatedFiles = [...currentFiles, ...capturedFiles];
+  //   setCurrentFiles(updatedFiles);
+  //   setIsCameraOpen(false);
+  // };
+
+  // if (isCameraOpen) {
+  //   return (
+  //     <div className="flex flex-col h-screen">
+  //       <div className="flex-grow overflow-auto">
+  //         <div className="flex flex-col gap-4 items-start justify-start pt-16 p-4 pb-[120px] w-full">
+  //           <MultiImageCapture
+  //             onCapture={handleCapturedPhotos}
+  //             onClose={() => setIsCameraOpen(false)}
+  //           />
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <Form {...form}>
@@ -164,7 +198,7 @@ export default function NewDropoffRequestForm() {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-[50vw]">
+                <PopoverContent className="w-full p-0">
                   <Command className="w-full">
                     <CommandInput placeholder="Search vehicles..." />
                     <CommandList className="w-full">
@@ -203,6 +237,16 @@ export default function NewDropoffRequestForm() {
             </FormItem>
           )}
         />
+
+        <Button
+          onClick={onOpenCamera}
+          variant="outline"
+          className="w-full"
+          type="button"
+        >
+          <CameraIcon className="mr-2 h-4 w-4" />
+          Open Camera
+        </Button>
 
         <FormField
           control={form.control}
@@ -255,7 +299,7 @@ export default function NewDropoffRequestForm() {
             <FormItem>
               <FormLabel>Parking Type</FormLabel>
               <FormControl>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <Card
                     className={cn(
                       'cursor-pointer hover:bg-accent',
@@ -379,12 +423,10 @@ export default function NewDropoffRequestForm() {
           )}
         />
 
-        <div className="flex w-full flex-col space-y-4">
-          {/* <MultiPhotoCapture onCapture={handleCapturedPhotos} /> */}
-        </div>
-
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+        <Button type="submit" disabled={isLoading} className="w-full h-14">
+          {isLoading ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin " />
+          ) : null}
           Add Request
         </Button>
       </form>

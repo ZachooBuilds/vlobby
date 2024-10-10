@@ -20,6 +20,7 @@ import {
 import { RequestCardData } from '../../../../lib/app-types';
 import {
   OccupantsIconPath,
+  ParkIconPath,
   SpacesIconPath,
 } from '../../../../../public/svg/icons';
 
@@ -151,20 +152,27 @@ export default function RequestsOverview() {
   };
 
   return (
-    <Card className="flex flex-col h-full w-full">
-      <CardHeader className="flex-shrink-0 flex flex-row items-center justify-between p-4">
-        <CardTitle className="text-md font-medium">Valet Requests</CardTitle>
-      </CardHeader>
-      <CardContent className=" flex flex-col gap-2 p-2">
-        {requests?.map((request) => (
-          <RequestCard
-            key={request._id}
-            request={request}
-            onAssign={handleAssignRequest}
-            onComplete={handleCompleteRequest}
-          />
-        ))}
-      </CardContent>
-    </Card>
+    <div className="flex flex-col gap-2 w-full">
+      <div className="flex flex-row items-center gap-4">
+        <div className="w-5 h-5 fill-foreground">
+          <ParkIconPath />
+        </div>
+        <h1 className="text-2xl font-medium">Valet Requests</h1>
+        <Badge color={ "green"}>
+          {requests?.filter(
+            (request) =>
+              request.status === 'pending' || request.status === 'assigned'
+          ).length} active requests
+        </Badge>
+      </div>
+      {requests?.map((request) => (
+        <RequestCard
+          key={request._id}
+          request={request}
+          onAssign={handleAssignRequest}
+          onComplete={handleCompleteRequest}
+        />
+      ))}
+    </div>
   );
 }

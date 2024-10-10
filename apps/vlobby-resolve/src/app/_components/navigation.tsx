@@ -16,7 +16,7 @@ import {
 const navigationItems = [
   { name: 'Dashboard', href: '/parking', icon: DashboardIconPath },
   { name: 'Requests', href: '/parking/requests', icon: ParkIconPath },
-  { name: 'Options', href: '/parking/options', icon: CarIconPath },
+  { name: 'Options', href: '/parking/options/search', icon: CarIconPath },
   { name: 'Map', href: '/parking/map', icon: MapIconPath },
 ];
 
