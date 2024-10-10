@@ -16,18 +16,25 @@ import {
 import { FileUploadWithPreview } from '../../_components/file-upload-form-field';
 import NewDropoffRequestForm from './_forms/new-dropoff-request';
 import MultiImageCapture from '../../_components/multi-image-capture';
+import { Button } from '@repo/ui/components/ui/button';
+import { CameraIcon } from 'lucide-react';
 
 export default function OptionsPage() {
   const router = useRouter();
   const { isLoaded, isSignedIn } = useUser();
 
   const [currentFiles, setCurrentFiles] = useState<File[]>([]);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
 
   const handleCapturedPhotos = (capturedFiles: File[]) => {
-    // const currentFiles = form.getValues('evidenceImages') || [];
     const updatedFiles = [...currentFiles, ...capturedFiles];
-    // form.setValue('evidenceImages', updatedFiles);
+    setCurrentFiles(updatedFiles);
+    setIsCameraOpen(false);
   };
+
+  if (isCameraOpen) {
+    return <MultiImageCapture onCapture={handleCapturedPhotos} onClose={() => setIsCameraOpen(false)} />;
+  }
 
   return (
     <div className="flex flex-col h-screen">
@@ -52,9 +59,15 @@ export default function OptionsPage() {
               </div>
             </TabsContent>
           </Tabs>
-          <div className="w-full aspect-[3/4] relative overflow-hidden">
-            <MultiImageCapture onCapture={handleCapturedPhotos} />
-          </div>
+          <Button
+            onClick={() => setIsCameraOpen(true)}
+            variant="outline"
+            className="w-full"
+            type="button"
+          >
+            <CameraIcon className="mr-2 h-4 w-4" />
+            Open Camera
+          </Button>
         </div>
       </div>
       <div className="w-full bg-white">

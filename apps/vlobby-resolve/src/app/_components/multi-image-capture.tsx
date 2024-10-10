@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
-import { CameraIcon, FlipVertical } from 'lucide-react';
+import { CameraIcon, FlipVertical, X } from 'lucide-react';
 import {
   CameraPreview,
   CameraPreviewOptions,
@@ -8,13 +8,14 @@ import {
 
 interface MultiPhotoCaptureProps {
   onCapture: (files: File[]) => void;
+  onClose: () => void;
 }
 
-const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
-  const [isCameraOpen, setIsCameraOpen] = useState(false);
+const MultiPhotoCapture = ({ onCapture, onClose }: MultiPhotoCaptureProps) => {
   const [capturedPhotos, setCapturedPhotos] = useState<string[]>([]);
 
   useEffect(() => {
+    openCamera();
     return () => {
       CameraPreview.stop();
     };
@@ -23,23 +24,19 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
   const openCamera = async () => {
     const cameraPreviewOptions: CameraPreviewOptions = {
       position: 'rear',
-      parent: 'divCameraPreviewContent',
+      parent: 'cameraPreview',
       className: 'camera-preview',
       disableAudio: true,
       width: window.innerWidth,
       height: window.innerHeight,
-      toBack: true, // Changed from true to false
+      toBack: false,
     };
 
     try {
-      setIsCameraOpen(true); // Set this to true before starting the camera
-      // Wait for the next render cycle to ensure the cameraPreview element exists
-      setTimeout(async () => {
-        await CameraPreview.start(cameraPreviewOptions);
-      }, 0);
+      await CameraPreview.start(cameraPreviewOptions);
     } catch (error) {
       console.error('Error opening camera:', error);
-      setIsCameraOpen(false); // Reset if there's an error
+      onClose();
     }
   };
 
@@ -66,7 +63,7 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
 
   const closeCamera = async () => {
     await CameraPreview.stop();
-    setIsCameraOpen(false);
+    onClose();
   };
 
   const finishCapture = () => {
@@ -85,62 +82,61 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
     closeCamera();
   };
 
-  if (isCameraOpen) {
-    return (
-      <div className="flex flex-col h-full w-full relative" id="cameraPreview">
-        <div className="flex flex-row justify-between z-10 p-4">
-          <Button
-            onClick={flipCamera}
-            variant="outline"
-            className="rounded-full p-2"
-            type="button"
-          >
-            <FlipVertical className="h-6 w-6" />
-          </Button>
-          <Button
-            onClick={finishCapture}
-            variant="outline"
-            className="rounded-full p-2"
-            type="button"
-          >
-            Finish
-          </Button>
-        </div>
-        <div className="flex-grow"></div>
-        <div className="flex flex-col items-center z-10 p-4">
+  return (
+    <div className="fixed inset-0 z-50 bg-black" id="cameraPreview">
+      <div className="absolute top-0 left-0 right-0 flex justify-between p-4 z-10">
+        <Button
+          onClick={closeCamera}
+          variant="outline"
+          className="rounded-full p-2"
+          type="button"
+        >
+          <X className="h-6 w-6" />
+        </Button>
+        <Button
+          onClick={flipCamera}
+          variant="outline"
+          className="rounded-full p-2"
+          type="button"
+        >
+          <FlipVertical className="h-6 w-6" />
+        </Button>
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
+        <div className="flex justify-center mb-4">
           <Button
             onClick={capturePhoto}
             variant="outline"
-            className="rounded-full p-2 mb-4"
+            className="rounded-full p-4"
             type="button"
           >
-            <CameraIcon className="h-6 w-6" />
+            <CameraIcon className="h-8 w-8" />
           </Button>
-          <div className="flex flex-row overflow-x-auto w-full">
+        </div>
+        <div className="flex justify-between items-center">
+          <div className="flex-1 overflow-x-auto whitespace-nowrap">
             {capturedPhotos.map((photo, index) => (
               <img
                 key={index}
                 src={photo}
                 alt={`Captured ${index + 1}`}
-                className="h-16 w-16 object-cover mr-2 rounded"
+                className="h-16 w-16 object-cover inline-block mr-2 rounded"
               />
             ))}
           </div>
+          {capturedPhotos.length > 0 && (
+            <Button
+              onClick={finishCapture}
+              variant="outline"
+              className="ml-4"
+              type="button"
+            >
+              Finish
+            </Button>
+          )}
         </div>
       </div>
-    );
-  }
-
-  return (
-    <Button
-      onClick={openCamera}
-      variant="outline"
-      className="w-full"
-      type="button"
-    >
-      <CameraIcon className="mr-2 h-4 w-4" />
-      Open Camera
-    </Button>
+    </div>
   );
 };
 
