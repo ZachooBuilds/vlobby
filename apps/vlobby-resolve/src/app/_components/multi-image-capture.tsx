@@ -26,20 +26,20 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
       parent: 'cameraPreview',
       className: 'cameraPreview',
       disableAudio: true,
-      width: window.innerWidth,
-      height: window.innerHeight,
-      toBack: true, // Changed from true to false
+      width: window.screen.width,
+      height: window.screen.height,
+      toBack: true,
     };
 
     try {
-      setIsCameraOpen(true); // Set this to true before starting the camera
-      // Wait for the next render cycle to ensure the cameraPreview element exists
+      // Add a small delay before starting the camera
       setTimeout(async () => {
         await CameraPreview.start(cameraPreviewOptions);
-      }, 0);
+        setIsCameraOpen(true);
+      }, 100);
     } catch (error) {
       console.error('Error opening camera:', error);
-      setIsCameraOpen(false); // Reset if there's an error
+      setIsCameraOpen(false);
     }
   };
 
@@ -88,7 +88,7 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
 
   if (isCameraOpen) {
     return (
-      <div className="relative h-screen w-full" id="cameraPreview">
+      <div className="relative h-screen w-full bg-transparent" id="cameraPreview">
         <div className="absolute top-4 left-4 right-4 flex justify-between z-10">
           <Button
             onClick={flipCamera}
