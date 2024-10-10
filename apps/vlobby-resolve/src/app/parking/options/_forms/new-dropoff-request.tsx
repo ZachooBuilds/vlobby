@@ -380,7 +380,7 @@ export default function NewDropoffRequestForm() {
         />
 
         <div className="flex w-full flex-col space-y-4">
-          <MultiPhotoCapture onCapture={handleCapturedPhotos} />
+          {/* <MultiPhotoCapture onCapture={handleCapturedPhotos} /> */}
         </div>
 
         <Button type="submit" disabled={isLoading}>

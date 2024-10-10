@@ -15,9 +15,24 @@ const MultiPhotoCapture = ({ onCapture, onClose }: MultiPhotoCaptureProps) => {
   const [capturedPhotos, setCapturedPhotos] = useState<string[]>([]);
 
   useEffect(() => {
-    openCamera();
+    let isMounted = true;
+
+    const initCamera = async () => {
+      try {
+        await openCamera();
+      } catch (error) {
+        console.error('Failed to initialize camera:', error);
+        if (isMounted) onClose();
+      }
+    };
+
+    initCamera();
+
     return () => {
-      CameraPreview.stop();
+      isMounted = false;
+      CameraPreview.stop().catch(error => 
+        console.error('Error stopping camera on unmount:', error)
+      );
     };
   }, []);
 
