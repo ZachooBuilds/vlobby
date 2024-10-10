@@ -150,6 +150,10 @@ nextjs-portal {
   border-radius: 0.25rem !important;
 }
 
+.bg-transparent {
+--background: transparent !important;
+}
+
 .fc {
   width: 100%;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
@@ -15,10 +15,19 @@ import {
 } from '@repo/ui/components/ui/tabs';
 import { FileUploadWithPreview } from '../../_components/file-upload-form-field';
 import NewDropoffRequestForm from './_forms/new-dropoff-request';
+import MultiImageCapture from '../../_components/multi-image-capture';
 
 export default function OptionsPage() {
   const router = useRouter();
   const { isLoaded, isSignedIn } = useUser();
+
+  const [currentFiles, setCurrentFiles] = useState<File[]>([]);
+
+  const handleCapturedPhotos = (capturedFiles: File[]) => {
+    // const currentFiles = form.getValues('evidenceImages') || [];
+    const updatedFiles = [...currentFiles, ...capturedFiles];
+    // form.setValue('evidenceImages', updatedFiles);
+  };
 
   return (
     <div className="flex flex-col h-screen">
@@ -44,6 +53,7 @@ export default function OptionsPage() {
             </TabsContent>
           </Tabs>
         </div>
+        <MultiImageCapture onCapture={handleCapturedPhotos} />
       </div>
       <NavigationBar />
     </div>
