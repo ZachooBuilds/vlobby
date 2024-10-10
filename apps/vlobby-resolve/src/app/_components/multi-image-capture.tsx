@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonButton, IonContent, IonIcon } from '@ionic/react';
+import { Button } from '@repo/ui/components/ui/button';
 import { CameraIcon, FlipVertical } from 'lucide-react';
 import {
   CameraPreview,
@@ -26,20 +26,18 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
       parent: 'cameraPreview',
       className: 'cameraPreview',
       disableAudio: true,
-      width: window.screen.width,
-      height: window.screen.height,
+      width: window.innerWidth,
+      height: window.innerHeight,
       toBack: true,
+      enableHighResolution: true, // Add this line
     };
 
     try {
-      setIsCameraOpen(true); // Set this to true before starting the camera
-      // Wait for the next render cycle to ensure the cameraPreview element exists
-      setTimeout(async () => {
-        await CameraPreview.start(cameraPreviewOptions);
-      }, 0);
+      setIsCameraOpen(true);
+      await CameraPreview.start(cameraPreviewOptions);
     } catch (error) {
       console.error('Error opening camera:', error);
-      setIsCameraOpen(false); // Reset if there's an error
+      setIsCameraOpen(false);
     }
   };
 
@@ -87,55 +85,57 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
 
   if (isCameraOpen) {
     return (
-      <IonContent className="camera-preview-content">
-        <div className="relative h-screen w-full" id="cameraPreview">
-          <div className="absolute top-4 left-4 right-4 flex justify-between z-10">
-            <IonButton
-              onClick={flipCamera}
-              fill="outline"
-              shape="round"
-              size="small"
-            >
-              <FlipVertical />
-            </IonButton>
-            <IonButton
-              onClick={finishCapture}
-              fill="outline"
-              shape="round"
-              size="small"
-            >
-              Finish
-            </IonButton>
-          </div>
-          <IonButton
-            onClick={capturePhoto}
-            fill="outline"
-            shape="round"
-            size="large"
-            className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10"
+      <div className="relative h-screen w-full" id="cameraPreview">
+        <div className="absolute top-4 left-4 right-4 flex justify-between z-10">
+          <Button
+            onClick={flipCamera}
+            variant="outline"
+            className="rounded-full p-2"
+            type="button"
           >
-            <CameraIcon />
-          </IonButton>
-          <div className="absolute bottom-4 left-4 right-4 flex overflow-x-auto z-10">
-            {capturedPhotos.map((photo, index) => (
-              <img
-                key={index}
-                src={photo}
-                alt={`Captured ${index + 1}`}
-                className="h-16 w-16 object-cover mr-2 rounded"
-              />
-            ))}
-          </div>
+            <FlipVertical className="h-6 w-6" />
+          </Button>
+          <Button
+            onClick={finishCapture}
+            variant="outline"
+            className="rounded-full p-2"
+            type="button"
+          >
+            Finish
+          </Button>
         </div>
-      </IonContent>
+        <Button
+          onClick={capturePhoto}
+          variant="outline"
+          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 rounded-full p-2"
+          type="button"
+        >
+          <CameraIcon className="h-6 w-6" />
+        </Button>
+        <div className="absolute bottom-4 left-4 right-4 flex overflow-x-auto z-10">
+          {capturedPhotos.map((photo, index) => (
+            <img
+              key={index}
+              src={photo}
+              alt={`Captured ${index + 1}`}
+              className="h-16 w-16 object-cover mr-2 rounded"
+            />
+          ))}
+        </div>
+      </div>
     );
   }
 
   return (
-    <IonButton onClick={openCamera} fill="outline" expand="block">
-      <CameraIcon />
+    <Button
+      onClick={openCamera}
+      variant="outline"
+      className="w-full"
+      type="button"
+    >
+      <CameraIcon className="mr-2 h-4 w-4" />
       Open Camera
-    </IonButton>
+    </Button>
   );
 };
 

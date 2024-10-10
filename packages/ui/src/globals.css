@@ -154,6 +154,18 @@ nextjs-portal {
 --background: transparent !important;
 }
 
+.cameraPreview {
+  background-color: transparent !important;
+}
+
+#app {
+  background-color: transparent !important;
+}
+
+ion-content {
+  --background: transparent !important;
+}
+
 .fc {
   width: 100%;
 }

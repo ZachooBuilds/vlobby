@@ -39,8 +39,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       lang="en"
       className={`${GeistSans.variable}`}
     >
-      <body className="h-screen w-screen overflow-hidden">
-        <div className="flex h-full w-full flex-col bg-background">
+      <body className="h-screen w-screen overflow-hidden bg-transparent">
+        <div className="flex h-full w-full flex-col bg-transparent">
           <ThemeProvider
             attribute="class"
             defaultTheme="light"
