@@ -52,8 +52,8 @@ export default function OptionsPage() {
               </div>
             </TabsContent>
           </Tabs>
+          <MultiImageCapture onCapture={handleCapturedPhotos} />
         </div>
-        <MultiImageCapture onCapture={handleCapturedPhotos} />
       </div>
       <NavigationBar />
     </div>
