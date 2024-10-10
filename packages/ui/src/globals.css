@@ -154,16 +154,23 @@ nextjs-portal {
 --background: transparent !important;
 }
 
-.cameraPreview {
-  background-color: transparent !important;
-}
-
-#app {
-  background-color: transparent !important;
-}
-
 ion-content {
-  --background: transparent !important;
+   --background: transparent !important;
+}
+.camera-preview {
+  position: absolute;
+  z-index: 1;
+}
+.overlay-hole {
+  position: absolute;
+  width: 500;
+  height: 500;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #BFBFBF;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.2);
+  z-index: 999999998;
 }
 
 .fc {

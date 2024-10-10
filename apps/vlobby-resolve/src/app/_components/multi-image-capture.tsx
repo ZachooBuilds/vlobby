@@ -23,8 +23,8 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
   const openCamera = async () => {
     const cameraPreviewOptions: CameraPreviewOptions = {
       position: 'rear',
-      parent: 'cameraPreview',
-      className: 'cameraPreview',
+      parent: 'divCameraPreviewContent',
+      className: 'camera-preview',
       disableAudio: true,
       width: window.innerWidth,
       height: window.innerHeight,
