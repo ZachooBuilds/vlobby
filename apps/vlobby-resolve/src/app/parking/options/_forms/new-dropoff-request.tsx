@@ -105,8 +105,6 @@ export default function NewDropoffRequestForm({
 
   const router = useRouter();
 
-  // const [selectedSpotId, setSelectedSpotId] = useState<string | null>(null);
-
   const onSubmit = async (data: DropoffRequest) => {
     setIsLoading(true);
     console.log('Form Data:', data);
