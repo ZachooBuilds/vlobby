@@ -30,7 +30,7 @@ const MultiPhotoCapture = ({ onCapture, onClose }: MultiPhotoCaptureProps) => {
 
     return () => {
       isMounted = false;
-      CameraPreview.stop().catch(error => 
+      CameraPreview.stop().catch((error) =>
         console.error('Error stopping camera on unmount:', error)
       );
     };
@@ -44,7 +44,7 @@ const MultiPhotoCapture = ({ onCapture, onClose }: MultiPhotoCaptureProps) => {
       disableAudio: true,
       width: window.innerWidth,
       height: window.innerHeight,
-      toBack: false,
+      toBack: true,
     };
 
     try {
@@ -58,7 +58,7 @@ const MultiPhotoCapture = ({ onCapture, onClose }: MultiPhotoCaptureProps) => {
   const capturePhoto = async () => {
     try {
       console.log('button clicked to capture');
-      const result = await CameraPreview.capture({ quality: 90 });
+      const result = await CameraPreview.capture({ quality: 70 });
       if (result.value) {
         const dataUrl = `data:image/jpeg;base64,${result.value}`;
         setCapturedPhotos((prev) => [...prev, dataUrl]);
@@ -99,7 +99,7 @@ const MultiPhotoCapture = ({ onCapture, onClose }: MultiPhotoCaptureProps) => {
 
   return (
     <div className="fixed inset-0 z-50 bg-black" id="cameraPreview">
-      <div className="absolute top-0 left-0 right-0 flex justify-between p-4 z-10">
+      <div className="absolute top-10 left-4 right-4 flex justify-between p-4 z-10">
         <Button
           onClick={closeCamera}
           variant="outline"
@@ -117,7 +117,7 @@ const MultiPhotoCapture = ({ onCapture, onClose }: MultiPhotoCaptureProps) => {
           <FlipVertical className="h-6 w-6" />
         </Button>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
+      <div className="absolute bottom-120 left-0 right-0 p-4 z-10">
         <div className="flex justify-center mb-4">
           <Button
             onClick={capturePhoto}
