@@ -24,8 +24,8 @@ export default function NavigationBar() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-6 left-4 right-4 shadow-lg rounded rounded-md shadow-foreground-muted/10 bg-background border-muted overflow-hidden">
-      <div className="flex flex-row justify-around items-center p-2 bg-background">
+    <nav className="fixed bottom-6 left-4 right-4 shadow-lg rounded rounded-md shadow-foreground-muted/10 bg-white border-muted overflow-hidden">
+      <div className="flex flex-row justify-around items-center p-2 bg-white">
         {navigationItems.map((item) => (
           <Link key={item.name} href={item.href} passHref>
             <div className="p-4">
