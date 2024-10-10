@@ -98,7 +98,7 @@ const MultiPhotoCapture = ({ onCapture, onClose }: MultiPhotoCaptureProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black" id="cameraPreview">
+    <div className="fixed inset-0 z-50 h-full" id="cameraPreview">
       <div className="absolute top-10 left-4 right-4 flex justify-between p-4 z-10">
         <Button
           onClick={closeCamera}
