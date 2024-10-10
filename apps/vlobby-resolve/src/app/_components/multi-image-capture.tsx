@@ -26,10 +26,12 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
       parent: 'cameraPreview',
       className: 'cameraPreview',
       disableAudio: true,
-      width: window.innerWidth,
-      height: window.innerHeight,
-      toBack: true,
-      enableHighResolution: true, // Add this line
+      width: 300, // Set a fixed width
+      height: 400, // Set a fixed height
+      x: 0, // X position of the preview
+      y: 0, // Y position of the preview
+      toBack: false, // Change to false to keep it in front
+      enableHighResolution: true,
     };
 
     try {
@@ -85,20 +87,20 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
 
   if (isCameraOpen) {
     return (
-      <div className="relative h-screen w-full" id="cameraPreview">
-        <div className="absolute top-4 left-4 right-4 flex justify-between z-10">
+      <div className="relative w-[300px] h-[400px] mx-auto my-4" id="cameraPreview">
+        <div className="absolute top-2 left-2 right-2 flex justify-between z-10">
           <Button
             onClick={flipCamera}
             variant="outline"
-            className="rounded-full p-2"
+            className="rounded-full p-1"
             type="button"
           >
-            <FlipVertical className="h-6 w-6" />
+            <FlipVertical className="h-4 w-4" />
           </Button>
           <Button
             onClick={finishCapture}
             variant="outline"
-            className="rounded-full p-2"
+            className="rounded-full p-1 text-sm"
             type="button"
           >
             Finish
@@ -107,18 +109,18 @@ const MultiPhotoCapture = ({ onCapture }: MultiPhotoCaptureProps) => {
         <Button
           onClick={capturePhoto}
           variant="outline"
-          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 rounded-full p-2"
+          className="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-10 rounded-full p-1"
           type="button"
         >
-          <CameraIcon className="h-6 w-6" />
+          <CameraIcon className="h-4 w-4" />
         </Button>
-        <div className="absolute bottom-4 left-4 right-4 flex overflow-x-auto z-10">
+        <div className="absolute bottom-2 left-2 right-2 flex overflow-x-auto z-10">
           {capturedPhotos.map((photo, index) => (
             <img
               key={index}
               src={photo}
               alt={`Captured ${index + 1}`}
-              className="h-16 w-16 object-cover mr-2 rounded"
+              className="h-12 w-12 object-cover mr-1 rounded"
             />
           ))}
         </div>
