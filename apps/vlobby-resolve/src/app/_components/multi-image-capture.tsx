@@ -99,7 +99,7 @@ const MultiPhotoCapture = ({ onCapture, onClose }: MultiPhotoCaptureProps) => {
 
   return (
     <div className="fixed inset-0" id="cameraPreview">
-      <div className="absolute top-4 left-4 right-4 flex justify-between z-10">
+      <div className="absolute top-10 left-4 right-4 flex justify-between z-10">
         <Button
           onClick={closeCamera}
           variant="outline"
@@ -118,16 +118,6 @@ const MultiPhotoCapture = ({ onCapture, onClose }: MultiPhotoCaptureProps) => {
         </Button>
       </div>
       <div className="absolute bottom-4 left-0 right-0 p-4 z-10">
-        <div className="flex justify-center mb-4">
-          <Button
-            onClick={capturePhoto}
-            variant="outline"
-            className="rounded-full p-4"
-            type="button"
-          >
-            <CameraIcon className="h-8 w-8" />
-          </Button>
-        </div>
         <div className="flex justify-between items-center">
           <div className="flex-1 overflow-x-auto whitespace-nowrap">
             {capturedPhotos.map((photo, index) => (
@@ -149,6 +139,16 @@ const MultiPhotoCapture = ({ onCapture, onClose }: MultiPhotoCaptureProps) => {
               Finish
             </Button>
           )}
+        </div>
+        <div className="flex justify-center mb-4">
+          <Button
+            onClick={capturePhoto}
+            variant="outline"
+            className="rounded-full p-4"
+            type="button"
+          >
+            <CameraIcon className="h-8 w-8" />
+          </Button>
         </div>
       </div>
     </div>
