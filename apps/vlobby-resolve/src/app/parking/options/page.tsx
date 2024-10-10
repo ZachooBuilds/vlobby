@@ -33,7 +33,7 @@ export default function OptionsPage() {
     <div className="flex flex-col h-screen">
       <div className="flex-grow overflow-auto">
         <div className="flex flex-col gap-4 items-start justify-start pt-16 p-4 pb-[120px] w-full">
-          <Tabs defaultValue="search" className="w-full bg-background">
+          <Tabs defaultValue="search" className="w-full bg-white">
             <TabsList className="grid w-full grid-cols-2 h-14">
               <TabsTrigger value="search" className="h-full">
                 Request Vehicle
@@ -57,7 +57,9 @@ export default function OptionsPage() {
           </div>
         </div>
       </div>
-      <NavigationBar />
+      <div className="w-full bg-white">
+        <NavigationBar />
+      </div>
     </div>
   );
 }
