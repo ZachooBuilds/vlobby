@@ -87,7 +87,7 @@ export default function MaintenancePage() {
             {selectedIssue ? (
               <Button onClick={handleIssueEdit}>Edit Issue</Button>
             ) : (
-              <Link href="/maintenance/new-issue" passHref>
+              <Link href="/maintenance/issues/new-issue" passHref>
                 <Button>Report Issue</Button>
               </Link>
             )}
