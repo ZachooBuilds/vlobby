@@ -16,9 +16,9 @@ import WorkOrderUpsertForm from '../../work-orders/_forms/work-order-upsert-form
 import { TaskCard } from './_components/work-order-summary';
 import { Id } from '@repo/backend/convex/_generated/dataModel';
 import {
-  AssignedUser,
   AssignedUserWithFormDetails,
   IssueFormDataWithNames,
+  UserCoreDetails,
   WorkOrderSummaryCardData,
 } from '../../../lib/app-data/app-types';
 import useModalStore from '../../../lib/global-state/modal-state';
@@ -65,8 +65,6 @@ type IssueDetailsPageProps = {
  */
 export default function IssueDetailsPage({ params }: IssueDetailsPageProps) {
   const issueId = params.id;
-  const [assignedUser, setAssignedUser] = useState<AssignedUser>();
-  const [creationUser, setCreationUser] = useState<AssignedUser>();
   const openModal = useModalStore((state) => state.openModal);
 
   // Retrieve data from convex backend
@@ -78,39 +76,22 @@ export default function IssueDetailsPage({ params }: IssueDetailsPageProps) {
   const issueCreationTime = issueDetails
     ? format(new Date(issueDetails._creationTime), 'dd/MM/yyyy h:mm a')
     : '';
-  useEffect(() => {
-    console.log('useEffect triggered with issueDetails:', issueDetails);
-    if (issueDetails) {
-      const fetchUsers = async () => {
-        try {
-          if (issueDetails.assignedToId) {
-            console.log('Fetching assigned user with ID:', issueDetails.assignedToId);
-            const assignedUser = await getUser(issueDetails.assignedToId);
-            console.log('Assigned user fetched:', assignedUser);
-            setAssignedUser(assignedUser);
-          }
-          if (issueDetails.userId) {
-            console.log('Fetching creation user with ID:', issueDetails.userId);
-            const creationUser = await getUser(issueDetails.userId);
-            console.log('Creation user fetched:', creationUser);
-            setCreationUser(creationUser);
-          }
-        } catch (error) {
-          console.error('Error fetching users:', error);
-        }
-      };
 
-      void fetchUsers();
-    }
-  }, [issueDetails]);
+  const creationUser = useQuery(api.allUsers.getUserById, {
+    userId: issueDetails?.userId ?? '',
+  }) as UserCoreDetails;
+
+  const assignedUser = useQuery(api.allUsers.getUserById, {
+    userId: issueDetails?.assignedToId ?? '',
+  }) as UserCoreDetails;
 
   const completeIssueDetails: AssignedUserWithFormDetails = {
     ...issueDetails,
-    creationFirstName: creationUser?.assignedFirstName ?? '',
-    creationLastName: creationUser?.assignedLastName ?? '',
-    creationEmail: creationUser?.assignedEmail ?? '',
-    assignedFirstName: assignedUser?.assignedFirstName ?? '',
-    assignedLastName: assignedUser?.assignedLastName ?? '',
+    creationFirstName: creationUser?.firstname ?? '',
+    creationLastName: creationUser?.lastname ?? '',
+    creationEmail: creationUser?.email ?? '',
+    assignedFirstName: assignedUser?.firstname ?? '',
+    assignedLastName: assignedUser?.lastname ?? '',
   };
 
   const images = issueDetails?.files?.map((file) => file.url) ?? [];
@@ -146,8 +127,8 @@ export default function IssueDetailsPage({ params }: IssueDetailsPageProps) {
               space={issueDetails.linkedAssetName}
               floor={issueDetails.floor ?? ''}
               location={issueDetails.locationName ?? ''}
-              loggedBy={`${creationUser?.assignedFirstName} ${creationUser?.assignedLastName}`}
-              email={creationUser?.assignedEmail ?? ''}
+              loggedBy={`${creationUser?.firstname} ${creationUser?.lastname}`}
+              email={creationUser?.email ?? ''}
             />
           </div>
 
@@ -160,8 +141,8 @@ export default function IssueDetailsPage({ params }: IssueDetailsPageProps) {
               tags={issueDetails.tags.map((tag) => tag.label)}
               priority={issueDetails.priority}
               assignedTo={
-                assignedUser?.assignedFirstName
-                  ? `${assignedUser.assignedFirstName} ${assignedUser.assignedLastName}`
+                assignedUser?.firstname
+                  ? `${assignedUser.firstname} ${assignedUser.lastname}`
                   : 'Unassigned'
               }
               description={issueDetails.description}

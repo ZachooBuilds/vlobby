@@ -258,7 +258,7 @@ export type WorkOrderSummaryCardData = {
   priority: string;
 };
 
-export type AssignedUserWithWorkOrderDetails = AssignedUser &
+export type AssignedUserWithWorkOrderDetails = UserCoreDetails &
   WorkOrderFormData & {
     creationFirstName?: string;
     creationLastName?: string;
@@ -278,8 +278,10 @@ export type WorkOrderFormDataWithNames = WorkOrderFormData & {
   buildingName: string;
 };
 
-export type AssignedUserWithFormDetails = AssignedUser &
+export type AssignedUserWithFormDetails = UserCoreDetails &
   IssueFormData & {
+    assignedFirstName?: string;
+    assignedLastName?: string;
     creationFirstName?: string;
     creationLastName?: string;
     creationEmail?: string;
@@ -306,10 +308,10 @@ export type IssueSummaryCardData = {
 };
 
 
-export type AssignedUser = {
-  assignedFirstName?: string;
-  assignedLastName?: string;
-  assignedEmail?: string;
+export type UserCoreDetails = {
+  firstname?: string;
+  lastname?: string;
+  email?: string;
 };
 
 export type ChatSummary = {
