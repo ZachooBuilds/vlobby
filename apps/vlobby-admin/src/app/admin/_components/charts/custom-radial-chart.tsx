@@ -1,12 +1,22 @@
+'use client';
 
-"use client";
+import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from 'recharts';
+import { colorsList } from '../../../lib/app-data/static-data';
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@repo/ui/components/ui/chart';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@repo/ui/components/ui/card';
 
-import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts";
-import { colorsList } from "../../../lib/app-data/static-data";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@repo/ui/components/ui/chart";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
-
-export const description = "A radial chart with stacked sections";
+export const description = 'A radial chart with stacked sections';
 
 export interface RadialChartDataItem {
   label: string;
@@ -22,15 +32,14 @@ interface RadialChartProps {
 }
 
 const getColorForIndex = (index: number) => {
-  return colorsList[index % colorsList.length]?.hex ?? "#000000";
+  return colorsList[index % colorsList.length]?.hex ?? '#000000';
 };
 
 export function RadialChart({ data, title, description }: RadialChartProps) {
   const chartData = [
     {
       title: title,
-      [data[0]?.key ?? ""]: data[0]?.value ?? 0,
-      [data[1]?.key ?? ""]: data[1]?.value ?? 0,
+      ...Object.fromEntries(data.map((item) => [item.key, item.value])),
     },
   ];
 
@@ -48,7 +57,7 @@ export function RadialChart({ data, title, description }: RadialChartProps) {
     data.map((item, index) => [
       item.key,
       { label: item.label, color: getColorForIndex(index) },
-    ]),
+    ])
   );
 
   console.log(chartConfig);
@@ -83,7 +92,7 @@ export function RadialChart({ data, title, description }: RadialChartProps) {
             <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
               <Label
                 content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                  if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
                     return (
                       <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle">
                         <tspan

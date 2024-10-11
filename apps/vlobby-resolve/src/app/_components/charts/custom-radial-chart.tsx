@@ -39,8 +39,7 @@ export function RadialChart({ data, title, description }: RadialChartProps) {
   const chartData = [
     {
       title: title,
-      [data[0]?.key ?? '']: data[0]?.value ?? 0,
-      [data[1]?.key ?? '']: data[1]?.value ?? 0,
+      ...Object.fromEntries(data.map(item => [item.key, item.value])),
     },
   ];
 
