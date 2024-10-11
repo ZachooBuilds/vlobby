@@ -24,7 +24,6 @@ import { HammerIconPath } from '../../../../public/svg/icons';
 import NoData from '../../_components/no-data';
 import NavigationBarMaintenance from '../../_components/navigation-maintenance';
 
-
 export default function MaintenancePage() {
   // Fetch all occupant issues
   const issues = useQuery(api.tickets.getAllAssignedIssues) as
@@ -80,14 +79,8 @@ export default function MaintenancePage() {
                 </div>
                 <div className="flex flex-col gap-2">
                   <h2 className="text-xl font-semibold">
-                    {selectedIssue ? 'Issue Details' : 'Maintenance Issues'}
+                    {selectedIssue ? 'Issue Details' : 'Assigned Jobs'}
                   </h2>
-                  {!selectedIssue && (
-                    <Badge
-                      size="xs"
-                      color="purple"
-                    >{`${openIssues?.length || 0} Open Issues`}</Badge>
-                  )}
                 </div>
               </div>
             </div>
@@ -139,7 +132,7 @@ export default function MaintenancePage() {
             <div className="w-full">
               {/* Open Issues */}
               <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-4">Open Issues</h2>
+                <h2 className="text-xl font-semibold mb-4">Open Jobs</h2>
                 {issues === undefined ? (
                   <div className="flex justify-center items-center h-40">
                     <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -167,7 +160,7 @@ export default function MaintenancePage() {
               <div>
                 <div className="flex flex-row items-center gap-4 mb-4">
                   <CheckCircle className="w-5 h-5" />
-                  <h2 className="text-xl font-semibold">Resolved Issues</h2>
+                  <h2 className="text-xl font-semibold">Resolved Jobs</h2>
                 </div>
                 {issues === undefined ? (
                   <div className="flex justify-center items-center h-40">
