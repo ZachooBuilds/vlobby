@@ -447,6 +447,70 @@ export const getAllOccupantIssues = query({
   },
 });
 
+// Get all issues for the current occupant with detailed information
+export const getAllAssignedIssues = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const userId = identity.subject;
+    const orgId = identity.orgId;
+
+    console.log('userId', userId);
+
+    const issues = await ctx.db
+      .query('issues')
+      .filter((q) => q.eq(q.field('assignedToId'), userId))
+      .collect();
+
+    console.log('Issues', issues);
+
+    const enhancedIssues = await Promise.all(
+      issues.map(async (issue) => {
+        const location = issue.locationId
+          ? await ctx.db.get(issue.locationId)
+          : null;
+
+        let linkedAsset = null;
+        let buildingName = null;
+
+        if (issue.linkedAssetId) {
+          if (issue.linkedAssetType === 'space') {
+            linkedAsset = await ctx.db.get(issue.linkedAssetId);
+          } else if (issue.linkedAssetType === 'facility') {
+            linkedAsset = await ctx.db.get(issue.linkedAssetId);
+          }
+        }
+
+        if (issue.buildingId) {
+          const building = await ctx.db.get(issue.buildingId);
+          buildingName = building ? building.name : null;
+        }
+        // Transform the files array
+        const transformedFiles = await Promise.all(
+          (issue.files || []).map(async (storageId: Id<'_storage'>) => ({
+            url: await ctx.storage.getUrl(storageId),
+            storageId: storageId,
+          }))
+        );
+
+        return {
+          ...issue,
+          files: transformedFiles,
+          locationName: location ? location.name : null,
+          linkedAssetName: linkedAsset
+            ? issue.linkedAssetType === 'space'
+              ? linkedAsset.spaceName
+              : linkedAsset.name
+            : null,
+          buildingName,
+        };
+      })
+    );
+
+    return enhancedIssues;
+  },
+});
+
 export const getAllIssuesWithNames = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();

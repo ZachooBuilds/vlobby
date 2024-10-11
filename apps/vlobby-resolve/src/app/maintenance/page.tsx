@@ -1,36 +1,12 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { useUser } from '@clerk/clerk-react';
-import { useRouter } from 'next/navigation';
-import { useQuery } from 'convex/react';
-import { api } from '@repo/backend/convex/_generated/api';
-import NavigationBar from '../_components/navigation';
+import React from 'react';
 import { Loader2 } from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@repo/ui/components/ui/select';
-import { viewOptions } from '../../lib/staticData';
 import ViewSwitcher from '../_components/view-switcher';
+import NavigationBarMaintenance from '../_components/navigation-maintenance';
+import UnderConstructionMessage from '../_components/under-construction';
 
-export default function HomePage() {
-  const router = useRouter();
-  const buildings = useQuery(api.site.getAllSites);
-  const { isLoaded, isSignedIn } = useUser();
-
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push('/');
-    }
-  }, [isLoaded, isSignedIn, router]);
-
-  if (!isLoaded) {
-    return <LoadingSpinner />;
-  }
+export default function SettingsPage() {
 
   return (
     <div className="flex flex-col h-screen">
@@ -39,10 +15,10 @@ export default function HomePage() {
           <div className="w-full mb-4 w-full">
             <ViewSwitcher />
           </div>
-          maintenance page
+          <UnderConstructionMessage />
         </div>
       </div>
-      <NavigationBar />
+      <NavigationBarMaintenance />
     </div>
   );
 }

@@ -298,23 +298,25 @@ export default function NewDropoffRequestForm({
               <FormLabel>Parking Type</FormLabel>
               <FormControl>
                 <div className="grid grid-cols-1 gap-4">
-                  <Card
-                    className={cn(
-                      'cursor-pointer hover:bg-accent',
-                      !field.value ? 'border-primary' : 'border-border'
-                    )}
-                    onClick={() => {
-                      field.onChange(false);
-                      // No need to clear allocationId here as it's handled in the effect
-                    }}
-                  >
-                    <CardContent className="p-4">
-                      <h3 className="font-semibold">Allocated Parking</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Use pre-allocated parking space
-                      </p>
-                    </CardContent>
-                  </Card>
+                  {getAllocations && getAllocations.length > 0 && (
+                    <Card
+                      className={cn(
+                        'cursor-pointer hover:bg-accent',
+                        !field.value ? 'border-primary' : 'border-border'
+                      )}
+                      onClick={() => {
+                        field.onChange(false);
+                        // No need to clear allocationId here as it's handled in the effect
+                      }}
+                    >
+                      <CardContent className="p-4">
+                        <h3 className="font-semibold">Allocated Parking</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Use pre-allocated parking space
+                        </p>
+                      </CardContent>
+                    </Card>
+                  )}
                   <Card
                     className={cn(
                       'cursor-pointer hover:bg-accent',

@@ -35,7 +35,12 @@ import { Button } from '@repo/ui/components/ui/button';
 import { Switch } from '@repo/ui/components/ui/switch';
 import { Badge } from '@repo/ui/components/ui/badge';
 import { toast } from '@repo/ui/hooks/use-toast';
-import { Level, ParkingLog, ParkingSpot, ValueLabelPair } from '../../../../lib/app-types';
+import {
+  Level,
+  ParkingLog,
+  ParkingSpot,
+  ValueLabelPair,
+} from '../../../../lib/app-types';
 import useDrawerStore from '../../../../lib/global-state';
 import ActiveParkSummary from './active-park-summary';
 
@@ -89,7 +94,7 @@ function LevelSelection({
   return (
     <div className="flex flex-col gap-4 w-full">
       {/* Location selection */}
-      <div className="w-full">
+      <div className="w-full z-10">
         <Select
           value={selectedLocationId ?? undefined}
           onValueChange={(value) =>
@@ -110,7 +115,7 @@ function LevelSelection({
       </div>
 
       {/* Level selection */}
-      <div className="w-full">
+      <div className="w-full z-10">
         <Select
           value={selectedLevelId ?? undefined}
           onValueChange={(value) => {
@@ -291,8 +296,6 @@ export default function CarParkMap({
     activeParkingLogs.some((log) => log.parkId === spotId);
 
   const handleSpotSelect = (spot: ParkingSpot) => {
-
-
     // If we are in selecting mode and the spot is not occupied
     if (isSelecting && !isSpotOccupied(spot._id!)) {
       onSpotSelect!(spot._id!);

@@ -5,6 +5,7 @@ import NavigationBar from '../_components/navigation';
 import { SettingIconPath } from '../../../public/svg/icons';
 import { SignOutButton } from '../(auth)/_components/sign-out-button';
 import { ModeToggle } from '../_components/dark-mode-toggle';
+import NavigationBarMaintenance from '../_components/navigation-maintenance';
 
 export default function SettingsPage() {
   return (
@@ -22,7 +23,7 @@ export default function SettingsPage() {
           <ModeToggle />
         </div>
       </div>
-      <NavigationBar />
+      <NavigationBarMaintenance />
     </div>
   );
 }

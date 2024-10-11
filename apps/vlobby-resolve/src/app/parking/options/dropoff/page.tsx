@@ -59,7 +59,7 @@ export default function DropoffPage() {
           </Card>
         </div>
       </div>
-      <div className="w-full bg-white">
+      <div className="w-full bg-white z-1000">
         <NavigationBar />
       </div>
     </div>

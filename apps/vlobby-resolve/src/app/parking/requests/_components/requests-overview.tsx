@@ -152,7 +152,7 @@ export default function RequestsOverview() {
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex flex-col gap-4 w-full">
       <div className="flex flex-row items-center gap-4">
         <div className="w-5 h-5 fill-foreground">
           <ParkIconPath />

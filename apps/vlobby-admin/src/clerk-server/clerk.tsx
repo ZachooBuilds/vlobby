@@ -53,7 +53,8 @@ export async function getOrgUsers() {
   );
 
   const filteredMembers = members.data.filter(
-    (member) => member.role === 'org:admin' || member.role === 'org:member'
+    (member) =>
+      member.role === 'org:admin' || member.role === 'org:resolve_user'
   );
 
   const useValueLabelPairs = filteredMembers.map((member) => ({

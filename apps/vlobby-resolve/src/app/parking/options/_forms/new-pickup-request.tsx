@@ -49,11 +49,12 @@ import {
   CardTitle,
 } from '@repo/ui/components/ui/card';
 import { ParkIconPath } from '../../../../../public/svg/icons';
+import { useRouter } from 'next/navigation';
 
 export default function NewRequestForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-
+  const router = useRouter();
   const upsertRequestMutation = useMutation(api.requests.upsertRequest);
 
   const getVehicles = useQuery(api.vehicles.getAllVehicleValueLabelPair, {
@@ -87,6 +88,7 @@ export default function NewRequestForm() {
         description: 'The request has been successfully saved.',
       });
       form.reset();
+      router.push('/parking/requests');
     } catch (error) {
       setIsLoading(false);
       toast({
