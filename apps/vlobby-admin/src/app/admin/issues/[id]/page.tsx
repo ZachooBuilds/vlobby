@@ -79,36 +79,26 @@ export default function IssueDetailsPage({ params }: IssueDetailsPageProps) {
     ? format(new Date(issueDetails._creationTime), 'dd/MM/yyyy h:mm a')
     : '';
 
-  // Fetch users from clerk
   useEffect(() => {
-    // Get the assigned user details from clerk
-    const fetchAssignedUser = async () => {
-      if (issueDetails?.assignedToId) {
+    if (issueDetails) {
+      const fetchUsers = async () => {
         try {
-          const assignedUser = await getUser(issueDetails.assignedToId);
-          setAssignedUser(assignedUser);
+          if (issueDetails.assignedToId) {
+            const assignedUser = await getUser(issueDetails.assignedToId);
+            setAssignedUser(assignedUser);
+          }
+          if (issueDetails.userId) {
+            const creationUser = await getUser(issueDetails.userId);
+            setCreationUser(creationUser);
+          }
         } catch (error) {
-          console.error('Error fetching assigned user:', error);
+          console.error('Error fetching users:', error);
         }
-      }
-    };
-    // Get the creation user details from clerk
-    const fetchCreationUser = async () => {
-      if (issueDetails?.userId) {
-        try {
-          const creationUser = await getUser(issueDetails.userId);
-          setCreationUser(creationUser);
-        } catch (error) {
-          console.error('Error fetching creation user:', error);
-        }
-      }
-    };
+      };
 
-    void fetchAssignedUser();
-    void fetchCreationUser();
-  }, [issueDetails?.assignedToId]);
-
-  console.log('creationUser:', creationUser);
+      void fetchUsers();
+    }
+  }, [issueDetails]);
 
   const completeIssueDetails: AssignedUserWithFormDetails = {
     ...issueDetails,
