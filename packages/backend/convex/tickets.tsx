@@ -447,6 +447,132 @@ export const getAllOccupantIssues = query({
   },
 });
 
+export const getActiveIssuesByPriority = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    // Get all active issues for the organization
+    const activeIssues = await ctx.db
+      .query('issues')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .filter((q) =>
+        q.or(
+          q.eq(q.field('status'), 'Open'),
+          q.eq(q.field('status'), 'In Progress'),
+          q.eq(q.field('status'), 'Assigned'),
+          q.eq(q.field('status'), 'Pending')
+        )
+      )
+      .collect();
+
+    // Define priority values
+    const priorityValues = ['low', 'medium', 'high'];
+
+    // Count active issues for each priority
+    const priorityCounts = priorityValues.map((priority) => {
+      const count = activeIssues.filter(
+        (issue) => issue.priority === priority
+      ).length;
+      const color =
+        priority === 'low'
+          ? '#4CAF50'
+          : priority === 'medium'
+            ? '#FFC107'
+            : priority === 'high'
+              ? '#F44336'
+              : '#9E9E9E'; // Default color if priority is not recognized
+      return {
+        key: priority.charAt(0).toUpperCase() + priority.slice(1),
+        value: count,
+        label: priority.charAt(0).toUpperCase() + priority.slice(1),
+        color: color,
+      };
+    });
+
+    return priorityCounts;
+  },
+});
+
+export const issueStatusSummary = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    // Get all issues for the organization
+    const issues = await ctx.db
+      .query('issues')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .filter((q) =>
+        q.or(
+          q.eq(q.field('status'), 'Open'),
+          q.eq(q.field('status'), 'In Progress'),
+          q.eq(q.field('status'), 'Assigned'),
+          q.eq(q.field('status'), 'Pending')
+        )
+      )
+      .collect();
+
+    // Define status values
+    const statusValues = ['Open', 'In Progress', 'Assigned', 'Pending'];
+
+    // Count issues for each status
+    const statusCounts = statusValues.map((status) => {
+      const count = issues.filter((issue) => issue.status === status).length;
+      return {
+        key: status,
+        value: count,
+        label: status,
+      };
+    });
+
+    return statusCounts;
+  },
+});
+
+export const activeIssuesByFloor = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    // Get all active issues for the organization
+    const activeIssues = await ctx.db
+      .query('issues')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .filter((q) =>
+        q.or(
+          q.eq(q.field('status'), 'Open'),
+          q.eq(q.field('status'), 'In Progress'),
+          q.eq(q.field('status'), 'Assigned'),
+          q.eq(q.field('status'), 'Pending')
+        )
+      )
+      .collect();
+
+    // Group issues by floor
+    const issuesByFloor = activeIssues.reduce((acc, issue) => {
+      const floor = issue.floor || 'Unspecified';
+      if (!acc[floor]) {
+        acc[floor] = 0;
+      }
+      acc[floor]++;
+      return acc;
+    }, {});
+
+    // Format the result
+    const floorCounts = Object.entries(issuesByFloor).map(([floor, count]) => ({
+      key: floor,
+      value: count,
+      label: floor,
+    }));
+
+    return floorCounts;
+  },
+});
+
 // Get all issues for the current occupant with detailed information
 export const getAllAssignedIssues = query({
   handler: async (ctx) => {

@@ -252,6 +252,32 @@ export const getChat = query({
   },
 });
 
+export const getChatByUserId = query({
+  args: { userId: v.string() },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    const occupant = await ctx.db
+      .query('users')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
+      .first();
+
+    if (!occupant) {
+      return null; // Return null if no chat is found
+    }
+
+    const chat = await ctx.db
+      .query('chats')
+      .filter((q) => q.eq(q.field('occupantId'), occupant._id))
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .first();
+
+    return chat?._id;
+  },
+});
+
 // Add a new mutation to mark the chat as read
 export const markChatAsRead = mutation({
   args: { chatId: v.id('chats') },

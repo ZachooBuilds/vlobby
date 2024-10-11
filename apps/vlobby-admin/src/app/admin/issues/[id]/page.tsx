@@ -123,6 +123,7 @@ export default function IssueDetailsPage({ params }: IssueDetailsPageProps) {
           {/* Left Column - 1/3 width */}
           <div className="w-full md:w-1/3">
             <ConnectAssetDetailsCard
+              userId={issueDetails.userId}
               space={issueDetails.linkedAssetName}
               floor={issueDetails.floor ?? ''}
               location={issueDetails.locationName ?? ''}

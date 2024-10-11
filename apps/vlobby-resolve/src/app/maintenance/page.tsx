@@ -32,6 +32,16 @@ export default function SettingsPage() {
     api.spaces.getRoleFrequencies
   ) as PieChartData[];
 
+  const issueTypeSummary = useQuery(
+    api.tickets.issueStatusSummary
+  ) as PieChartData[];
+  const issuePrioritySummary = useQuery(
+    api.tickets.getActiveIssuesByPriority
+  ) as RadialChartDataItem[];
+  const activeTicketsByFloor = useQuery(
+    api.tickets.activeIssuesByFloor
+  ) as PieChartData[];
+
   const formattedRoleFrequencies = roleFrequencies?.map((role) => ({
     ...role,
     label:
@@ -56,7 +66,7 @@ export default function SettingsPage() {
           <div className="w-full mb-4 w-full">
             <ViewSwitcher />
           </div>
-          <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-3">
             <CustomPieChart
               data={spaceTypeData}
               title="Spaces By Type"
@@ -64,17 +74,36 @@ export default function SettingsPage() {
               totalLabel="Spaces"
             />
             <CustomPieChart
+              data={issueTypeSummary}
+              title="Issues By Status"
+              description="Distribution of issues across different statuses"
+              totalLabel="Issues"
+            />
+          </div>
+          <RadialChart
+            data={occupancyData}
+            title={'Occupancy Overview'}
+            description="An overview of occupancy rates across all spaces"
+          />
+          <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <CustomPieChart
               data={formattedRoleFrequencies}
               title="Space Role Frequencies"
               description="A breakdown of the different occupant roles in your spaces"
               totalLabel="Assigned Roles"
             />
-            <RadialChart
-              data={occupancyData}
-              title={'Occupancy Overview'}
-              description="An overview of occupancy rates across all spaces"
+            <CustomPieChart
+              data={activeTicketsByFloor}
+              title="Active Issues by Floor"
+              description="Distribution of active issues across different floors"
+              totalLabel="Active Issues"
             />
           </div>
+          <RadialChart
+            data={issuePrioritySummary}
+            title="Active Issues by Priority"
+            description="An overview of active issues by priority"
+          />
         </div>
       </div>
       <NavigationBarMaintenance />

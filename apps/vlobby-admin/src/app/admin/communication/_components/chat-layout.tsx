@@ -1,7 +1,7 @@
 'use client';
 
 import { Badge } from '@tremor/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ChatSidebar from './chat-sidebar';
 import { Chat } from './chat';
 import { Loader2 } from 'lucide-react'; // Add this import
@@ -28,14 +28,12 @@ import {
   CommandList,
 } from '@repo/ui/components/ui/command';
 
-export function ChatWindow() {
+export function ChatWindow({ selectedChatId }: { selectedChatId?: Id<'chats'> }) {
   const occupants = useQuery(
     api.occupants.getAllOccupantsValueLabelPair
   ) as ValueLabelPair[];
   const allChats = useQuery(api.chats.getChatSummaries) as ChatSummary[];
-  const [selectedChat, setSelectedChat] = useState<ChatSummary | null>(
-    (allChats ?? [])[0] ?? null
-  );
+  const [selectedChat, setSelectedChat] = useState<ChatSummary | null>(null);
 
   console.log('selected chat', selectedChat);
 
@@ -52,6 +50,18 @@ export function ChatWindow() {
     setSelectedChat(chat);
     void markChatAsRead({ chatId: chat._id as Id<'chats'> });
   };
+
+  useEffect(() => {
+    if (selectedChatId) {
+      const chat = allChats?.find(chat => chat._id === selectedChatId);
+      if (chat) {
+        setSelectedChat(chat);
+        void markChatAsRead({ chatId: chat._id as Id<'chats'> });
+      }
+    } else if (allChats && allChats.length > 0 && !selectedChat) {
+      setSelectedChat(allChats[0] as ChatSummary);
+    }
+  }, [selectedChatId, allChats, selectedChat, markChatAsRead]);
 
   return (
     <div className="flex h-full w-full flex-row items-start justify-start gap-2">

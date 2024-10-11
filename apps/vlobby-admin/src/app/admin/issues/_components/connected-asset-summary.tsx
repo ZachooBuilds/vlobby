@@ -1,7 +1,18 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
-import React from "react";
-import { SpacesIconPath } from "../../../lib/icons/icons";
-import { Button } from "@repo/ui/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@repo/ui/components/ui/card';
+import React from 'react';
+import { SpacesIconPath } from '../../../lib/icons/icons';
+import { Button } from '@repo/ui/components/ui/button';
+import { useQuery } from 'convex/react';
+import { api } from '@repo/backend/convex/_generated/api';
+import { ChatSummary } from '../../../lib/app-data/app-types';
+import { Id } from '@repo/backend/convex/_generated/dataModel';
+import { useRouter } from 'next/navigation';
 
 interface EntityDetailsProps {
   space: string;
@@ -9,6 +20,7 @@ interface EntityDetailsProps {
   location: string;
   loggedBy: string;
   email: string;
+  userId: string;
 }
 
 export default function ConnectAssetDetailsCard({
@@ -17,7 +29,14 @@ export default function ConnectAssetDetailsCard({
   location,
   loggedBy,
   email,
+  userId,
 }: EntityDetailsProps) {
+  const occupantChatId = useQuery(api.chats.getChatByUserId, {
+    userId: userId,
+  }) as ChatSummary;
+
+  const router = useRouter();
+
   return (
     <Card className="h-full">
       <CardHeader>
@@ -40,7 +59,17 @@ export default function ConnectAssetDetailsCard({
         <DetailItem label="Email" value={email} />
       </CardContent>
       <CardFooter>
-        <Button variant="secondary" className="mt-4 w-full">
+        <Button
+          variant="secondary"
+          className="mt-4 w-full"
+          onClick={() => {
+            if (occupantChatId) {
+              router.push(
+                `/admin/communication?selectedChatId=${occupantChatId}`
+              );
+            }
+          }}
+        >
           Contact Occupant
         </Button>
       </CardFooter>

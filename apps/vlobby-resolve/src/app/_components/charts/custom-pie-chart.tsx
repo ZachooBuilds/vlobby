@@ -65,14 +65,14 @@ export function CustomPieChart({
   return (
     <Card className="flex flex-col w-full">
       <CardHeader className="items-start pb-0">
-        <CardTitle className="text-md font-medium text-foreground">
+        <CardTitle className="text-sm font-medium text-foreground">
           {title}
         </CardTitle>
-        {description && (
+        {/* {description && (
           <CardDescription className="text-sm text-muted-foreground">
             {description}
           </CardDescription>
-        )}
+        )} */}
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -88,8 +88,8 @@ export function CustomPieChart({
               data={chartData}
               dataKey="value"
               nameKey="key"
-              innerRadius={70}
-              strokeWidth={5}
+              innerRadius={30}
+              strokeWidth={3}
             >
               <Label
                 content={({ viewBox }) => {
@@ -104,7 +104,7 @@ export function CustomPieChart({
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          className="fill-foreground text-xl font-bold"
                         >
                           {total.toLocaleString()}
                         </tspan>

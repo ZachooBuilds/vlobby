@@ -66,7 +66,7 @@ export function RadialChart({ data, title, description }: RadialChartProps) {
   return (
     <Card className="flex flex-col w-full text-sm">
       <CardHeader className="items-start pb-0">
-        <CardTitle className="text-md font-medium text-foreground">
+        <CardTitle className="text-sm font-medium text-foreground">
           {title}
         </CardTitle>
         {description && (
@@ -75,10 +75,10 @@ export function RadialChart({ data, title, description }: RadialChartProps) {
           </CardDescription>
         )}
       </CardHeader>
-      <CardContent className="flex flex-1 items-center pb-0">
+      <CardContent className="flex items-center pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square w-full max-w-[250px]"
+          className="mx-auto aspect-square w-full max-w-[250px] pb-0"
         >
           <RadialBarChart
             data={chartData}
