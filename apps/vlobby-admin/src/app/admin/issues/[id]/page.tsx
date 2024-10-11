@@ -108,6 +108,8 @@ export default function IssueDetailsPage({ params }: IssueDetailsPageProps) {
     void fetchCreationUser();
   }, [issueDetails?.assignedToId]);
 
+  console.log('creationUser:', creationUser);
+
   const completeIssueDetails: AssignedUserWithFormDetails = {
     ...issueDetails,
     creationFirstName: creationUser?.assignedFirstName ?? '',
