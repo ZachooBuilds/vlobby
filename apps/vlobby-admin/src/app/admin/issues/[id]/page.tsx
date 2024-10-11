@@ -78,17 +78,21 @@ export default function IssueDetailsPage({ params }: IssueDetailsPageProps) {
   const issueCreationTime = issueDetails
     ? format(new Date(issueDetails._creationTime), 'dd/MM/yyyy h:mm a')
     : '';
-
   useEffect(() => {
+    console.log('useEffect triggered with issueDetails:', issueDetails);
     if (issueDetails) {
       const fetchUsers = async () => {
         try {
           if (issueDetails.assignedToId) {
+            console.log('Fetching assigned user with ID:', issueDetails.assignedToId);
             const assignedUser = await getUser(issueDetails.assignedToId);
+            console.log('Assigned user fetched:', assignedUser);
             setAssignedUser(assignedUser);
           }
           if (issueDetails.userId) {
+            console.log('Fetching creation user with ID:', issueDetails.userId);
             const creationUser = await getUser(issueDetails.userId);
+            console.log('Creation user fetched:', creationUser);
             setCreationUser(creationUser);
           }
         } catch (error) {
