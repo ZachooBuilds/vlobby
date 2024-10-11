@@ -11,8 +11,9 @@ import {
   ParkIconPath,
   CarIconPath,
   MapIconPath,
+  TicketIconPath,
+  LockIconPath,
 } from '../../../public/svg/icons';
-import { LockIconPath, TicketIconPath } from '../../../out/svg/icons';
 
 const navigationItems = [
   { name: 'Dashboard', href: '/maintenance', icon: DashboardIconPath },
