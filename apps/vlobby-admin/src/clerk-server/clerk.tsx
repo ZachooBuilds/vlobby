@@ -2,9 +2,9 @@
 
 import { clerkClient } from '@clerk/nextjs/server';
 import { auth } from '@clerk/nextjs/server';
-import { AssignedUser } from '../app/lib/app-data/app-types';
 import { OccupantFormData } from '../app/admin/occupants/_form/occupant-upsert';
 import { spaceRoleOptions } from '../app/lib/app-data/static-data';
+import { UserCoreDetails } from '../app/lib/app-data/app-types';
 
 export async function addUser(data: OccupantFormData) {
   const { orgId } = auth();
@@ -71,10 +71,10 @@ export async function getUser(userId: string) {
   }
   const user = await clerkClient.users.getUser(userId);
 
-  const userData: AssignedUser = {
-    assignedFirstName: user.firstName ?? '',
-    assignedLastName: user.lastName ?? '',
-    assignedEmail: user.emailAddresses[0]?.emailAddress ?? '',
+  const userData: UserCoreDetails = {
+    firstname: user.firstName ?? '',
+    lastname: user.lastName ?? '',
+    email: user.emailAddresses[0]?.emailAddress ?? '',
   };
 
   return userData;
