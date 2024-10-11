@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { CheckIcon, XIcon } from "lucide-react";
 import { FeedPostFormData } from "../_forms/feed-validation";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { format } from "date-fns";
 import { api } from "@repo/backend/convex/_generated/api";
 import { getUser } from "../../../../../clerk-server/clerk";
@@ -13,6 +13,7 @@ import { toast } from "@repo/ui/hooks/use-toast";
 import { Card, CardContent, CardHeader } from "@repo/ui/components/ui/card";
 import { Button } from "@repo/ui/components/ui/button";
 import { cn } from "@repo/ui/lib/utils";
+import { UserCoreDetails } from "../../../../lib/app-data/app-types";
 
 interface PendingPostProps {
   post: FeedPostFormData;
@@ -20,18 +21,12 @@ interface PendingPostProps {
 
 export function PendingPost({ post }: PendingPostProps) {
   const [isFading, setIsFading] = useState(false);
-  const [authorName, setAuthorName] = useState("");
+
   const setFeedPostStatus = useMutation(api.feed.setFeedPostStatus);
 
-  useEffect(() => {
-    const fetchAuthor = async () => {
-      if (post.authorId) {
-        const user = await getUser(post.authorId);
-        setAuthorName(`${user.assignedFirstName} ${user.assignedLastName}`);
-      }
-    };
-    void fetchAuthor();
-  }, [post.authorId]);
+  const author = useQuery(api.allUsers.getUserById, {
+    userId: post?.authorId ?? '',
+  }) as UserCoreDetails;
 
   const handleAction = async (newStatus: "approved" | "rejected") => {
     setIsFading(true);
@@ -69,7 +64,7 @@ export function PendingPost({ post }: PendingPostProps) {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-medium">{post.title}</h2>
-              <p className="text-sm text-muted-foreground">By {authorName}</p>
+              <p className="text-sm text-muted-foreground">By {author?.firstname} {author?.lastname}</p>
               <p className="text-sm text-muted-foreground">
                 {format(new Date(post._creationTime!), "PPP")} •{" "}
                 {format(new Date(post._creationTime!), "p")}

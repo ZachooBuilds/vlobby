@@ -7,6 +7,9 @@ import { Badge } from "@tremor/react";
 import { cn } from "@repo/ui/lib/utils";
 import { getUser } from "../../../../../clerk-server/clerk";
 import { Card, CardContent, CardHeader } from "@repo/ui/components/ui/card";
+import { useQuery } from "convex/react";
+import { UserCoreDetails } from "../../../../lib/app-data/app-types";
+import { api } from "@repo/backend/convex/_generated/api";
 
 /**
  * @interface PostContentProps
@@ -75,17 +78,10 @@ interface FeedPostProps {
  * @returns {JSX.Element} The rendered FeedPost component.
  */
 export default function FeedPost({ post }: FeedPostProps) {
-  const [authorName, setAuthorName] = useState("");
-
-  useEffect(() => {
-    const fetchAuthor = async () => {
-      if (post.authorId) {
-        const user = await getUser(post.authorId);
-        setAuthorName(`${user.assignedFirstName} ${user.assignedLastName}`);
-      }
-    };
-    void fetchAuthor();
-  }, [post.authorId]);
+ 
+  const author = useQuery(api.allUsers.getUserById, {
+   userId: post?.authorId ?? '',
+ }) as UserCoreDetails;
 
   return (
     <div className="mx-auto w-full max-w-2xl pt-2">
@@ -96,7 +92,7 @@ export default function FeedPost({ post }: FeedPostProps) {
             {post.isAdmin && <Badge>Admin Post</Badge>}
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">By {authorName}</p>
+            <p className="text-sm text-muted-foreground">By {author?.firstname} {author?.lastname}</p>
             <p className="text-sm text-muted-foreground">
               {format(new Date(post._creationTime!), "PPP")} •{" "}
               {format(new Date(post._creationTime!), "p")}
