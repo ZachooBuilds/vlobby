@@ -62,48 +62,48 @@ export default function SettingsPage() {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-grow overflow-auto">
-        <div className="flex flex-col gap-4 items-start justify-start pt-16 p-4 pb-[120px] w-full">
-          <div className="w-full mb-4 w-full">
-            <ViewSwitcher />
+        <div className="flex flex-col gap-4 p-4 pt-16 pb-[120px]">
+          <ViewSwitcher />
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-row gap-4">
+              <CustomPieChart
+                data={spaceTypeData}
+                title="Spaces By Type"
+                description="Distribution of spaces across different categories"
+                totalLabel="Spaces"
+              />
+              <CustomPieChart
+                data={issueTypeSummary}
+                title="Issues By Status"
+                description="Distribution of issues across different statuses"
+                totalLabel="Issues"
+              />
+            </div>
+            <RadialChart
+              data={occupancyData}
+              title={'Occupancy Overview'}
+              description="An overview of occupancy rates across all spaces"
+            />
+            <div className="flex flex-row gap-4">
+              <CustomPieChart
+                data={formattedRoleFrequencies}
+                title="Space Role Frequencies"
+                description="A breakdown of the different occupant roles in your spaces"
+                totalLabel="Assigned Roles"
+              />
+              <CustomPieChart
+                data={activeTicketsByFloor}
+                title="Active Issues by Floor"
+                description="Distribution of active issues across different floors"
+                totalLabel="Active Issues"
+              />
+            </div>
+            <RadialChart
+              data={issuePrioritySummary}
+              title="Active Issues by Priority"
+              description="An overview of active issues by priority"
+            />
           </div>
-          <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <CustomPieChart
-              data={spaceTypeData}
-              title="Spaces By Type"
-              description="Distribution of spaces across different categories"
-              totalLabel="Spaces"
-            />
-            <CustomPieChart
-              data={issueTypeSummary}
-              title="Issues By Status"
-              description="Distribution of issues across different statuses"
-              totalLabel="Issues"
-            />
-          </div>
-          <RadialChart
-            data={occupancyData}
-            title={'Occupancy Overview'}
-            description="An overview of occupancy rates across all spaces"
-          />
-          <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <CustomPieChart
-              data={formattedRoleFrequencies}
-              title="Space Role Frequencies"
-              description="A breakdown of the different occupant roles in your spaces"
-              totalLabel="Assigned Roles"
-            />
-            <CustomPieChart
-              data={activeTicketsByFloor}
-              title="Active Issues by Floor"
-              description="Distribution of active issues across different floors"
-              totalLabel="Active Issues"
-            />
-          </div>
-          <RadialChart
-            data={issuePrioritySummary}
-            title="Active Issues by Priority"
-            description="An overview of active issues by priority"
-          />
         </div>
       </div>
       <NavigationBarMaintenance />
