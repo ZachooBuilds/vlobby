@@ -260,6 +260,8 @@ export type WorkOrderSummaryCardData = {
 
 export type AssignedUserWithWorkOrderDetails = UserCoreDetails &
   WorkOrderFormData & {
+    assignedFirstName?: string;
+    assignedLastName?: string;
     creationFirstName?: string;
     creationLastName?: string;
     creationEmail?: string;

@@ -23,7 +23,6 @@ import {
 } from '../../../lib/app-data/app-types';
 import useModalStore from '../../../lib/global-state/modal-state';
 import { api } from '@repo/backend/convex/_generated/api';
-import { getUser } from '../../../../clerk-server/clerk';
 import DetailsHeader from '../../_components/global-components/page-header';
 import { IssueIconPath } from '../../../lib/icons/icons';
 import {
