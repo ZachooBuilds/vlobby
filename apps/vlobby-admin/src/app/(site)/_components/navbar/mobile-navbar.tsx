@@ -1,98 +1,67 @@
-"use client";
-import { cn } from '@repo/ui/lib/utils';
-import { Link } from "next-view-transitions";
-import { useState } from "react";
-import { IoIosMenu } from "react-icons/io";
-import { IoIosClose } from "react-icons/io";
-import { useMotionValueEvent, useScroll } from "framer-motion";
+'use client';
+import { useState } from 'react';
+import Link from 'next/link';
+import { IoIosMenu, IoIosClose } from 'react-icons/io';
 import { Logo } from '../logo';
 import { Button } from '@repo/ui/components/ui/button';
+import { LogoIconPath } from '../../../lib/icons/icons';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ModeToggle } from '../../../admin/_components/global-components/dark-mode-toggle';
 
-export const MobileNavbar = ({ navItems }: any) => {
-  const [open, setOpen] = useState(false);
-
-  const { scrollY } = useScroll();
-
-  const [showBackground, setShowBackground] = useState(false);
-
-  useMotionValueEvent(scrollY, "change", (value) => {
-    if (value > 100) {
-      setShowBackground(true);
-    } else {
-      setShowBackground(false);
-    }
-  });
+export const MobileNavbar = ({
+  navItems,
+}: {
+  navItems: Array<{ title: string; link: string }>;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div
-      className={cn(
-        "flex justify-between bg-transparent items-center w-full rounded-md px-2.5 py-1.5 transition duration-200",
-        showBackground &&
-          " bg-neutral-900  shadow-[0px_-2px_0px_0px_var(--neutral-800),0px_2px_0px_0px_var(--neutral-800)]"
-      )}
-    >
-      <Logo />
-      <IoIosMenu
-        className="text-white h-6 w-6"
-        onClick={() => setOpen(!open)}
-      />
-      {open && (
-        <div className="fixed inset-0 bg-black z-50 flex flex-col items-start justify-start space-y-10  pt-5  text-xl text-zinc-600  transition duration-200 hover:text-zinc-800">
-          <div className="flex items-center justify-between w-full px-5">
-            <Logo />
-            <div className="flex items-center space-x-2">
-              <IoIosClose
-                className="h-8 w-8 text-white"
-                onClick={() => setOpen(!open)}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col items-start justify-start gap-[14px] px-8">
-            {navItems.map((navItem: any, idx: number) => (
-              <>
-                {navItem.children && navItem.children.length > 0 ? (
-                  <>
-                    {navItem.children.map((childNavItem: any, idx: number) => (
-                      <Link
-                        key={`link=${idx}`}
-                        href={childNavItem.link}
-                        onClick={() => setOpen(false)}
-                        className="relative max-w-[15rem] text-left text-2xl"
-                      >
-                        <span className="block text-white">
-                          {childNavItem.title}
-                        </span>
-                      </Link>
-                    ))}
-                  </>
-                ) : (
-                  <Link
-                    key={`link=${idx}`}
-                    href={navItem.link}
-                    onClick={() => setOpen(false)}
-                    className="relative"
-                  >
-                    <span className="block text-[26px] text-white">
-                      {navItem.title}
-                    </span>
-                  </Link>
-                )}
-              </>
-            ))}
-          </div>
-          <div className="flex flex-row w-full items-start gap-2.5  px-8 py-4 ">
-            <Button>Book a demo</Button>
-            <Button
-              variant="outline"
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
-              Register
-            </Button>
-          </div>
+    <nav className="flex flex-col w-full bg-background rounded-md">
+      <div className="flex flex-row justify-between items-center px-4 py-2">
+        <div className="flex flex-row items-center gap-2">
+          <Image src={'/logonw.png'} alt="Logo" width={24} height={24} />
+          <span className="text-foreground font-bold text-md">VLobby</span>
         </div>
-      )}
-    </div>
+        <button onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <IoIosClose size={24} /> : <IoIosMenu size={24} />}
+        </button>
+      </div>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="flex flex-col items-start p-4 space-y-4 overflow-hidden"
+          >
+            {navItems.map((item, index) => (
+              <Link
+                key={index}
+                href={item.link}
+                onClick={() => setIsOpen(false)}
+              >
+                <span className="text-lg">{item.title}</span>
+              </Link>
+            ))}
+            <div className="flex flex-row gap-2 w-full">
+              <Button onClick={() => setIsOpen(false)} className="w-full">
+                Book a demo
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setIsOpen(false)}
+                className="w-full"
+              >
+                Register
+              </Button>
+              <ModeToggle />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
   );
 };
