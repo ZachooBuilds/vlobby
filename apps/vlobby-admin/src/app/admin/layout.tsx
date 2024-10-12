@@ -50,7 +50,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       <WebNavigation />
       <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
         <PageBar />
-        <main className="flex-1 overflow-auto p-2 bg-muted rounded-md">
+        <main className="flex-1 overflow-scroll p-2 bg-muted rounded-md">
           {children}
         </main>
         <GlobalSheet />

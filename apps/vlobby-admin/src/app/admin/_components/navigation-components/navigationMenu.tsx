@@ -1,43 +1,48 @@
 /**
  * WebNavigation Component
- * 
+ *
  * This component provides a responsive navigation menu for the admin interface.
  * It supports collapsible view, dynamic rendering of navigation items based on user permissions,
  * and integrates with Convex for real-time data and authentication.
  */
 
-"use client";
+'use client';
 
 // External library imports
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useConvexAuth, useQuery } from "convex/react";
-import Image from "next/image";
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useConvexAuth, useQuery } from 'convex/react';
+import Image from 'next/image';
 
 // Internal imports
-import { api } from "@repo/backend/convex/_generated/api";
-import { ImagePlaceholder, navigationItems } from "../../../lib/app-data/static-data";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@repo/ui/components/ui/command";
-import { Button } from "@repo/ui/components/ui/button";
-import { cn } from "@repo/ui/lib/utils";
-import { Card } from "@repo/ui/components/ui/card";
-import { SettingIconPath } from "../../../lib/icons/icons";
-import { Feature, IconImage } from "../../../lib/app-data/app-types";
-
-
+import { api } from '@repo/backend/convex/_generated/api';
+import {
+  ImagePlaceholder,
+  navigationItems,
+} from '../../../lib/app-data/static-data';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@repo/ui/components/ui/command';
+import { Button } from '@repo/ui/components/ui/button';
+import { cn } from '@repo/ui/lib/utils';
+import { Card } from '@repo/ui/components/ui/card';
+import { SettingIconPath } from '../../../lib/icons/icons';
+import { Feature, IconImage } from '../../../lib/app-data/app-types';
 
 /**
  * WebNavigation Component
- * 
+ *
  * @param {Props} props - The component props
  * @returns {JSX.Element} The navigation menu component
  */
 export default function WebNavigation() {
-
-
-  
   // Current pathname for determining the selected navigation item
   const pathname = usePathname();
 
@@ -56,7 +61,7 @@ export default function WebNavigation() {
 
   /**
    * Renders navigation items based on the provided category and user permissions
-   * 
+   *
    * @param {string} category - The category of navigation items to render
    * @returns {JSX.Element[]} An array of rendered navigation items
    */
@@ -68,40 +73,40 @@ export default function WebNavigation() {
         return featuresData?.some(
           (feature: Feature) =>
             feature.enabled &&
-            feature.feature.toLowerCase().includes(option.name.toLowerCase()),
+            feature.feature.toLowerCase().includes(option.name.toLowerCase())
         );
       })
       .map((option, index) => {
         const isSelected = pathname.includes(
-          option.href.split("/")[1] ?? option.href,
+          option.href.split('/')[1] ?? option.href
         );
         return (
           <CommandItem
             key={index}
-            className="w-full !bg-transparent hover:bg-slate-100"
+            className="w-full h-full !bg-transparent hover:bg-slate-100"
           >
             <Link href={`/admin/${option.href}`} className="w-full text-start">
               <Button
-                variant={isSelected ? "default" : "ghost"}
-                className={cn("w-full", {
-                  "justify-center": isCollapsed,
-                  "justify-start": !isCollapsed,
+                variant={isSelected ? 'default' : 'ghost'}
+                className={cn('w-full', {
+                  'justify-center': isCollapsed,
+                  'justify-start': !isCollapsed,
                 })}
               >
                 <div className="flex flex-row items-center gap-2">
                   <div
-                    className={cn("h-5 w-5", {
-                      "fill-white": isSelected,
-                      "fill-foreground": !isSelected,
+                    className={cn('h-5 w-5', {
+                      'fill-white': isSelected,
+                      'fill-foreground': !isSelected,
                     })}
                   >
                     <option.icon />
                   </div>
                   {!isCollapsed && (
                     <p
-                      className={cn("pl-2", {
-                        "text-white": isSelected,
-                        "text-foreground": !isSelected,
+                      className={cn('pl-2', {
+                        'text-white': isSelected,
+                        'text-foreground': !isSelected,
                       })}
                     >
                       {option.name}
@@ -117,20 +122,20 @@ export default function WebNavigation() {
 
   return (
     <Card
-      className={cn("flex flex-col p-2", {
-        "w-[80px]": isCollapsed,
-        "w-[300px]": !isCollapsed,
+      className={cn('flex flex-col p-2', {
+        'w-[80px]': isCollapsed,
+        'w-[300px]': !isCollapsed,
       })}
     >
       {/* Toggle button for collapsing/expanding the sidebar */}
       <div
-        className={cn("flex flex-row gap-2 pb-2", {
-          "justify-center": isCollapsed,
-          "justify-end": !isCollapsed,
+        className={cn('flex flex-row gap-2 pb-2', {
+          'justify-center': isCollapsed,
+          'justify-end': !isCollapsed,
         })}
       >
         <Button
-          variant={"outline"}
+          variant={'outline'}
           className="items-center justify-center p-2"
           onClick={toggleView}
         >
@@ -145,9 +150,9 @@ export default function WebNavigation() {
       {/* Logo or icon display based on collapsed state */}
       <div className="flex items-center justify-center ">
         <div
-          className={cn("fill-foreground pt-2", {
-            "h-10 w-10": isCollapsed,
-            "h-28 w-48": !isCollapsed,
+          className={cn('fill-foreground pt-2', {
+            'h-10 w-10': isCollapsed,
+            'h-28 w-48': !isCollapsed,
           })}
         >
           {!isCollapsed ? (
@@ -182,19 +187,19 @@ export default function WebNavigation() {
           )}
           <CommandList className="py-4">
             <CommandEmpty>No Results Found</CommandEmpty>
-            <CommandGroup heading={!isCollapsed && "Quick Actions"}>
-              {renderNavigationItems("quick_actions")}
+            <CommandGroup heading={!isCollapsed && 'Quick Actions'}>
+              {renderNavigationItems('quick_actions')}
             </CommandGroup>
             {!isCollapsed && (
               <>
                 <CommandGroup heading="Maintainence">
-                  {renderNavigationItems("maintainence")}
+                  {renderNavigationItems('maintainence')}
                 </CommandGroup>
                 <CommandGroup heading="Site Info">
-                  {renderNavigationItems("site_details")}
+                  {renderNavigationItems('site_details')}
                 </CommandGroup>
                 <CommandGroup heading="Resident Services">
-                  {renderNavigationItems("resident_services")}
+                  {renderNavigationItems('resident_services')}
                 </CommandGroup>
               </>
             )}
@@ -205,7 +210,7 @@ export default function WebNavigation() {
       {/* Account & Settings button (visible only in expanded view) */}
       {!isCollapsed && (
         <Link href={`/admin/settings/general`}>
-          <Button variant={"secondary"} className="flex w-full flex-row gap-2">
+          <Button variant={'secondary'} className="flex w-full flex-row gap-2">
             <svg
               className="h-4 w-4 fill-foreground"
               xmlns="http://www.w3.org/2000/svg"

@@ -40,9 +40,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             enableSystem
             disableTransitionOnChange
           >
-            <ConvexClientProvider>
-              <div className="h-full overflow-hidden">{children}</div>
-            </ConvexClientProvider>
+            <ConvexClientProvider>{children}</ConvexClientProvider>
             <Toaster />
           </ThemeProvider>
         </div>
