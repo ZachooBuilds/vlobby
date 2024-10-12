@@ -13,6 +13,7 @@ import { Link } from 'next-view-transitions';
 import { Logo } from '../logo';
 import { Button } from '@repo/ui/components/ui/button';
 import { ModeToggle } from '../../../admin/_components/global-components/dark-mode-toggle';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   navItems: {
@@ -24,6 +25,7 @@ type Props = {
 
 export const DesktopNavbar = ({ navItems }: Props) => {
   const { scrollY } = useScroll();
+  const router = useRouter();
 
   const [showBackground, setShowBackground] = useState(false);
 
@@ -73,9 +75,12 @@ export const DesktopNavbar = ({ navItems }: Props) => {
         </div>
       </div>
       <div className="flex space-x-2 items-center">
-        <Link href="/admin/dashboard">
-          <Button className="text-white">Go to dashboard</Button>
-        </Link>
+        <Button
+          className="text-white"
+          onClick={() => router.push('/admin/dashboard')}
+        >
+          Go to dashboard
+        </Button>
         <Button variant="outline">Book a demo</Button>
         <ModeToggle />
       </div>
