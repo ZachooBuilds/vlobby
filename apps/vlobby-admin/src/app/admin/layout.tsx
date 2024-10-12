@@ -1,27 +1,23 @@
-"use client";
-import { useConvexAuth } from "convex/react";
-import { Loader2 } from "lucide-react";
-import { ReactNode } from "react";
-import WebNavigation from "./_components/navigation-components/navigationMenu";
-import PageBar from "./_components/navigation-components/page-bar";
-import { GlobalSheet } from "./_components/global-components/global-sheet";
-import { GlobalModal } from "./_components/global-components/global-modal";
+'use client';
+import { useConvexAuth } from 'convex/react';
+import { Loader2 } from 'lucide-react';
+import { ReactNode } from 'react';
+import WebNavigation from './_components/navigation-components/navigationMenu';
+import PageBar from './_components/navigation-components/page-bar';
+import { GlobalSheet } from './_components/global-components/global-sheet';
+import { GlobalModal } from './_components/global-components/global-modal';
 
 /**
  * AdminLayout component
- * 
+ *
  * This component handles the layout for the admin section of the application.
  * It manages authentication state and renders appropriate UI based on that state.
- * 
+ *
  * @param {Object} props - The component props
  * @param {ReactNode} props.children - The child components to be rendered within the layout
  * @returns {JSX.Element} The rendered AdminLayout component
  */
-export default function AdminLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function AdminLayout({ children }: { children: ReactNode }) {
   const { isLoading, isAuthenticated } = useConvexAuth();
 
   // Display loading spinner while authentication state is being determined
@@ -52,15 +48,13 @@ export default function AdminLayout({
   return (
     <div className="flex h-full w-full flex-row gap-2">
       <WebNavigation />
-      <div className="flex h-full w-full flex-col">
+      <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
         <PageBar />
-        {/* <SeamProvider publishableKey="seam_pk1XoRIyZ_KyqqVTAaIYiWEMzThnDgehpE"> */}
-        <main className="h-full overflow-scroll rounded-md bg-muted p-2">
+        <main className="flex-1 overflow-auto p-2 bg-muted rounded-md">
           {children}
         </main>
         <GlobalSheet />
         <GlobalModal />
-        {/* </SeamProvider> */}
       </div>
     </div>
   );

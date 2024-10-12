@@ -63,7 +63,7 @@ export function RadialChart({ data, title, description }: RadialChartProps) {
   console.log(chartConfig);
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col w-full">
       <CardHeader className="items-start pb-0">
         <CardTitle className="text-lg font-medium text-foreground">
           {title}

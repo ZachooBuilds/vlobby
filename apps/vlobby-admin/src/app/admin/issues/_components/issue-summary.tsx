@@ -144,7 +144,7 @@ function DetailItem({
     <div>
       <p className="text-sm text-muted-foreground">{label}</p>
       {isBadge ? (
-        <Badge color={getBadgeColor(label, value)}>
+        <Badge color="red">
           {value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()}
         </Badge>
       ) : (
