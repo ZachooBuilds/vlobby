@@ -138,3 +138,71 @@ export const sendPushNotificationToUser = mutation({
     return { success: true };
   },
 });
+
+export const sendPushNotificationToAllOperators = mutation({
+  args: {
+    title: v.string(),
+    body: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const { title, body } = args;
+
+    console.log(`Sending push notification to all operators: ${title}`);
+
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    console.log(`Organization ID: ${orgId}`);
+
+    // Get all operators for the organization
+    const operators = await ctx.db
+      .query('operators')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .collect();
+
+    console.log(`Found ${operators.length} operators`);
+
+    const operatorUserIds = operators.map((operator) => operator.userId);
+
+    const allTokenRecords = await ctx.db
+      .query('userDeviceTokens')
+      .filter((q) => q.eq(q.field('orgId'), orgId))
+      .collect();
+
+    console.log(
+      `Found ${allTokenRecords.length} device tokens for the organization`
+    );
+
+    const tokenRecords = allTokenRecords.filter((record) =>
+      operatorUserIds.includes(record.userId)
+    );
+
+    console.log(
+      `Found ${tokenRecords.length} valid device tokens for operators`
+    );
+
+    if (tokenRecords.length === 0) {
+      console.log('No valid tokens found. Aborting notification send.');
+      return { success: false, reason: 'No valid tokens found' };
+    }
+
+    const notificationPromises = tokenRecords.map((record) =>
+      ctx.scheduler.runAfter(0, internal.firebaseAdmin.sendFCMNotification, {
+        token: record.deviceToken,
+        title,
+        body,
+      })
+    );
+
+    console.log(`Sending ${notificationPromises.length} notifications`);
+
+    await Promise.all(notificationPromises);
+
+    console.log(
+      `Successfully sent ${notificationPromises.length} notifications`
+    );
+
+    return { success: true, notificationsSent: tokenRecords.length };
+  },
+});

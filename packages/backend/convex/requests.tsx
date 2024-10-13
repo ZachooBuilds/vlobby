@@ -1,6 +1,9 @@
 import { action, internalQuery, mutation, query } from './_generated/server';
 import { v } from 'convex/values';
-import { sendPushNotificationToUser } from './pushNotifications';
+import {
+  sendPushNotificationToAllOperators,
+  sendPushNotificationToUser,
+} from './pushNotifications';
 import { Id } from './_generated/dataModel';
 
 // Define the request schema for Convex
@@ -87,6 +90,12 @@ export const upsertRequest = mutation({
           parkId = activeParkingLog.parkId;
           allocationId = activeParkingLog.allocationId;
         }
+
+        //send a notification to all operators
+        await sendPushNotificationToAllOperators(ctx, {
+          title: '🚙 New Pickup Request',
+          body: `A new pickup request has been created for ${args.vehicleId}.`,
+        });
       }
 
       const parkTypeId =
@@ -243,17 +252,19 @@ export const getActiveParkTypeSummary = query({
     );
 
     // Create final result
-    const result = parkTypes.map((parkType, index) => {
-      const parkTypeId = parkTypeIds[index];
-      if (!parkTypeId) {
-        return null; // or handle this case as appropriate for your use case
-      }
-      return {
-        value: groupedLogs[parkTypeId] || 0,
-        label: parkType?.name || 'Unknown',
-        key: parkTypeId,
-      };
-    }).filter((item): item is NonNullable<typeof item> => item !== null);
+    const result = parkTypes
+      .map((parkType, index) => {
+        const parkTypeId = parkTypeIds[index];
+        if (!parkTypeId) {
+          return null; // or handle this case as appropriate for your use case
+        }
+        return {
+          value: groupedLogs[parkTypeId] || 0,
+          label: parkType?.name || 'Unknown',
+          key: parkTypeId,
+        };
+      })
+      .filter((item): item is NonNullable<typeof item> => item !== null);
 
     return result;
   },
