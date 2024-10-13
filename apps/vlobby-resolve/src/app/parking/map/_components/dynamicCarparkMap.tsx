@@ -94,7 +94,7 @@ function LevelSelection({
   return (
     <div className="flex flex-col gap-4 w-full">
       {/* Location selection */}
-      <div className="w-full z-10">
+      <div className="w-full">
         <Select
           value={selectedLocationId ?? undefined}
           onValueChange={(value) =>
@@ -115,7 +115,7 @@ function LevelSelection({
       </div>
 
       {/* Level selection */}
-      <div className="w-full z-10">
+      <div className="w-full">
         <Select
           value={selectedLevelId ?? undefined}
           onValueChange={(value) => {
@@ -333,7 +333,7 @@ export default function CarParkMap({
   return (
     <div className="flex h-full flex-col">
       {/* Level selection and edit toggle */}
-      <div className="z-10 p-2">
+      <div className="z-5 p-2">
         <LevelSelection
           isEditing={isEditing}
           onEditToggle={(checked) => {

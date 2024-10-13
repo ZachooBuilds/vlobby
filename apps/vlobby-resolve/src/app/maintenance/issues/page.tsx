@@ -67,7 +67,7 @@ export default function MaintenancePage() {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-full">
       <div className="flex-grow overflow-auto">
         <div className="flex flex-col gap-4 items-start justify-start pt-16 p-4 pb-[120px] w-full">
           {/* Header */}

@@ -26,13 +26,13 @@ export default function NavigationBarMaintenance() {
   const pathname = usePathname();
 
   return (
-    <nav className="z-100 fixed bottom-6 left-4 right-4 shadow-lg rounded rounded-md shadow-foreground-muted/10 bg-background border-muted overflow-hidden">
+    <nav className="z-100 fixed bottom-6 left-4 right-4 shadow-lg rounded-md shadow-foreground-muted/10 bg-background border-muted overflow-hidden">
       <div className="flex flex-row justify-around items-center p-2 bg-background">
         {navigationItems.map((item) => (
           <Link key={item.name} href={item.href} passHref>
             <div className="p-4">
               <div
-                className={`w-8 h-8 ${pathname.startsWith(item.href) ? 'fill-primary' : 'fill-foreground'}`}
+                className={`w-8 h-8 ${pathname === item.href ? 'fill-primary' : 'fill-foreground'}`}
               >
                 {item.icon()}
               </div>

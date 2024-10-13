@@ -25,6 +25,7 @@ import {
 } from '../../../../../public/svg/icons';
 import { useState } from 'react';
 import { Check, Loader2 } from 'lucide-react';
+import { Skeleton } from '@repo/ui/components/ui/skeleton';
 
 const RequestCard = ({
   request,
@@ -142,7 +143,6 @@ export default function RequestsOverview() {
   const completeRequest = useMutation(api.requests.completeRequest);
 
   const { toast } = useToast();
-
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAssignRequest = async (requestId: string) => {
@@ -166,6 +166,24 @@ export default function RequestsOverview() {
       setIsLoading(false);
     }
   };
+
+  if (!requests) {
+    return (
+      <div className="flex flex-col gap-4 w-full">
+        <div className="flex flex-row items-center gap-2">
+          <div className="w-5 h-5 fill-foreground">
+            <ParkIconPath />
+          </div>
+          <h1 className="text-2xl font-medium">Valet Requests</h1>
+        </div>
+        <div className="grid w-full grid-cols-1 items-start justify-start gap-2 md:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <Skeleton key={index} className="h-[200px] w-full" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4 w-full">

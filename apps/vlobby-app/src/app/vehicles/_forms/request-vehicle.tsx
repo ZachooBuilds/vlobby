@@ -61,21 +61,12 @@ export function RequestVehicleForm({
         vehicleId: vehicleId,
         notes: data.notes,
       });
-      toast({
-        title: 'Request Submitted',
-        description: 'Vehicle request submitted successfully.',
-      });
       if (onSuccess) {
         onSuccess();
       }
       form.reset();
     } catch (error) {
       console.error('Error submitting request:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to submit request. Please try again.',
-        variant: 'destructive',
-      });
     } finally {
       setIsLoading(false);
     }

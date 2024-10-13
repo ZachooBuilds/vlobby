@@ -37,7 +37,7 @@ export function ActivityTimeline({ items }: ActivityTimelineProps) {
           {index !== items.length - 1 && (
             <div className="absolute left-5 top-12 h-full w-px bg-muted"></div>
           )}
-          <div className="relative z-10 flex h-full flex-col items-center">
+          <div className="relative z-0 flex h-full flex-col items-center">
             <Avatar
               style={{
                 borderColor: typeColorMap[item.type],
