@@ -7,9 +7,9 @@ import { Footer } from './_components/footer';
 import { cn } from './lib/utils';
 
 export const metadata: Metadata = {
-  title: 'Proactiv - Social Media Automation | Aceternity Templates',
+  title: 'Vlobby | Admin Portal',
   description:
-    'Proactiv is an all in on marketing automation platform that handles emails, tasks tracking, social media management and everything in between.',
+    'Vlobby Admin Portal is a comprehensive management system for vehicle logistics, parking operations, and customer service in the automotive industry.',
   openGraph: {
     images: ['https://proactiv-aceternity.vercel.app/banner.png'],
   },
