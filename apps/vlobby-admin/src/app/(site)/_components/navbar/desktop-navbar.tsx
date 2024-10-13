@@ -77,7 +77,10 @@ export const DesktopNavbar = ({ navItems }: Props) => {
       <div className="flex space-x-2 items-center">
         <Button
           className="text-white"
-          onClick={() => router.push('/admin/dashboard')}
+          onClick={() => {
+            router.push('/admin/dashboard');
+            router.refresh();
+          }}
         >
           Go to dashboard
         </Button>

@@ -57,7 +57,7 @@ export default clerkMiddleware((auth, req) => {
 
   // Handle onboarding
   if (userId && isOnboardingRoute(req)) {
-    if (sessionClaims?.metadata?.onboardingComplete) {
+    if (sessionClaims?.metadata?.onboardingComplete) { 
       return NextResponse.redirect(new URL('/admin/dashboard', req.url));
     }
     return NextResponse.next();

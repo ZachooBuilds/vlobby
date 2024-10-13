@@ -1,9 +1,13 @@
-import { AspectRatio } from "@repo/ui/components/ui/aspect-ratio";
-import Image from "next/image";
+'use client';
+
+import { AspectRatio } from '@repo/ui/components/ui/aspect-ratio';
+import Image from 'next/image';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 /**
  * AuthLayout Component
- * 
+ *
  * This component serves as the layout for authentication-related pages.
  * It provides a responsive grid layout with an image and a main content area.
  *
@@ -12,8 +16,15 @@ import Image from "next/image";
  * @returns {JSX.Element} The rendered authentication layout
  */
 export default function AuthLayout({ children }: React.PropsWithChildren) {
+  // const router = useRouter();
+
+  // useEffect(() => {
+  //   // Force a page reload on mount
+  //   router.refresh();
+  // }, []);
+
   return (
-    <div className="grid h-full grid-cols-1 overflow-hidden md:grid-cols-3 lg:grid-cols-2">
+    <div className="flex flex-row h-full gap-4">
       {/* AspectRatio: Maintains a 16:9 aspect ratio for the image container */}
       <AspectRatio ratio={16 / 9}>
         <Image
@@ -25,7 +36,7 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
         />
       </AspectRatio>
       {/* Main content area: Responsive positioning and sizing for the authentication form */}
-      <main className="container absolute top-1/2 col-span-1 flex -translate-y-1/2 items-center md:static md:top-0 md:col-span-2 md:flex md:translate-y-0 lg:col-span-1">
+      <main className=" container absolute top-1/2 col-span-1 flex -translate-y-1/2 items-center md:static md:top-0 md:col-span-2 md:flex md:translate-y-0 lg:col-span-1">
         {children}
       </main>
     </div>

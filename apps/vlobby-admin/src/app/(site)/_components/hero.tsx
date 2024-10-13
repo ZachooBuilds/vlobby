@@ -25,8 +25,8 @@ export const Hero = () => {
             Transform Your Building with VLobby.
           </Heading>
           <Subheading className="text-lg md:text-xl text-muted-foreground">
-            Automate Campaigns, Engage Audiences, and Boost Lead Generation with
-            Our All-in-One Marketing Solution
+            Streamline Operations, Enhance Resident Experience, and Optimize
+            Building Management with Our Comprehensive Property Solution
           </Subheading>
           <Button className="flex items-center space-x-2 text-lg text-white">
             <span>Book a demo</span>
