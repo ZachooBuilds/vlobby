@@ -13,7 +13,7 @@ const requestSchema = {
   createdBy: v.optional(v.string()),
   notes: v.optional(v.string()),
   allocationId: v.optional(v.string()),
-  isCasualParking: v.boolean(),
+  isCasualParking: v.optional(v.boolean()),
   evidenceImages: v.optional(
     v.array(
       v.object({
