@@ -24,7 +24,7 @@ import {
   SpacesIconPath,
 } from '../../../../../public/svg/icons';
 import { useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Check, Loader2 } from 'lucide-react';
 
 const RequestCard = ({
   request,
@@ -39,7 +39,15 @@ const RequestCard = ({
 }) => (
   <Card key={request._id} className="flex flex-col gap-1 p-2">
     <CardHeader className="flex flex-row items-center justify-between p-0">
-      <Badge>
+      <Badge
+        color={
+          request.requestType.startsWith('pickup')
+            ? 'pink'
+            : request.requestType.startsWith('dropoff')
+              ? 'violet'
+              : 'purple'
+        }
+      >
         {request.requestType
           .replace(':', '- ')
           .split('-')
@@ -47,7 +55,7 @@ const RequestCard = ({
           .join(' ')}
       </Badge>
       <Badge
-        size="xs"
+        size="sm"
         color={
           request.status === 'received'
             ? 'red'
@@ -62,6 +70,9 @@ const RequestCard = ({
     <CardContent className="flex flex-col gap-2 p-2">
       <div>
         <p className="font-medium">{request.vehicleDetails}</p>
+        {/* <p className="text-sm text-muted-foreground">
+          {request.assignedToName || 'Unassigned'}
+        </p> */}
       </div>
       <div className="flex flex-row items-center gap-4">
         <svg
@@ -103,15 +114,17 @@ const RequestCard = ({
       )}
       {request.status === 'assigned' && (
         <Button
-          color="green"
           onClick={() => onComplete(request._id)}
-          className="w-full h-16"
+          className="w-full h-16 bg-green-600 text-white"
           disabled={isLoading}
         >
           {isLoading ? (
             <Loader2 className="h-4 w-4 animate-spin " />
           ) : (
-            'Complete'
+            <>
+              <Check className="mr-2 h-4 w-4" />
+              Complete
+            </>
           )}
         </Button>
       )}
@@ -137,7 +150,7 @@ export default function RequestsOverview() {
     try {
       await assignRequest({ id: requestId as Id<'requests'> });
     } catch (error) {
-      console.error('Failed to assign request:', error);    
+      console.error('Failed to assign request:', error);
     } finally {
       setIsLoading(false);
     }
@@ -156,16 +169,20 @@ export default function RequestsOverview() {
 
   return (
     <div className="flex flex-col gap-4 w-full">
-      <div className="flex flex-row items-center gap-4">
-        <div className="w-5 h-5 fill-foreground">
-          <ParkIconPath />
+      <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-row items-center gap-2">
+          <div className="w-5 h-5 fill-foreground">
+            <ParkIconPath />
+          </div>
+          <h1 className="text-2xl font-medium">Valet Requests</h1>
         </div>
-        <h1 className="text-2xl font-medium">Valet Requests</h1>
-        <Badge color={'green'}>
+        <Badge color={'purple'}>
           {
             requests?.filter(
               (request) =>
-                request.status === 'pending' || request.status === 'assigned'
+                request.status === 'pending' ||
+                request.status === 'assigned' ||
+                request.status === 'received'
             ).length
           }{' '}
           active requests

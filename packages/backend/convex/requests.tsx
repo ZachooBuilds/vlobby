@@ -149,17 +149,18 @@ export const getRequestsForCards = query({
     const requestCards = await Promise.all(
       requests.map(async (request) => {
         const park = await ctx.db.get(request.parkId);
-
         const vehicle = await ctx.db.get(request.vehicleId);
 
-        const operator = await ctx.db.get(request.assignedTo);
-
         let assignedToName = 'Unassigned';
-        if (operator) {
-          const operator = await ctx.db.get(request.assignedTo);
-          assignedToName = operator
-            ? `${operator.firstName} ${operator.lastName}`
-            : 'Unassigned';
+        if (request.assignedTo) {
+          if (request.assignedTo === 'system') {
+            assignedToName = 'System';
+          } else {
+            const operator = await ctx.db.get(request.assignedTo);
+            assignedToName = operator
+              ? `${operator.firstName} ${operator.lastName}`
+              : 'System';
+          }
         }
 
         return {

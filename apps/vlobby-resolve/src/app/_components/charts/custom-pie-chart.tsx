@@ -88,7 +88,7 @@ export function CustomPieChart({
               data={chartData}
               dataKey="value"
               nameKey="key"
-              innerRadius={30}
+              innerRadius={35}
               strokeWidth={3}
             >
               <Label
