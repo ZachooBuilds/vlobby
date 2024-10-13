@@ -108,6 +108,7 @@ export default function NewDropoffRequestForm({
   const onSubmit = async (data: DropoffRequest) => {
     setIsLoading(true);
     console.log('Form Data:', data);
+
     try {
       const result = await upsertRequestMutation({
         _id: data._id as Id<'requests'>,
@@ -116,6 +117,7 @@ export default function NewDropoffRequestForm({
         allocationId: data.allocationId,
         evidenceImages: data.evidenceImages,
         parkId: selectedSpotId!, // Use the selected spot ID
+        isCasualParking: data.isCasualParking,
         parkTypeId: data.parkTypeId,
       });
       console.log('Mutation Result:', result);

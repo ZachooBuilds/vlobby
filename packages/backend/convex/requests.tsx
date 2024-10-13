@@ -13,6 +13,7 @@ const requestSchema = {
   createdBy: v.optional(v.string()),
   notes: v.optional(v.string()),
   allocationId: v.optional(v.string()),
+  isCasualParking: v.boolean(),
   evidenceImages: v.optional(
     v.array(
       v.object({
@@ -77,6 +78,7 @@ export const upsertRequest = mutation({
       // Insert new request
       let parkId = args.parkId;
       let allocationId = args.allocationId;
+      let vehicleDetails;
 
       if (args.requestType.startsWith('pickup')) {
         // For pickup requests, get parkId and allocationId from the active parking log
@@ -89,12 +91,13 @@ export const upsertRequest = mutation({
         if (activeParkingLog) {
           parkId = activeParkingLog.parkId;
           allocationId = activeParkingLog.allocationId;
+          vehicleDetails = await ctx.db.get(activeParkingLog.vehicleId);
         }
 
         //send a notification to all operators
         await sendPushNotificationToAllOperators(ctx, {
           title: '🚙 New Pickup Request',
-          body: `A new pickup request has been created for ${args.vehicleId}.`,
+          body: `A new pickup request has been created for ${vehicleDetails?.make} ${vehicleDetails?.model} ${vehicleDetails?.rego}.`,
         });
       }
 
@@ -149,12 +152,14 @@ export const getRequestsForCards = query({
 
         const vehicle = await ctx.db.get(request.vehicleId);
 
+        const operator = await ctx.db.get(request.assignedTo);
+
         let assignedToName = 'Unassigned';
-        if (request.assignedTo === 'system') {
-          assignedToName = 'System';
-        } else if (request.assignedTo) {
+        if (operator) {
           const operator = await ctx.db.get(request.assignedTo);
-          assignedToName = operator ? operator.name : 'Unassigned';
+          assignedToName = operator
+            ? `${operator.firstName} ${operator.lastName}`
+            : 'Unassigned';
         }
 
         return {
@@ -365,6 +370,8 @@ export const assignRequest = mutation({
       .filter((q) => q.eq(q.field('userId'), identity.userId))
       .first();
 
+    console.log('operator', operator);
+
     let assignedTo;
     let assignedToName;
 
@@ -373,7 +380,7 @@ export const assignRequest = mutation({
       assignedToName = 'System Admin';
     } else {
       assignedTo = operator._id;
-      assignedToName = operator.name;
+      assignedToName = operator.firstName + ' ' + operator.lastName;
     }
 
     await ctx.db.patch(args.id, {

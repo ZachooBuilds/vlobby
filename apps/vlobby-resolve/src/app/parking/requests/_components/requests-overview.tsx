@@ -23,15 +23,19 @@ import {
   ParkIconPath,
   SpacesIconPath,
 } from '../../../../../public/svg/icons';
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
 const RequestCard = ({
   request,
   onAssign,
   onComplete,
+  isLoading,
 }: {
   request: RequestCardData;
   onAssign: (id: string) => void;
   onComplete: (id: string) => void;
+  isLoading: boolean;
 }) => (
   <Card key={request._id} className="flex flex-col gap-1 p-2">
     <CardHeader className="flex flex-row items-center justify-between p-0">
@@ -89,17 +93,26 @@ const RequestCard = ({
     </CardContent>
     <CardFooter className="flex flex-col items-start gap-2 p-2">
       {request.status === 'received' && (
-        <Button onClick={() => onAssign(request._id)} className="w-full">
-          Assign
+        <Button
+          onClick={() => onAssign(request._id)}
+          className="w-full h-16"
+          disabled={isLoading}
+        >
+          {isLoading ? <Loader2 className="h-4 w-4 animate-spin " /> : 'Assign'}
         </Button>
       )}
       {request.status === 'assigned' && (
         <Button
-          onClick={() => onComplete(request._id)}
           color="green"
-          className="w-full"
+          onClick={() => onComplete(request._id)}
+          className="w-full h-16"
+          disabled={isLoading}
         >
-          Complete
+          {isLoading ? (
+            <Loader2 className="h-4 w-4 animate-spin " />
+          ) : (
+            'Complete'
+          )}
         </Button>
       )}
       {request.status !== 'received' && request.status !== 'assigned' && null}
@@ -117,37 +130,27 @@ export default function RequestsOverview() {
 
   const { toast } = useToast();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleAssignRequest = async (requestId: string) => {
+    setIsLoading(true);
     try {
       await assignRequest({ id: requestId as Id<'requests'> });
-      toast({
-        title: 'Request Assigned',
-        description: 'The request has been successfully assigned.',
-      });
     } catch (error) {
-      console.error('Failed to assign request:', error);
-      toast({
-        title: 'Assignment Failed',
-        description: 'There was an error assigning the request.',
-        variant: 'destructive',
-      });
+      console.error('Failed to assign request:', error);    
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleCompleteRequest = async (requestId: string) => {
+    setIsLoading(true);
     try {
       await completeRequest({ id: requestId as Id<'requests'> });
-      toast({
-        title: 'Request Completed',
-        description: 'The request has been marked as completed.',
-      });
     } catch (error) {
       console.error('Failed to complete request:', error);
-      toast({
-        title: 'Completion Failed',
-        description: 'There was an error completing the request.',
-        variant: 'destructive',
-      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -158,11 +161,14 @@ export default function RequestsOverview() {
           <ParkIconPath />
         </div>
         <h1 className="text-2xl font-medium">Valet Requests</h1>
-        <Badge color={ "green"}>
-          {requests?.filter(
-            (request) =>
-              request.status === 'pending' || request.status === 'assigned'
-          ).length} active requests
+        <Badge color={'green'}>
+          {
+            requests?.filter(
+              (request) =>
+                request.status === 'pending' || request.status === 'assigned'
+            ).length
+          }{' '}
+          active requests
         </Badge>
       </div>
       {requests?.map((request) => (
@@ -171,6 +177,7 @@ export default function RequestsOverview() {
           request={request}
           onAssign={handleAssignRequest}
           onComplete={handleCompleteRequest}
+          isLoading={isLoading}
         />
       ))}
     </div>
