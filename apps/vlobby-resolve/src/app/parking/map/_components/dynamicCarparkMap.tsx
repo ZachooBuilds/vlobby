@@ -225,11 +225,13 @@ function ParkingSpots({
 interface CarParkMapProps {
   onSpotSelect?: (spotId: string | null) => void;
   isSelecting?: boolean;
+  selectedVehicleId?: string | null;
 }
 
 export default function CarParkMap({
   onSpotSelect,
   isSelecting = false,
+  selectedVehicleId = null,
 }: CarParkMapProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedLevelId, setSelectedLevelId] =
@@ -329,6 +331,20 @@ export default function CarParkMap({
       );
     }
   };
+
+
+
+  // New useEffect to handle selectedVehicleId
+  useEffect(() => {
+    if (selectedVehicleId && activeParkingLogs?.length > 0) {
+      const activeLog = activeParkingLogs.find(
+        (log) => log.vehicleId === selectedVehicleId
+      );
+      if (activeLog) {
+        setSelectedSpotId(activeLog.parkId);
+      }
+    }
+  }, [selectedVehicleId, activeParkingLogs]);
 
   return (
     <div className="flex h-full flex-col">

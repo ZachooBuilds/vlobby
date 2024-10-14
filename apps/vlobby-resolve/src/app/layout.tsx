@@ -6,7 +6,7 @@ import ConvexClientProvider from './ConvexClientProvider';
 import { ReactNode, useEffect } from 'react';
 import { Toaster } from '@repo/ui/components/ui/toaster';
 import { GlobalDrawer } from './_components/global-drawer';
-import { AuthCheck } from './_components/validate-auth';
+import { AuthCheck } from './_components/auth-validation/validate-auth';
 import PushNotificationInitializer from './_components/PushNotificationInitializer';
 import { Camera } from '@capacitor/camera';
 import { Device } from '@capacitor/device';

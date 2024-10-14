@@ -559,6 +559,26 @@ export const completeRequest = mutation({
   },
 });
 
+export const getActiveByVehicleId = query({
+  args: { vehicleId: v.string() },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthenticated');
+    const orgId = identity.orgId;
+
+    const activeParkingLog = await ctx.db
+      .query('parkingLogs')
+      .filter((q) => q.eq(q.field('vehicleId'), args.vehicleId))
+      .filter((q) => q.eq(q.field('status'), 'active'))
+      .first();
+
+    return activeParkingLog;
+  },
+});
+
+
+
+
 export const moveParkingLog = mutation({
   args: {
     parkingLogId: v.id('parkingLogs'),

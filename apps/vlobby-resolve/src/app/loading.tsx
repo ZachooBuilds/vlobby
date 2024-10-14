@@ -1,10 +1,13 @@
 import React from 'react';
-import { Skeleton } from '@repo/ui/components/ui/skeleton';
+import { Loader2 } from 'lucide-react';
 
 export default function LoadingPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <Skeleton className="w-full max-w-3xl h-[80vh] rounded-lg" />
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <Loader2 className="h-16 w-16 animate-spin text-primary mb-4" />
+      <p className="text-lg font-medium animate-pulse">
+        Fetching account data...
+      </p>
     </div>
   );
 }

@@ -39,7 +39,7 @@ export function RadialChart({ data, title, description }: RadialChartProps) {
   const chartData = [
     {
       title: title,
-      ...Object.fromEntries(data.map(item => [item.key, item.value])),
+      ...Object.fromEntries(data.map((item) => [item.key, item.value])),
     },
   ];
 
@@ -63,7 +63,7 @@ export function RadialChart({ data, title, description }: RadialChartProps) {
   console.log(chartConfig);
 
   return (
-    <Card className="flex flex-col w-full text-sm">
+    <Card className="flex flex-col w-full text-sm pb-0">
       <CardHeader className="items-start pb-0">
         <CardTitle className="text-sm font-medium text-foreground">
           {title}

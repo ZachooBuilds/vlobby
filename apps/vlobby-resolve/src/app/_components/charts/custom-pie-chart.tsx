@@ -46,13 +46,13 @@ export function CustomPieChart({
   trendPercentage,
   trendDescription,
 }: PieChartProps) {
-  const chartData = data.map((item, index) => ({
+  const chartData = data?.map((item, index) => ({
     ...item,
     fill: getColorForIndex(index),
   }));
 
   const chartConfig: ChartConfig = Object.fromEntries(
-    data.map((item, index) => [
+    data?.map((item, index) => [
       item.key,
       { label: item.label, color: getColorForIndex(index) },
     ])

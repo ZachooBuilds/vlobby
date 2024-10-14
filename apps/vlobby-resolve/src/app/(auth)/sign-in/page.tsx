@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useSignIn } from '@clerk/clerk-react';
 import { Card, CardHeader, CardContent } from '@repo/ui/components/ui/card';
-import { AspectRatio } from '@repo/ui/components/ui/aspect-ratio';
 import { Button } from '@repo/ui/components/ui/button';
 import {
   Form,
@@ -21,9 +20,12 @@ import { motion } from 'framer-motion';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { LogoPath } from '../../../lib/images';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
-console.log('Initializing SignInPage component');
-
+/**
+ * Zod schema for sign-in form validation.
+ * Ensures email is valid and password meets minimum length requirement.
+ */
 const signInFormSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
@@ -31,9 +33,16 @@ const signInFormSchema = z.object({
 
 type SignInFormValues = z.infer<typeof signInFormSchema>;
 
+/**
+ * SignInPage Component
+ * 
+ * This component handles user authentication for the application.
+ * It provides a form for users to enter their credentials and manages
+ * the sign-in process using Clerk authentication service.
+ * 
+ * @returns {JSX.Element} The rendered sign-in page
+ */
 export default function SignInPage() {
-  console.log('Rendering SignInPage component');
-
   const [isLoading, setIsLoading] = useState(false);
   const { isLoaded, signIn, setActive } = useSignIn();
   const { toast } = useToast();
@@ -41,6 +50,10 @@ export default function SignInPage() {
 
   console.log('Initial state:', { isLoading, isLoaded });
 
+  /**
+   * Initialize the form with react-hook-form and zod resolver.
+   * This setup provides form validation and handling.
+   */
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
@@ -51,6 +64,14 @@ export default function SignInPage() {
 
   console.log('Form initialized');
 
+  /**
+   * Handles form submission for user sign-in.
+   * 
+   * This function attempts to authenticate the user with the provided credentials.
+   * It manages loading states, error handling, and successful sign-in redirection.
+   * 
+   * @param {SignInFormValues} data - The form data containing email and password
+   */
   const onSubmit = async (data: SignInFormValues) => {
     console.log('Form submitted with data:', data);
 
@@ -75,19 +96,13 @@ export default function SignInPage() {
       if (result.status === 'complete') {
         console.log('Sign-in complete, setting active session');
         await setActive({ session: result.createdSessionId });
-        // toast({
-        //   title: 'Success',
-        //   description: 'You have successfully signed in.',
-        // });
-        // Redirect to dashboard or home page
         router.push('/home');
       } else {
-        console.log('Sign-in incomplete');
-        // toast({
-        //   title: 'Sign-in incomplete',
-        //   description: `Status: ${result.status}`,
-        //   variant: 'destructive',
-        // });
+        toast({
+          title: 'Error',
+          description: 'Sign-in incomplete',
+          variant: 'destructive',
+        });
       }
     } catch (error: any) {
       console.error('Error during sign-in process:', error);
@@ -114,14 +129,19 @@ export default function SignInPage() {
         className="w-full max-w-md"
       >
         <Card className="flex flex-col gap-2">
-          <CardHeader className="p-2">
-            <AspectRatio ratio={2 / 1}>
-              <LogoPath />
-            </AspectRatio>
+          <CardHeader className="p-2 items-center justify-center">
+            <Image
+              src="/resolvelogo.png"
+              alt="Resolve Logo"
+              width={200}
+              height={200}
+              quality={100}
+              priority
+            />
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="flex flex-col gap-2 w-full items-center p-2">
-              <p className="text-lg font-semibold">Sign In to Your Account</p>
+              <p className="text-md ">Sign in to your account below.</p>
             </div>
             <Form {...form}>
               <form
@@ -140,7 +160,7 @@ export default function SignInPage() {
                           type="email"
                           {...field}
                           inputMode="email"
-                          className="text-base"
+                          className="text-base h-14"
                           autoComplete="email"
                         />
                       </FormControl>
@@ -158,7 +178,7 @@ export default function SignInPage() {
                         <Input
                           placeholder="Enter your password"
                           type="password"
-                          className="text-base"
+                          className="text-base h-14"
                           {...field}
                         />
                       </FormControl>
@@ -166,12 +186,20 @@ export default function SignInPage() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Button
+                  type="submit"
+                  className="w-full h-14"
+                  disabled={isLoading}
+                >
                   {isLoading ? 'Signing In...' : 'Sign In'}
                 </Button>
               </form>
             </Form>
-            <Button variant="outline" onClick={() => router.push('/sign-up')}>
+            <Button
+              variant="outline"
+              onClick={() => router.push('/sign-up')}
+              className="w-full h-14"
+            >
               Don't have an account? Sign Up
             </Button>
             <Button

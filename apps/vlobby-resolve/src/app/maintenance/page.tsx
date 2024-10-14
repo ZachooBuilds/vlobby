@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import ViewSwitcher from '../_components/view-switcher';
 import NavigationBarMaintenance from '../_components/navigation-maintenance';
@@ -16,9 +16,12 @@ import {
   RadialChartDataItem,
 } from '../_components/charts/custom-radial-chart';
 import { spaceRoleOptions } from '../../lib/staticData';
+import { Skeleton } from '@repo/ui/components/ui/skeleton';
 
 export default function SettingsPage() {
   // const spaces = useQuery(api.spaces.getAllSpaces);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const spaceTypeData = useQuery(
     api.spaces.getTotalSpacesByType
@@ -49,14 +52,16 @@ export default function SettingsPage() {
       role.label,
   }));
 
-  const isLoading =
-    spaceTypeData === undefined ||
-    occupancyData === undefined ||
-    roleFrequencies === undefined;
-
   // If data is still loading, show the LoadingSpinner
-  if (isLoading) {
-    return <LoadingSpinner />;
+  if (
+    !spaceTypeData ||
+    !occupancyData ||
+    !roleFrequencies ||
+    !issueTypeSummary ||
+    !activeTicketsByFloor ||
+    !issuePrioritySummary
+  ) {
+    return <LoadingSkeleton />;
   }
 
   return (
@@ -64,8 +69,8 @@ export default function SettingsPage() {
       <div className="flex-grow overflow-auto">
         <div className="flex flex-col gap-4 p-4 pt-16 pb-[120px]">
           <ViewSwitcher />
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-row gap-4">
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-row gap-2">
               <CustomPieChart
                 data={spaceTypeData}
                 title="Spaces By Type"
@@ -84,7 +89,7 @@ export default function SettingsPage() {
               title={'Occupancy Overview'}
               description="An overview of occupancy rates across all spaces"
             />
-            <div className="flex flex-row gap-4">
+            <div className="flex flex-row gap-2">
               <CustomPieChart
                 data={formattedRoleFrequencies}
                 title="Space Role Frequencies"
@@ -111,10 +116,27 @@ export default function SettingsPage() {
   );
 }
 
-function LoadingSpinner() {
+function LoadingSkeleton() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <Loader2 className="h-16 w-16 animate-spin text-primary" />
+    <div className="flex flex-col h-screen">
+      <div className="flex-grow overflow-auto">
+        <div className="flex flex-col gap-4 p-4 pt-16 pb-[120px]">
+          <ViewSwitcher />
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-row gap-2">
+              <Skeleton className="w-full h-[200px] rounded-md" />
+              <Skeleton className="w-full h-[200px] rounded-md" />
+            </div>
+            <Skeleton className="w-full h-[250px] rounded-md" />
+            <div className="flex flex-row gap-2">
+              <Skeleton className="w-full h-[200px] rounded-md" />
+              <Skeleton className="w-full h-[200px] rounded-md" />
+            </div>
+            <Skeleton className="w-full h-[250px] rounded-md" />
+          </div>
+        </div>
+      </div>
+      <NavigationBarMaintenance />
     </div>
   );
 }

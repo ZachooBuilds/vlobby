@@ -1,12 +1,16 @@
+/**
+ * @page.tsx Sign Up Page
+ * This file contains the SignUpPage component for user registration.
+ */
+
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useSignUp } from '@clerk/clerk-react';
 import { Card, CardHeader, CardContent } from '@repo/ui/components/ui/card';
-import { AspectRatio } from '@repo/ui/components/ui/aspect-ratio';
 import { Button } from '@repo/ui/components/ui/button';
 import {
   Form,
@@ -19,11 +23,14 @@ import {
 import { Input } from '@repo/ui/components/ui/input';
 import { motion } from 'framer-motion';
 import { useToast } from '@repo/ui/hooks/use-toast';
-import { LogoPath } from '../../../lib/images';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
 
-console.log('Initializing SignUpPage component');
-
+/**
+ * @schema Sign Up Form Schema
+ * Defines the validation rules for the sign-up form fields.
+ */
 const signUpFormSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
@@ -37,17 +44,20 @@ const signUpFormSchema = z.object({
 
 type SignUpFormValues = z.infer<typeof signUpFormSchema>;
 
+/**
+ * @component SignUpPage
+ * Handles user registration and email verification process.
+ */
 export default function SignUpPage() {
-  console.log('Rendering SignUpPage component');
-
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [verifying, setVerifying] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [verifying, setVerifying] = useState(false);
   const { isLoaded, signUp, setActive } = useSignUp();
   const { toast } = useToast();
   const router = useRouter();
 
-  console.log('Initial state:', { isLoading, verifying, isLoaded });
-
+  /**
+   * @form Initialize form with react-hook-form and zod resolver
+   */
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpFormSchema),
     defaultValues: {
@@ -58,13 +68,12 @@ export default function SignUpPage() {
     },
   });
 
-  console.log('Form initialized');
-
+  /**
+   * @function onSubmit
+   * Handles form submission for user registration and email verification.
+   */
   const onSubmit = async (data: SignUpFormValues) => {
-    console.log('Form submitted with data:', data);
-
     if (!isLoaded) {
-      console.log('Clerk not loaded');
       toast({
         title: 'Error',
         description: 'Clerk is not loaded yet',
@@ -73,64 +82,40 @@ export default function SignUpPage() {
       return;
     }
     setIsLoading(true);
-    console.log('Setting isLoading to true');
-
-    toast({
-      title: 'Form Submitted',
-      description: JSON.stringify(data, null, 2),
-    });
 
     try {
       if (!verifying) {
-        console.log('Starting sign-up process');
-        toast({ title: 'Creating sign-up' });
+        // Initial sign-up process
         const signUpResult = await signUp.create({
           firstName: data.firstName,
           lastName: data.lastName,
           emailAddress: data.email,
           password: data.password,
         });
-        console.log('Sign-up created:', signUpResult);
-        toast({
-          title: 'Sign-up created',
-          description: JSON.stringify(signUpResult, null, 2),
-        });
 
-        console.log('Preparing email verification');
-        toast({ title: 'Preparing email verification' });
-        const prepareResult = await signUp.prepareEmailAddressVerification({
+        await signUp.prepareEmailAddressVerification({
           strategy: 'email_code',
-        });
-        console.log('Email verification prepared:', prepareResult);
-        toast({
-          title: 'Email verification prepared',
-          description: JSON.stringify(prepareResult, null, 2),
         });
 
         setVerifying(true);
-        console.log('Setting verifying to true');
         toast({
           title: 'Verification Required',
           description: 'Please check your email for a verification code.',
         });
       } else {
-        console.log('Attempting email verification');
-        toast({ title: 'Attempting email verification' });
+        // Email verification process
         const result = await signUp.attemptEmailAddressVerification({
           code: data.code!,
         });
-        console.log('Verification result:', result);
 
         if (result.status === 'complete') {
-          console.log('Verification complete, setting active session');
           await setActive({ session: result.createdSessionId });
           toast({
             title: 'Success',
             description: 'Your account has been created and verified.',
           });
-          // Redirect to dashboard or home page
+          router.push('/home');
         } else {
-          console.log('Verification incomplete');
           toast({
             title: 'Verification incomplete',
             description: `Status: ${result.status}`,
@@ -139,20 +124,20 @@ export default function SignUpPage() {
         }
       }
     } catch (error: any) {
-      console.error('Error during sign-up process:', error);
       toast({
         title: 'Error',
-        description: error.errors?.[0]?.longMessage || JSON.stringify(error),
+        description:
+          error.errors?.[0]?.longMessage || 'An error occurred during sign-up',
         variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
-      console.log('Setting isLoading to false');
     }
   };
 
-  console.log('Rendering JSX');
-
+  /**
+   * @render SignUpPage component
+   */
   return (
     <div className="flex items-center justify-center min-h-screen p-5 pt-20 overflow-scroll">
       <motion.div
@@ -162,17 +147,27 @@ export default function SignUpPage() {
         className="w-full max-w-md"
       >
         <Card className="flex flex-col gap-2">
-          <CardHeader className="p-2">
-            <AspectRatio ratio={2 / 1}>
-              <LogoPath />
-            </AspectRatio>
+          <CardHeader className="p-2 items-center justify-center">
+            <Image
+              src="/resolvelogo.png"
+              alt="Resolve Logo"
+              width={200}
+              height={200}
+              quality={100}
+              priority
+            />
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="flex flex-col gap-2 w-full items-center p-2">
-              <p className="text-lg font-semibold">
+              <p className="text-md">
                 {verifying ? 'Verify Your Email' : 'Create Your Account'}
               </p>
             </div>
+            <Link href="/">
+              <Button variant="ghost" size="sm">
+                ← Back
+              </Button>
+            </Link>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -180,6 +175,7 @@ export default function SignUpPage() {
               >
                 {!verifying ? (
                   <>
+                    {/* Registration form fields */}
                     <FormField
                       control={form.control}
                       name="firstName"
@@ -191,7 +187,7 @@ export default function SignUpPage() {
                               placeholder="Enter your first name"
                               {...field}
                               inputMode="text"
-                              className="text-base"
+                              className="text-base h-14"
                               autoComplete="given-name"
                             />
                           </FormControl>
@@ -210,7 +206,7 @@ export default function SignUpPage() {
                               placeholder="Enter your last name"
                               {...field}
                               inputMode="text"
-                              className="text-base"
+                              className="text-base h-14"
                               autoComplete="family-name"
                             />
                           </FormControl>
@@ -230,7 +226,7 @@ export default function SignUpPage() {
                               type="email"
                               {...field}
                               inputMode="email"
-                              className="text-base"
+                              className="text-base h-14"
                               autoComplete="email"
                             />
                           </FormControl>
@@ -248,7 +244,7 @@ export default function SignUpPage() {
                             <Input
                               placeholder="Enter your password"
                               type="password"
-                              className="text-base"
+                              className="text-base h-14"
                               {...field}
                             />
                           </FormControl>
@@ -258,6 +254,7 @@ export default function SignUpPage() {
                     />
                   </>
                 ) : (
+                  // Verification code input
                   <FormField
                     control={form.control}
                     name="code"
@@ -269,7 +266,7 @@ export default function SignUpPage() {
                             placeholder="Enter verification code"
                             {...field}
                             inputMode="numeric"
-                            className="text-base"
+                            className="text-base h-14"
                             pattern="[0-9]*"
                           />
                         </FormControl>
@@ -280,15 +277,8 @@ export default function SignUpPage() {
                 )}
                 <Button
                   type="submit"
-                  className="w-full"
+                  className="w-full h-14"
                   disabled={isLoading}
-                  onClick={() => {
-                    console.log('Submit button clicked');
-                    const errors = form.formState.errors;
-                    if (Object.keys(errors).length > 0) {
-                      console.log('Validation errors:', errors);
-                    }
-                  }}
                 >
                   {isLoading
                     ? 'Processing...'
@@ -298,8 +288,12 @@ export default function SignUpPage() {
                 </Button>
               </form>
             </Form>
-            <Button variant="outline" onClick={() => router.push('/')}>
-              Back
+            <Button
+              variant="outline"
+              onClick={() => router.push('/sign-in')}
+              className="w-full h-14"
+            >
+              Already have an account? Sign In
             </Button>
             <p className="text-muted-foreground text-xs text-center">
               By creating an account, you agree to our Terms and Conditions.
