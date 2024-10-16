@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { api } from '@repo/backend/convex/_generated/api';
 import { useQuery } from 'convex/react';
 import IssueSummaryCard from './_components/issue-card';
-import { Badge } from '@tremor/react';
 import { Button } from '@repo/ui/components/ui/button';
 import IssueOverview from './_components/issue-overview';
 import {
@@ -23,29 +22,26 @@ import useDrawerStore from '../../../lib/global-state';
 import { HammerIconPath } from '../../../../public/svg/icons';
 import NoData from '../../_components/no-data';
 import NavigationBarMaintenance from '../../_components/navigation-maintenance';
+import { Skeleton } from '@repo/ui/components/ui/skeleton';
 
 export default function MaintenancePage() {
   // Fetch all occupant issues
-  const issues = useQuery(api.tickets.getAllAssignedIssues) as
-    | EnhancedIssue[]
-    | undefined;
+  const issues = useQuery(api.tickets.getAllAssignedIssues) as EnhancedIssue[];
 
   // Filter issues into resolved and open
   const resolvedIssues = issues?.filter(
     (issue) => issue.status === 'Resolved' || issue.status === 'Closed'
-  ) as EnhancedIssue[];
+  );
 
   const openIssues = issues?.filter(
     (issue) => issue.status !== 'Resolved' && issue.status !== 'Closed'
   ) as EnhancedIssue[];
 
-  // Access the global drawer state
-  const { openDrawer } = useDrawerStore();
-
   // Local state for selected issue and work order
   const [selectedIssue, setSelectedIssue] = useState<EnhancedIssue | null>(
     null
   );
+
   const [selectedWorkOrder, setSelectedWorkOrder] =
     useState<Id<'workOrders'> | null>(null);
 
@@ -66,6 +62,11 @@ export default function MaintenancePage() {
     setSelectedWorkOrder(workOrderId);
   };
 
+  // If data is still loading, show the LoadingSpinner
+  if (!issues) {
+    return <LoadingSkeleton />;
+  }
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex-grow overflow-auto">
@@ -84,9 +85,7 @@ export default function MaintenancePage() {
                 </div>
               </div>
             </div>
-            {selectedIssue ? (
-              <Button onClick={handleIssueEdit}>Edit Issue</Button>
-            ) : (
+            {selectedIssue ? null : (
               <Link href="/maintenance/issues/new-issue" passHref>
                 <Button>Report Issue</Button>
               </Link>
@@ -189,6 +188,34 @@ export default function MaintenancePage() {
         </div>
       </div>
       {/* Navigation Bar */}
+      <NavigationBarMaintenance />
+    </div>
+  );
+}
+
+function LoadingSkeleton() {
+  return (
+    <div className="flex flex-col h-screen">
+      <div className="flex-grow overflow-auto">
+        <div className="flex flex-col gap-4 p-4 pt-16 pb-[120px]">
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-row items-center gap-4">
+              <div className="w-5 h-5 fill-foreground">
+                <HammerIconPath />
+              </div>
+              <div className="flex flex-col gap-2">
+                <h2 className="text-xl font-semibold">{'Assigned Jobs'}</h2>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <h2 className="text-xl font-semibold mb-4">Open Jobs</h2>
+            <Skeleton className="w-full h-[400px] rounded-md" />
+            <h2 className="text-xl font-semibold mb-4">Resolved</h2>
+            <Skeleton className="w-full h-[400px] rounded-md" />
+          </div>
+        </div>
+      </div>
       <NavigationBarMaintenance />
     </div>
   );

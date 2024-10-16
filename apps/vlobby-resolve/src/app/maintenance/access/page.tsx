@@ -1,15 +1,21 @@
+/**
+ * @page.tsx Access Control Page
+ * This file contains the AccessPage component for the maintenance access control section.
+ */
+
 'use client';
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
+import React from 'react';
 import NavigationBarMaintenance from '../../_components/navigation-maintenance';
 import UnderConstructionMessage from '../../_components/under-construction';
-import { LockIconPath, SettingIconPath } from '../../../../public/svg/icons';
+import { LockIconPath } from '../../../../public/svg/icons';
 import { CardHeader, CardTitle } from '@repo/ui/components/ui/card';
 
+/**
+ * @component AccessPage
+ * Renders the access control page for the maintenance section.
+ * Currently displays an "under construction" message.
+ */
 export default function AccessPage() {
-  const router = useRouter();
-
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-grow overflow-auto">
@@ -26,14 +32,6 @@ export default function AccessPage() {
         </div>
       </div>
       <NavigationBarMaintenance />
-    </div>
-  );
-}
-
-function LoadingSpinner() {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <Loader2 className="h-16 w-16 animate-spin text-primary" />
     </div>
   );
 }

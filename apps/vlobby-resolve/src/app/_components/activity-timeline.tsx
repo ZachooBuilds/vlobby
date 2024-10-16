@@ -50,19 +50,30 @@ export function ActivityTimeline({ items }: ActivityTimelineProps) {
           <div className="flex w-full flex-col">
             <div className="flex flex-row items-start justify-between">
               <div className="flex flex-col">
-                <p className="text-md font-semibold">
-                  {item.title}
+                <div className="flex flex-row gap-1">
+                  <Badge
+                    className="flex flex-row gap-1"
+                    size="xs"
+                    style={{
+                      backgroundColor: `${typeColorMap[item.type]}20`,
+                      border: `0.5px solid ${typeColorMap[item.type]}`,
+                      color: typeColorMap[item.type],
+                    }}
+                  >
+                    {item.title}
+                  </Badge>
                   {index === 0 && (
                     <Badge size="xs" className="ml-2">
                       Latest
                     </Badge>
                   )}
-                </p>
+                </div>
+
                 <p className="text-xs text-muted-foreground">
                   {new Date(item._creationTime).toLocaleString()}
                 </p>
               </div>
-              <Badge
+              {/* <Badge
                 className="flex flex-row gap-1"
                 size="xs"
                 style={{
@@ -71,8 +82,8 @@ export function ActivityTimeline({ items }: ActivityTimelineProps) {
                   color: typeColorMap[item.type],
                 }}
               >
-                {item.type}
-              </Badge>
+                {item.title}
+              </Badge> */}
             </div>
             <p className="text-sm text-foreground">{item.description}</p>
           </div>

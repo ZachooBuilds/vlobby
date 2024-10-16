@@ -10,7 +10,7 @@ import {
 } from '@repo/ui/components/ui/card';
 import { Badge } from '@tremor/react';
 import { Button } from '@repo/ui/components/ui/button';
-import { useQuery } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { api } from '@repo/backend/convex/_generated/api';
 import {
   Avatar,
@@ -18,9 +18,24 @@ import {
   AvatarFallback,
 } from '@repo/ui/components/ui/avatar';
 import ImageGalleryComponent from '../../../_components/image-gallery';
-import { ActivityTimeline, TimelineItem } from '../../../_components/activity-timeline';
+import {
+  ActivityTimeline,
+  TimelineItem,
+} from '../../../_components/activity-timeline';
 import NoData from '../../../_components/no-data';
 import { AdminUser, EnhancedIssue } from '../../../../lib/app-types';
+import useDrawerStore from '../../../../lib/global-state';
+import { GlobalNoteData } from '../_form/global-note-form';
+import Link from 'next/link';
+import GlobalNote from '../_form/global-note';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@repo/ui/components/ui/select';
+import { Id } from '@repo/backend/convex/_generated/dataModel';
 
 interface IssueOverviewProps {
   issue: EnhancedIssue;
@@ -37,7 +52,7 @@ export default function IssueOverview({ issue, onClose }: IssueOverviewProps) {
 
   return (
     <div className="flex flex-col gap-4 w-full">
-      <Card className="w-full">
+      <Card className="w-full p-4">
         <CardHeader>
           <CardTitle className="text-md">{issue.title}</CardTitle>
           <div className="flex flex-row gap-2">
@@ -72,8 +87,10 @@ export default function IssueOverview({ issue, onClose }: IssueOverviewProps) {
             </div>
           )}
         </CardContent>
-        <CardFooter>
-          <Button onClick={onClose} variant="outline" className="w-full">
+        <CardFooter className="flex flex-col gap-2">
+          <StatusUpdate issueId={issue._id} status={issue.status} />
+
+          <Button onClick={onClose} variant="outline" className="w-full h-14">
             Back to Issues
           </Button>
         </CardFooter>
@@ -81,8 +98,63 @@ export default function IssueOverview({ issue, onClose }: IssueOverviewProps) {
       {issue.assignedToId && (
         <AssignedUserDetails userId={issue.assignedToId} />
       )}
+      <NotesTab issueId={issue._id} />
       <ActivityFeed issueId={issue._id} />
     </div>
+  );
+}
+
+function StatusUpdate({
+  issueId,
+  status,
+}: {
+  issueId: string;
+  status: string;
+}) {
+  const updateIssueStatus = useMutation(api.tickets.updateIssueStatus);
+
+  const handleStatusChange = (newStatus: string) => {
+    updateIssueStatus({ status: newStatus, issueId: issueId as Id<'issues'> });
+  };
+
+  return (
+    <Select onValueChange={handleStatusChange} defaultValue={status}>
+      <SelectTrigger className="w-full h-14">
+        <SelectValue placeholder="Select status" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="Pending">
+          <div className="flex items-center">
+            <div className="w-3 h-3 rounded-full bg-yellow-400 mr-2"></div>
+            Pending
+          </div>
+        </SelectItem>
+        <SelectItem value="Assigned">
+          <div className="flex items-center">
+            <div className="w-3 h-3 rounded-full bg-blue-400 mr-2"></div>
+            Assigned
+          </div>
+        </SelectItem>
+        <SelectItem value="In Progress">
+          <div className="flex items-center">
+            <div className="w-3 h-3 rounded-full bg-orange-400 mr-2"></div>
+            In Progress
+          </div>
+        </SelectItem>
+        <SelectItem value="Resolved">
+          <div className="flex items-center">
+            <div className="w-3 h-3 rounded-full bg-green-400 mr-2"></div>
+            Resolved
+          </div>
+        </SelectItem>
+        <SelectItem value="Closed">
+          <div className="flex items-center">
+            <div className="w-3 h-3 rounded-full bg-gray-400 mr-2"></div>
+            Closed
+          </div>
+        </SelectItem>
+      </SelectContent>
+    </Select>
   );
 }
 
@@ -96,9 +168,11 @@ function AssignedUserDetails({ userId }: { userId: string }) {
   }
 
   return (
-    <Card className="w-full mt-4">
+    <Card className="w-full">
       <CardHeader>
-        <CardTitle className="text-md">Assigned User</CardTitle>
+        <CardTitle className="text-md">
+          We are taking care of this issue
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex items-center space-x-4">
@@ -161,6 +235,73 @@ function ActivityFeed({ issueId }: { issueId: string }) {
       </CardHeader>
       <CardContent className="p-0">
         <ActivityTimeline items={activityData} />
+      </CardContent>
+    </Card>
+  );
+}
+
+/**
+ * @function NotesTab
+ * @description Handles the display of notes related to the issue
+ * @param {Object} props - Component props
+ * @param {string} props.issueId - The ID of the issue
+ * @returns {JSX.Element} Rendered component for the Notes tab
+ */
+function NotesTab({ issueId }: { issueId: string }) {
+  const noteData = useQuery(api.notes.getAllGlobalNotes, {
+    noteType: 'issue',
+    entityId: issueId,
+  }) as GlobalNoteData[];
+
+  if (noteData === undefined || noteData.length < 1) {
+    return (
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="text-md font-medium">Notes</CardTitle>
+          <Link
+            href={`/maintenance/issues/new-note?issueId=${issueId}`}
+            passHref
+          >
+            <Button variant={'outline'}>Add Note</Button>
+          </Link>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <NoData
+            badgeText={'No notes found'}
+            title={'No notes found'}
+            description={'No notes have been added for this issue.'}
+          />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle className="text-md font-medium">Notes</CardTitle>
+        <Link href={`/maintenance/issues/new-note?issueId=${issueId}`} passHref>
+          <Button variant={'outline'}>Add Note</Button>
+        </Link>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        {noteData.length > 0 && (
+          <>
+            <div className="flex flex-row gap-2">
+              <p className="text-md font-medium">All Notes</p>
+              <Badge size={'xs'}>{noteData.length} Total</Badge>
+              <Badge size={'xs'} color={'gray'}>
+                {noteData.filter((note) => !note.isPrivate).length} Public
+              </Badge>
+              <Badge size={'xs'} color={'gray'}>
+                {noteData.filter((note) => note.isPrivate).length} Private
+              </Badge>
+            </div>
+            {noteData.map((note) => (
+              <GlobalNote key={note._id} {...note} />
+            ))}
+          </>
+        )}
       </CardContent>
     </Card>
   );

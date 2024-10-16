@@ -91,6 +91,7 @@ DEPENDENCIES:
   - "CapacitorKeyboard (from `../../../../node_modules/.pnpm/@capacitor+keyboard@6.0.2_@capacitor+core@6.1.2/node_modules/@capacitor/keyboard`)"
   - "CapacitorPushNotifications (from `../../../../node_modules/.pnpm/@capacitor+push-notifications@6.0.2_@capacitor+core@6.1.2/node_modules/@capacitor/push-notifications`)"
   - CordovaPluginsStatic (from `../capacitor-cordova-ios-plugins`)
+  - FirebaseMessaging
 
 SPEC REPOS:
   trunk:
@@ -148,6 +149,6 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   Pushy: 21f159ce2693fe8fa518047bdf73ca14f02267a4
 
-PODFILE CHECKSUM: 6c05be86e67d4a87b2d51302599e31537dd2c775
+PODFILE CHECKSUM: 35d2b08562bc1b09260300cc99247ba67563de32
 
 COCOAPODS: 1.15.2

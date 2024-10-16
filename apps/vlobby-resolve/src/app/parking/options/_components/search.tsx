@@ -65,7 +65,7 @@ export default function VehicleSearch() {
               variant="outline"
               role="combobox"
               className={cn(
-                'w-full justify-between h-14s',
+                'w-full justify-between h-14',
                 !selectedVehicle && 'text-muted-foreground'
               )}
             >
@@ -73,9 +73,12 @@ export default function VehicleSearch() {
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full">
+          <PopoverContent className="w-full!">
             <Command className="w-full">
-              <CommandInput placeholder="Search vehicles..." />
+              <CommandInput
+                placeholder="Search vehicles..."
+                className="h-14 text-base w-full"
+              />
               <CommandList className="w-full">
                 <CommandEmpty>No Vehicles Found</CommandEmpty>
                 <CommandGroup>
@@ -106,7 +109,7 @@ export default function VehicleSearch() {
         </Popover>
         <Button
           onClick={handleSearch}
-          className="flex items-center gap-2 w-full"
+          className="flex items-center gap-2 w-full h-14"
         >
           <Search className="w-4 h-4" />
           Search

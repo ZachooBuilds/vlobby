@@ -31,6 +31,14 @@ export const spaceRoleOptions = [
   { id: 'vl:tenant', name: 'Tenant' },
 ];
 
+export const statusOptions = [
+  { id: 'Pending', label: 'Pending' },
+  { id: 'Assigned', label: 'Active' },
+  { id: 'In Progress', label: 'In Progress' },
+  { id: 'Resolved', label: 'Resolved' },
+  { id: 'Closed', label: 'Closed' },
+];
+
 export const viewOptions = [
   { id: 'maintenance', label: 'Maintenance View', href: '/maintenance',icon:HammerIconPath },
   { id: 'parking', label: 'Parking View', href: '/parking',icon:CarIconPath },

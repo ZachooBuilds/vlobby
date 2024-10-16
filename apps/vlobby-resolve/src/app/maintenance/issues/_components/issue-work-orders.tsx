@@ -98,7 +98,6 @@ function WorkOrderCard({
       </CardHeader>
       <CardContent>
         <h4 className="mb-2 font-medium">{workOrder.title}</h4>
-
         <div className="flex flex-row items-center gap-2">
           <p className="text-sm text-gray-600">Assigned Contractor: </p>
           <div className="flex flex-row items-center gap-2">

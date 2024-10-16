@@ -13,6 +13,13 @@ const config: CapacitorConfig = {
     PushNotifications: {
       presentationOptions: ["badge", "sound", "alert"]
     }
+  },
+  ios: {
+    contentInset: 'always',
+    allowsLinkPreview: false,
+    scrollEnabled: true,
+    limitsNavigationsToAppBoundDomains: true,
+    // webViewSuspensionEnabled: false
   }
   
   // Use the new way to pass environment variables in Capacitor 6

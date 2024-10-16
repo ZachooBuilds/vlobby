@@ -1,14 +1,22 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
 import { Button } from '@repo/ui/components/ui/button';
 import TicketUpsertForm from '../_form/issues-upsert-form';
 import Link from 'next/link';
+import GlobalNoteForm from '../_form/global-note-form';
 
-export default function NewIssuePage() {
+export default function NewNotePage() {
+  const searchParams = useSearchParams();
+  const issueId = searchParams.get('issueId');
+
+  if (!issueId) {
+    return <div>Error: Issue ID is missing</div>;
+  }
+
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-grow overflow-auto">
@@ -19,8 +27,8 @@ export default function NewIssuePage() {
               Back
             </Button>
           </Link>
-          <h1 className="text-2xl font-bold">Create New Issue</h1>
-          <TicketUpsertForm />
+          <h1 className="text-2xl font-bold">Add New Note</h1>
+          <GlobalNoteForm noteType={'issue'} entityId={issueId} />
         </div>
       </div>
     </div>

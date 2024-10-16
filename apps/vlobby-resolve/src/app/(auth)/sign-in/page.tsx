@@ -35,11 +35,11 @@ type SignInFormValues = z.infer<typeof signInFormSchema>;
 
 /**
  * SignInPage Component
- * 
+ *
  * This component handles user authentication for the application.
  * It provides a form for users to enter their credentials and manages
  * the sign-in process using Clerk authentication service.
- * 
+ *
  * @returns {JSX.Element} The rendered sign-in page
  */
 export default function SignInPage() {
@@ -66,10 +66,10 @@ export default function SignInPage() {
 
   /**
    * Handles form submission for user sign-in.
-   * 
+   *
    * This function attempts to authenticate the user with the provided credentials.
    * It manages loading states, error handling, and successful sign-in redirection.
-   * 
+   *
    * @param {SignInFormValues} data - The form data containing email and password
    */
   const onSubmit = async (data: SignInFormValues) => {
@@ -96,7 +96,7 @@ export default function SignInPage() {
       if (result.status === 'complete') {
         console.log('Sign-in complete, setting active session');
         await setActive({ session: result.createdSessionId });
-        router.push('/home');
+        router.push('/maintenance');
       } else {
         toast({
           title: 'Error',

@@ -56,6 +56,9 @@ export default function NewRequestForm() {
   const { toast } = useToast();
   const router = useRouter();
   const upsertRequestMutation = useMutation(api.requests.upsertRequest);
+  const [selectedVehicle, setSelectedVehicle] = useState<ValueLabelPair | null>(
+    null
+  );
 
   const getVehicles = useQuery(api.vehicles.getAllVehicleValueLabelPair, {
     isDropoff: false,
@@ -125,7 +128,7 @@ export default function NewRequestForm() {
                   <FormLabel>Request Type</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full h-14">
                         <SelectValue placeholder="Pickup Type" />
                       </SelectTrigger>
                     </FormControl>
@@ -146,31 +149,30 @@ export default function NewRequestForm() {
               control={form.control}
               name="vehicleId"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
+                <FormItem className="flex flex-col w-full">
                   <FormLabel>Vehicle</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            'w-full justify-between',
-                            !field.value && 'text-muted-foreground'
-                          )}
-                        >
-                          {field.value
-                            ? getVehicles?.find(
-                                (vehicle) => vehicle.value === field.value
-                              )?.label
-                            : 'Select vehicle'}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          'w-full justify-between h-14',
+                          !selectedVehicle && 'text-muted-foreground'
+                        )}
+                      >
+                        {selectedVehicle
+                          ? selectedVehicle.label
+                          : 'Select vehicle'}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-full">
+                    <PopoverContent className="w-full!">
                       <Command className="w-full">
-                        <CommandInput placeholder="Search vehicles..." />
+                        <CommandInput
+                          placeholder="Search vehicles..."
+                          className="h-14 text-base w-full"
+                        />
                         <CommandList className="w-full">
                           <CommandEmpty>No Vehicles Found</CommandEmpty>
                           <CommandGroup>
@@ -180,13 +182,14 @@ export default function NewRequestForm() {
                                 key={vehicle.value}
                                 onSelect={() => {
                                   form.setValue('vehicleId', vehicle.value);
+                                  setSelectedVehicle(vehicle);
                                 }}
                                 className="w-full"
                               >
                                 <Check
                                   className={cn(
                                     'mr-2 h-4 w-4',
-                                    vehicle.value === field.value
+                                    vehicle.value === selectedVehicle?.value
                                       ? 'opacity-100'
                                       : 'opacity-0'
                                   )}
@@ -215,6 +218,7 @@ export default function NewRequestForm() {
                   <FormLabel>Notes</FormLabel>
                   <FormControl>
                     <Input
+                      className="h-14"
                       placeholder="Enter any additional notes"
                       {...field}
                     />

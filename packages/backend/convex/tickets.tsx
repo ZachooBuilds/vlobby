@@ -289,7 +289,7 @@ export const upsertIssue = mutation({
         await upsertGlobalActivity(ctx, {
           title: 'Issue Assigned',
           description: `Issue "${args.title}" has been assigned`,
-          type: 'issue_assigned',
+          type: 'Issue Assigned',
           entityId: issueId,
         });
       }
@@ -304,7 +304,7 @@ export const upsertIssue = mutation({
         await upsertGlobalActivity(ctx, {
           title: 'Issue Assigned',
           description: `Issue "${args.title}" has been assigned`,
-          type: 'issue_assigned',
+          type: 'Issue Assigned',
           entityId: issueId,
         });
       }
@@ -354,7 +354,7 @@ export const updateIssueStatus = mutation({
     await upsertGlobalActivity(ctx, {
       title: 'Issue Status Updated',
       description: `Issue status has been updated to ${args.status}`,
-      type: 'issue_status_updated',
+      type: 'Status Updated',
       entityId: args.issueId,
     });
 
