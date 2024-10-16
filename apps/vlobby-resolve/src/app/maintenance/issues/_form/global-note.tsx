@@ -174,13 +174,10 @@ const GlobalNote = ({
       )}
       <CardFooter>
         <div className="flex w-full items-center space-x-4">
-          <Avatar className="h-8 w-8 flex-shrink-0">
-            <AvatarFallback>{'U'}</AvatarFallback>
-          </Avatar>
           <div className="flex-grow">
             <Textarea
               placeholder="Write a comment..."
-              className="w-full resize-none"
+              className="w-full resize-none text-base"
               rows={1}
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}

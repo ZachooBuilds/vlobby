@@ -1,35 +1,43 @@
-"use client";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useMutation } from "convex/react";
-import { Loader2 } from "lucide-react";
-import { z } from "zod";
-import { useToast } from "@repo/ui/hooks/use-toast";
-import { api } from "@repo/backend/convex/_generated/api";
-import { Id } from "@repo/backend/convex/_generated/dataModel";
-import { Card } from "@repo/ui/components/ui/card";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/ui/form";
-import { Textarea } from "@repo/ui/components/ui/textarea";
-import { Switch } from "@repo/ui/components/ui/switch";
-import { Button } from "@repo/ui/components/ui/button";
-import { FileUploadWithPreview } from "../../../_components/file-upload-form-field";
-
+'use client';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useMutation } from 'convex/react';
+import { Loader2 } from 'lucide-react';
+import { z } from 'zod';
+import { useToast } from '@repo/ui/hooks/use-toast';
+import { api } from '@repo/backend/convex/_generated/api';
+import { Id } from '@repo/backend/convex/_generated/dataModel';
+import { Card } from '@repo/ui/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@repo/ui/components/ui/form';
+import { Textarea } from '@repo/ui/components/ui/textarea';
+import { Switch } from '@repo/ui/components/ui/switch';
+import { Button } from '@repo/ui/components/ui/button';
+import { FileUploadWithPreview } from '../../../_components/file-upload-form-field';
+import { useRouter } from 'next/navigation';
 
 export const globalNoteFormSchema = z.object({
   _id: z.string().optional(),
   _creationTime: z.string(),
-  content: z.string().min(1, "Note content is required"),
+  content: z.string().min(1, 'Note content is required'),
   isPrivate: z.boolean(),
   files: z
     .array(
       z.object({
         url: z.string().url(),
         storageId: z.string(),
-      }),
+      })
     )
     .optional(),
-  noteType: z.string().min(1, "Note type is required"),
-  author: z.string().min(1, "Author is required"),
+  noteType: z.string().min(1, 'Note type is required'),
+  author: z.string().min(1, 'Author is required'),
 });
 
 export type GlobalNoteData = z.infer<typeof globalNoteFormSchema>;
@@ -38,27 +46,28 @@ type Props = {
   selectedNote?: GlobalNoteData;
   entityId: string;
   noteType:
-    | "issue"
-    | "workOrder"
-    | "ticket"
-    | "vehicle"
-    | "occupant"
-    | "space"
-    | "contractor";
+    | 'issue'
+    | 'workOrder'
+    | 'ticket'
+    | 'vehicle'
+    | 'occupant'
+    | 'space'
+    | 'contractor';
 };
 
 const GlobalNoteForm = ({ selectedNote, noteType, entityId }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const upsertGlobalNote = useMutation(api.notes.upsertGlobalNote);
+  const router = useRouter();
 
   const form = useForm<GlobalNoteData>({
     defaultValues: selectedNote ?? {
-      content: "",
+      content: '',
       isPrivate: false,
       files: [],
       noteType: noteType,
-      author: "system",
+      author: 'system',
     },
   });
 
@@ -66,24 +75,25 @@ const GlobalNoteForm = ({ selectedNote, noteType, entityId }: Props) => {
     setIsLoading(true);
     try {
       await upsertGlobalNote({
-        _id: data._id as Id<"globalNotes">,
+        _id: data._id as Id<'globalNotes'>,
         content: data.content,
         isPrivate: data.isPrivate,
-        files: data.files?.map((file) => file.storageId) as Id<"_storage">[],
+        files: data.files?.map((file) => file.storageId) as Id<'_storage'>[],
         noteType: data.noteType,
         entityId: entityId,
       });
       toast({
-        title: "Success",
-        description: "Note has been saved successfully.",
+        title: 'Success',
+        description: 'Note has been saved successfully.',
       });
       form.reset(); // Reset form after successful submission
+      router.back();
     } catch (error) {
-      console.error("Error upserting note:", error);
+      console.error('Error upserting note:', error);
       toast({
-        title: "Error",
-        description: "Failed to save the note. Please try again.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to save the note. Please try again.',
+        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -106,7 +116,7 @@ const GlobalNoteForm = ({ selectedNote, noteType, entityId }: Props) => {
                 <FormControl>
                   <Textarea
                     placeholder="Enter your note here..."
-                    className="min-h-[150px] resize-y"
+                    className="min-h-[150px] resize-y text-base"
                     {...field}
                   />
                 </FormControl>
