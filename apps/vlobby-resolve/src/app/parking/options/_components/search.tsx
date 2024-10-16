@@ -109,9 +109,9 @@ export default function VehicleSearch() {
         </Popover>
         <Button
           onClick={handleSearch}
-          className="flex items-center gap-2 w-full h-14 text-foreground  "
+          className="flex items-center gap-2 w-full h-14 text-white  "
         >
-          <Search className="w-4 h-4 text-foreground" />
+          <Search className="w-4 h-4 text-white" />
           Search
         </Button>
       </CardContent>

@@ -152,6 +152,44 @@ export default function NewDropoffRequestForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <Button
+          onClick={onOpenCamera}
+          variant="outline"
+          className="w-full h-14"
+          type="button"
+        >
+          <CameraIcon className="mr-2 h-4 w-4" />
+          Open Camera
+        </Button>
+
+        {capturedFiles.length > 0 && (
+          <div className="mt-4">
+            <div className="grid grid-cols-3 gap-2">
+              {capturedFiles.map((file, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`Captured ${index + 1}`}
+                    className="w-full h-24 object-cover rounded"
+                  />
+                  <button
+                    onClick={() => {
+                      const newFiles = capturedFiles.filter(
+                        (_, i) => i !== index
+                      );
+                      // form.setValue('evidenceImages', newFiles);
+                    }}
+                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
+                    type="button"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <FormField
           control={form.control}
           name="vehicleId"
@@ -430,7 +468,11 @@ export default function NewDropoffRequestForm({
           )}
         />
 
-        <Button type="submit" disabled={isLoading} className="w-full h-14 text-white">
+        <Button
+          type="submit"
+          disabled={isLoading}
+          className="w-full h-14 text-white"
+        >
           {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin " />
           ) : null}

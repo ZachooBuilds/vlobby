@@ -21,6 +21,10 @@ import { Id } from '@repo/backend/convex/_generated/dataModel';
 import { Loader2, CheckCircle } from 'lucide-react';
 import { WorkOrderDetails } from '../../../../lib/app-types';
 import ImageGalleryComponent from '../../../_components/image-gallery';
+import { GlobalNoteData } from '../_form/global-note-form';
+import Link from 'next/link';
+import NoData from '../../../_components/no-data';
+import GlobalNote from '../_form/global-note';
 
 interface WorkOrdersOverviewProps {
   workOrderId: string;
@@ -126,6 +130,7 @@ export default function WorkOrderOverview({
           assignedContractor={workOrder.assignedContractor}
         />
       )}
+      <NotesTab workOrderId={workOrderId} />
       {/* <ActivityFeed issueId={issue._id} /> */}
     </div>
   );
@@ -178,6 +183,76 @@ function AssignedContractorDetails({
           {assignedContractor.name} will arrange a time to resolve this issue.
         </p>
       </CardFooter>
+    </Card>
+  );
+}
+
+/**
+ * @function NotesTab
+ * @description Handles the display of notes related to the issue
+ * @param {Object} props - Component props
+ * @param {string} props.issueId - The ID of the issue
+ * @returns {JSX.Element} Rendered component for the Notes tab
+ */
+function NotesTab({ workOrderId }: { workOrderId: string }) {
+  const noteData = useQuery(api.notes.getAllGlobalNotes, {
+    noteType: 'workOrder',
+    entityId: workOrderId,
+  }) as GlobalNoteData[];
+
+  if (noteData === undefined || noteData.length < 1) {
+    return (
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="text-md font-medium">Notes</CardTitle>
+          <Link
+            href={`/maintenance/issues/new-work-order-note?workOrderId=${workOrderId}`}
+            passHref
+          >
+            <Button variant={'outline'}>Add Note</Button>
+          </Link>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <NoData
+            badgeText={'No notes found'}
+            title={'No notes found'}
+            description={'No notes have been added for this issue.'}
+          />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle className="text-md font-medium">Notes</CardTitle>
+        <Link
+          href={`/maintenance/issues/new-work-order-note?workOrderId=${workOrderId}`}
+          passHref
+        >
+          <Button variant={'outline'}>Add Note</Button>
+        </Link>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        {noteData.length > 0 && (
+          <>
+            <div className="flex flex-row gap-2">
+              <p className="text-md font-medium">All Notes</p>
+              <Badge size={'xs'}>{noteData.length} Total</Badge>
+              <Badge size={'xs'} color={'gray'}>
+                {noteData.filter((note) => !note.isPrivate).length} Public
+              </Badge>
+              <Badge size={'xs'} color={'gray'}>
+                {noteData.filter((note) => note.isPrivate).length} Private
+              </Badge>
+            </div>
+            {noteData.map((note) => (
+              <GlobalNote key={note._id} {...note} />
+            ))}
+          </>
+        )}
+      </CardContent>
     </Card>
   );
 }

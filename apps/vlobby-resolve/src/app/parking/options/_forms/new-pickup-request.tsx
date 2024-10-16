@@ -239,7 +239,7 @@ export default function NewRequestForm() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full h-14 text-foreground"
+              className="w-full h-14 text-white"
             >
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
