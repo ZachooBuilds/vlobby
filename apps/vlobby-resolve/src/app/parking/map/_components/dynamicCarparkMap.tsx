@@ -101,12 +101,16 @@ function LevelSelection({
             setSelectedLocationId(value as Id<'parkingLocations'>)
           }
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full h-14">
             <SelectValue placeholder="Select a Location" />
           </SelectTrigger>
           <SelectContent>
             {locations?.map((location) => (
-              <SelectItem key={location.value} value={location.value}>
+              <SelectItem
+                key={location.value}
+                value={location.value}
+                className="h-14"
+              >
                 {location.label}
               </SelectItem>
             ))}
@@ -123,12 +127,16 @@ function LevelSelection({
             onLevelChange(value as Id<'parkingLevels'>);
           }}
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full h-14">
             <SelectValue placeholder="Select a level" />
           </SelectTrigger>
           <SelectContent>
             {levels?.map((level) => (
-              <SelectItem key={level.value} value={level.value}>
+              <SelectItem
+                key={level.value}
+                value={level.value}
+                className="h-14"
+              >
                 {level.label}
               </SelectItem>
             ))}
@@ -332,8 +340,6 @@ export default function CarParkMap({
     }
   };
 
-
-
   // New useEffect to handle selectedVehicleId
   useEffect(() => {
     if (selectedVehicleId && activeParkingLogs?.length > 0) {
@@ -349,7 +355,7 @@ export default function CarParkMap({
   return (
     <div className="flex h-full flex-col">
       {/* Level selection and edit toggle */}
-      <div className="z-5 p-2">
+      <div className="z-5 p-2 mb-4">
         <LevelSelection
           isEditing={isEditing}
           onEditToggle={(checked) => {
@@ -370,7 +376,7 @@ export default function CarParkMap({
           <MapContainer
             center={[250, 250]}
             zoom={0}
-            className="absolute inset-0 h-full w-full"
+            className="absolute inset-0 h-full w-full rounded-lg"
             crs={L.CRS.Simple}
             minZoom={-2}
             maxZoom={5}
