@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CameraIcon, Check, ChevronsUpDown, Loader2 } from 'lucide-react';
+import { CameraIcon, Check, ChevronsUpDown, Loader2, X } from 'lucide-react';
 import { dropoffSchema, DropoffRequest } from './request-validation';
 import { useMutation, useQuery } from 'convex/react';
 import { Badge } from '@tremor/react';
@@ -41,6 +41,7 @@ import {
 import { Card, CardContent } from '@repo/ui/components/ui/card';
 import CarParkMap from '../../map/_components/parkingMapLoader';
 import { useRouter } from 'next/navigation';
+import ImageGalleryComponent from '../../../_components/image-gallery';
 // import { useRouter } from 'next/navigation';
 // import router from 'next/router';
 
@@ -223,6 +224,34 @@ export default function NewDropoffRequestForm({
           <CameraIcon className="mr-2 h-4 w-4" />
           Open Camera
         </Button>
+
+        {capturedFiles.length > 0 && (
+          <div className="mt-4">
+            <div className="grid grid-cols-3 gap-2">
+              {capturedFiles.map((file, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`Captured ${index + 1}`}
+                    className="w-full h-24 object-cover rounded"
+                  />
+                  <button
+                    onClick={() => {
+                      const newFiles = capturedFiles.filter(
+                        (_, i) => i !== index
+                      );
+                      // form.setValue('evidenceImages', newFiles);
+                    }}
+                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
+                    type="button"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <FormField
           control={form.control}
