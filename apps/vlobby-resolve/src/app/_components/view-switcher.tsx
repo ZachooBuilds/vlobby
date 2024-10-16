@@ -16,12 +16,12 @@ export default function ViewSwitcher() {
             variant={pathname === option.href ? 'default' : 'outline'}
             className={`h-14 px-4 w-full ${
               pathname === option.href
-                ? 'bg-primary text-primary-foreground'
-                : ''
+                ? 'bg-primary text-white'
+                : 'text-muted-foreground'
             }`}
           >
             <div
-              className={`w-4 h-4 mr-4 ${pathname === option.href ? 'fill-white' : ''}`}
+              className={`w-4 h-4 mr-4 ${pathname === option.href ? 'fill-white' : 'fill-foreground'}`}
             >
               <option.icon />
             </div>

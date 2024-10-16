@@ -139,6 +139,7 @@ import {
 } from '@clerk/clerk-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
+import Image from 'next/image';
 
 const publicRoutes = ['/sign-in', '/sign-up', '/'];
 
@@ -250,7 +251,20 @@ export function AuthCheck({ children }: { children: ReactNode }) {
   }
 
   if (!authChecked || !userLoaded || !sessionLoaded) {
-    return <Loader2 className="h-6 w-6 animate-spin" />;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="relative">
+          <Image
+            src="/resolveIcon.png"
+            alt="Resolve Logo"
+            width={100}
+            height={100}
+            className="animate-pulse"
+          />
+          <div className="absolute inset-0 bg-primary/20 rounded-full animate-ping"></div>
+        </div>
+      </div>
+    );
   }
 
   // For non-public routes, ensure there's a valid session

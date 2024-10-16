@@ -139,35 +139,14 @@ export default function NewDropoffRequestForm({
     }
   };
   const [selectedSpotId, setSelectedSpotId] = useState<string | null>(null);
+  const [selectedVehicle, setSelectedVehicle] = useState<ValueLabelPair | null>(
+    null
+  );
 
   function handleSpotSelect(spotId: string | null) {
     setSelectedSpotId(spotId);
     form.setValue('parkId', spotId ?? '');
   }
-
-  // const [currentFiles, setCurrentFiles] = useState<File[]>([]);
-  // const [isCameraOpen, setIsCameraOpen] = useState(false);
-
-  // const handleCapturedPhotos = (capturedFiles: File[]) => {
-  //   const updatedFiles = [...currentFiles, ...capturedFiles];
-  //   setCurrentFiles(updatedFiles);
-  //   setIsCameraOpen(false);
-  // };
-
-  // if (isCameraOpen) {
-  //   return (
-  //     <div className="flex flex-col h-screen">
-  //       <div className="flex-grow overflow-auto">
-  //         <div className="flex flex-col gap-4 items-start justify-start pt-16 p-4 pb-[120px] w-full">
-  //           <MultiImageCapture
-  //             onCapture={handleCapturedPhotos}
-  //             onClose={() => setIsCameraOpen(false)}
-  //           />
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   return (
     <Form {...form}>
@@ -176,31 +155,28 @@ export default function NewDropoffRequestForm({
           control={form.control}
           name="vehicleId"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex flex-col w-full">
               <FormLabel>Vehicle</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      className={cn(
-                        'w-full justify-between',
-                        !field.value && 'text-muted-foreground'
-                      )}
-                    >
-                      {field.value
-                        ? getVehicles?.find(
-                            (vehicle) => vehicle.value === field.value
-                          )?.label
-                        : 'Select vehicle'}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </FormControl>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    className={cn(
+                      'w-full justify-between h-14',
+                      !selectedVehicle && 'text-muted-foreground'
+                    )}
+                  >
+                    {selectedVehicle ? selectedVehicle.label : 'Select vehicle'}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-full p-0">
+                <PopoverContent className="w-full!">
                   <Command className="w-full">
-                    <CommandInput placeholder="Search vehicles..." />
+                    <CommandInput
+                      placeholder="Search vehicles..."
+                      className="h-14 text-base w-full"
+                    />
                     <CommandList className="w-full">
                       <CommandEmpty>No Vehicles Found</CommandEmpty>
                       <CommandGroup>
@@ -210,14 +186,14 @@ export default function NewDropoffRequestForm({
                             key={vehicle.value}
                             onSelect={() => {
                               form.setValue('vehicleId', vehicle.value);
-                              console.log('Selected Vehicle:', vehicle);
+                              setSelectedVehicle(vehicle);
                             }}
                             className="w-full"
                           >
                             <Check
                               className={cn(
                                 'mr-2 h-4 w-4',
-                                vehicle.value === field.value
+                                vehicle.value === selectedVehicle?.value
                                   ? 'opacity-100'
                                   : 'opacity-0'
                               )}
@@ -241,7 +217,7 @@ export default function NewDropoffRequestForm({
         <Button
           onClick={onOpenCamera}
           variant="outline"
-          className="w-full"
+          className="w-full h-14"
           type="button"
         >
           <CameraIcon className="mr-2 h-4 w-4" />

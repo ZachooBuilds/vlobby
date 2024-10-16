@@ -13,8 +13,8 @@ export default function ParkingOptionsTabs() {
         className={cn(
           'flex items-center justify-center h-full rounded-md',
           pathname === '/parking/options/search'
-            ? 'bg-primary text-primary-foreground'
-            : 'bg-muted'
+            ? 'bg-primary text-foreground'
+            : 'bg-muted text-muted-foreground'
         )}
       >
         Request Vehicle
@@ -24,8 +24,8 @@ export default function ParkingOptionsTabs() {
         className={cn(
           'flex items-center justify-center h-full rounded-md',
           pathname === '/parking/options/dropoff'
-            ? 'bg-primary text-primary-foreground'
-            : 'bg-muted'
+            ? 'bg-primary text-foreground'
+            : 'bg-muted text-muted-foreground'
         )}
       >
         Dropoff Vehicle

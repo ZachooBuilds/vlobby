@@ -133,8 +133,16 @@ export default function NewRequestForm() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="pickup:item">Item Request</SelectItem>
-                      <SelectItem value="pickup:vehicle">
+                      <SelectItem
+                        value="pickup:item"
+                        className="text-foreground h-14"
+                      >
+                        Item Request
+                      </SelectItem>
+                      <SelectItem
+                        value="pickup:vehicle"
+                        className="text-foreground h-14"
+                      >
                         Vehicle Request
                       </SelectItem>
                     </SelectContent>
@@ -228,7 +236,11 @@ export default function NewRequestForm() {
               )}
             />
 
-            <Button type="submit" disabled={isLoading} className="w-full h-14">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full h-14 text-foreground"
+            >
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : null}
