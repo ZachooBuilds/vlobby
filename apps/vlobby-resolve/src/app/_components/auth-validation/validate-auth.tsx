@@ -245,8 +245,8 @@ export function AuthCheck({ children }: { children: ReactNode }) {
   }, [clerk, router, pathname]);
 
   // Allow access to public routes even without a session
-  if (publicRoutes.includes(pathname)) {
-    return <>{children}</>;
+  if (publicRoutes.includes(pathname) && sessionLoaded) {
+    router.push('/maintenance');
   }
 
   if (!authChecked || !userLoaded || !sessionLoaded) {
