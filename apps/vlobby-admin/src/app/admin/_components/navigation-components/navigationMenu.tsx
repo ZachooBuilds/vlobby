@@ -42,7 +42,7 @@ import { Feature, IconImage } from '../../../lib/app-data/app-types';
  * @param {Props} props - The component props
  * @returns {JSX.Element} The navigation menu component
  */
-export default function WebNavigation() {
+export default function eWebNavigation() {
   // Current pathname for determining the selected navigation item
   const pathname = usePathname();
 

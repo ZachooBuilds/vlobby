@@ -4,11 +4,11 @@ const config: CapacitorConfig = {
   appId: 'com.vlobby.app',
   appName: 'vlobby-app',
   webDir: 'out',
-  server: {
-    cleartext: true,
-    url: "https://vlobby-occupant-app.vercel.app",
-    // url: "http://192.168.1.64:3000",
-  },
+  // server: {
+  //   cleartext: true,
+  //   url: "https://vlobby-occupant-app.vercel.app",
+  //   // url: "http://192.168.1.64:3000",
+  // },
   plugins: {
     PushNotifications: {
       presentationOptions: ["badge", "sound", "alert"]

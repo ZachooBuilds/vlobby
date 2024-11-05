@@ -37,6 +37,8 @@ function SpacesContentLoader({
     api.spaces.getRoleFrequencies,
   ) as PieChartData[];
 
+
+
   const formattedRoleFrequencies = roleFrequencies?.map((role) => ({
     ...role,
     label:

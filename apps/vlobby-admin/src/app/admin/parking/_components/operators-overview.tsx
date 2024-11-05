@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useQuery } from "convex/react";
+import { useState } from 'react';
+import { useQuery } from 'convex/react';
 
-import OperatorUpsertForm from "../_forms/upsert-operator";
+import OperatorUpsertForm from '../_forms/upsert-operator';
 
-import { Badge } from "@tremor/react";
-import { PencilIcon, Loader2 } from "lucide-react";
-import { Operator } from "../_forms/operator-validation";
-import { Card, CardContent } from "@repo/ui/components/ui/card";
-import { Button } from "@repo/ui/components/ui/button";
-import { api } from "@repo/backend/convex/_generated/api";
-import useModalStore from "../../../lib/global-state/modal-state";
-import { Input } from "@repo/ui/components/ui/input";
-import NoData from "../../_components/global-components/no-data";
+import { Badge } from '@tremor/react';
+import { PencilIcon, Loader2 } from 'lucide-react';
+import { Operator } from '../_forms/operator-validation';
+import { Card, CardContent } from '@repo/ui/components/ui/card';
+import { Button } from '@repo/ui/components/ui/button';
+import { api } from '@repo/backend/convex/_generated/api';
+import useModalStore from '../../../lib/global-state/modal-state';
+import { Input } from '@repo/ui/components/ui/input';
+import NoData from '../../_components/global-components/no-data';
 
 const OperatorSummaryCard = ({
   operator,
@@ -40,34 +40,33 @@ const OperatorSummaryCard = ({
 );
 
 const OperatorsOverview = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const operators = useQuery(api.parkingOperators.getAll);
 
   const openModal = useModalStore((state) => state.openModal);
 
   const handleAddOperator = () => {
     openModal(
-      "Add New Operator",
-      "Enter the details of the new operator",
-      <OperatorUpsertForm />,
+      'Add New Operator',
+      'Enter the details of the new operator',
+      <OperatorUpsertForm />
     );
   };
 
   const handleEditOperator = (operator: Operator) => {
     openModal(
-      "Edit Operator",
-      "Update the details of the operator",
-      <OperatorUpsertForm selectedOperator={operator} />,
+      'Edit Operator',
+      'Update the details of the operator',
+      <OperatorUpsertForm selectedOperator={operator} />
     );
   };
 
-  const filteredOperators =
-    operators?.filter(
-      (operator: Operator) =>
-        operator.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        operator.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        operator.lastName.toLowerCase().includes(searchQuery.toLowerCase()),
-    ) as Operator[];
+  const filteredOperators = operators?.filter(
+    (operator: Operator) =>
+      operator.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      operator.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      operator.lastName.toLowerCase().includes(searchQuery.toLowerCase())
+  ) as Operator[];
 
   return (
     <div className="flex flex-col gap-4">
