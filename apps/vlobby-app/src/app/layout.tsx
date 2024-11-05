@@ -11,7 +11,7 @@ import PushNotificationInitializer from './_components/PushNotificationInitializ
 import { Camera } from '@capacitor/camera';
 
 /**
- * RootLayout Component
+ * RootLayout Components
  *
  * This component serves as the main layout wrapper for the entire application.
  * It sets up the HTML structure, applies global styles, and provides theme and state management.
